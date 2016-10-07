@@ -1,21 +1,20 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-
-import com.mysql.jdbc.Statement;
-
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
 import java.sql.Connection;
+import com.mysql.jdbc.Statement;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
+
 import java.util.ArrayList;
 
 public class InterfaceClass {
@@ -36,7 +35,13 @@ public class InterfaceClass {
 		Connection con;
 		try{
 			//Creating connection with variable which named "con" 	 DB address		user		pw
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/DbTest", "root", "81035241");
+			Properties properties = new Properties();
+			properties.setProperty("user", "root");
+			properties.setProperty("password", "81035241");
+			properties.setProperty("useSSL", "false");
+			properties.setProperty("autoReconnect", "true");
+			
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/DbTest", properties);
 			return con;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -84,7 +89,22 @@ public class InterfaceClass {
 			model.addRow(row);
 		}
 	}
-	
+	//Execute SQL query
+	public void executeSqlQuery(String query, String message){
+		Connection con = getConnection();
+		Statement statement;
+		try {
+			statement = (Statement) con.createStatement();
+			if(statement.executeUpdate(query) == 1){
+				JOptionPane.showMessageDialog(null, "Data" + message + " Succes!");
+			}else{
+				JOptionPane.showMessageDialog(null, "Data Not " + message);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	//Launch the application.
 	public static void main(String[] args) {
