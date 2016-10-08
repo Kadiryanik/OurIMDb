@@ -234,7 +234,7 @@ public class InterfaceClass {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String query = "UPDATE `information` SET `fname`='"+textFieldFN.getText()+"',`lname`='"+textFieldLN.getText()+"',`age`='"+textFieldA.getText()+" WHERE `PK` = " + textFieldPK.getText();
+				String query = "UPDATE `information` SET `fname`='"+textFieldFN.getText()+"',`lname`='"+textFieldLN.getText()+"',`age`='"+textFieldA.getText()+"' WHERE `PK` = " + textFieldPK.getText();
 				executeSqlQuery(query, " Updated");
 			}
 		});
