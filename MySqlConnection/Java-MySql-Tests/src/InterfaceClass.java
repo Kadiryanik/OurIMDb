@@ -1,4 +1,3 @@
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -24,7 +23,7 @@ import java.awt.event.ActionEvent;
 
 public class InterfaceClass {
 
-	private JFrame frmDbtestform;
+	JFrame frmDbtestform;
 	private JTable table;
 	private JTextField textFieldFN;
 	private JTextField textFieldLN;
@@ -47,7 +46,7 @@ public class InterfaceClass {
 			properties.setProperty("useSSL", "false");
 			properties.setProperty("autoReconnect", "true");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/DbTest", properties);
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ourimdb", properties);
 			return con;
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -118,7 +117,7 @@ public class InterfaceClass {
 		}
 	}
 	
-	//Launch the application.
+	/*//Launch the application.
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -130,11 +129,12 @@ public class InterfaceClass {
 				}
 			}
 		});
-	}
+	}*/
 
     //Initialize the contents of the frame.
 	private void initialize() {
 		frmDbtestform = new JFrame();
+		frmDbtestform.setResizable(false);
 		frmDbtestform.setTitle("DbTestForm");
 		frmDbtestform.setBounds(100, 100, 800, 500);
 		frmDbtestform.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
