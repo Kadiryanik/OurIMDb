@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+//comment
 public class InterfaceClass {
 
 	JFrame frmDbtestform;
