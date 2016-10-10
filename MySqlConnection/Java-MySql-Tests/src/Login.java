@@ -54,7 +54,7 @@ public class Login {
 			properties.setProperty("useSSL", "false");
 			properties.setProperty("autoReconnect", "true");
 			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/DbTest", properties);
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ourimdb", properties);
 			return con;
 		} catch(Exception e) {
 			e.printStackTrace();
