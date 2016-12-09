@@ -1,5 +1,5 @@
-CREATE DATABASE deneme;
-USE deneme;
+CREATE DATABASE imdb;
+USE imdb;
 
 CREATE TABLE IF NOT EXISTS Movie(
     m_Title VARCHAR(255) NOT NULL,
@@ -12,16 +12,6 @@ CREATE TABLE IF NOT EXISTS Movie(
     movie_ID INT(100) NOT NULL AUTO_INCREMENT,
     PRIMARY KEY(movie_ID)
 );
-
-
-DROP DATABASE deneme;
-
-Drop table movie;
-INSERT INTO Movie(m_Title,m_Year,m_Country,movie_Time,m_Language,m_Rating,m_Rating_Count)
-	VALUES('The Shawshank Redemption4', '1999-03-10', 'United States', '2:22:00', 'English', '8.9', 10);
-    
-delete from movie where Movie_ID =1; 
-Select * from movie;
 
 CREATE TABLE IF NOT EXISTS People(
     p_Title VARCHAR(255) NOT NULL,
@@ -37,24 +27,11 @@ CREATE TABLE IF NOT EXISTS People(
     PRIMARY KEY(people_ID)
 );
 
-INSERT INTO People(p_Title, p_First_Name, p_Last_Name, p_Birthday, p_Birth_place,
-	p_Gender, actor_flag,director_flag, writer_flag) 
-		VALUES('Tim Robbins - IMDB', 'Tim', 'Robbins', '1958-10-16', 'West Covina, California, USA',
-			'M', 'Y', 'Y', 'N');
-
-select * from people;
-
-INSERT INTO Movie_People VALUES (1,1);
-
-select * from movie where 
-	(select fk_movie_ID from movie_people) = movie_ID;
-
 CREATE TABLE IF NOT EXISTS Movie_People(
 	fk_movie_ID INT(100),
     fk_people_ID INT(100),
 	CONSTRAINT PRIMARY KEY (fk_movie_ID,fk_people_ID)
 );
-
 
 CREATE TABLE IF NOT EXISTS Organization(
 	org_Name VARCHAR(50) NOT NULL,
@@ -112,7 +89,6 @@ CREATE TABLE IF NOT EXISTS People_Commend(
     FOREIGN KEY (fk_user_ID) REFERENCES Users(user_ID),
     PRIMARY KEY (commend_ID)
 );
-ALTER TABLE People_Commend AUTO_INCREMENT = 1;
  
 CREATE TABLE IF NOT EXISTS Movie_Reply(
 	fk_commend_ID INT,
@@ -133,3 +109,18 @@ CREATE TABLE IF NOT EXISTS People_Reply(
     PRIMARY KEY(commend_ID)
 );
 ALTER TABLE People_Reply AUTO_INCREMENT = 1000000;
+
+INSERT INTO Movie(m_Title,m_Year,m_Country,movie_Time,m_Language,m_Rating,m_Rating_Count)
+	VALUES('The Shawshank Redemption1', '1999-03-10', 'United States', '2:22:00', 'English', '8.9', 10);
+
+INSERT INTO Movie(m_Title,m_Year,m_Country,movie_Time,m_Language,m_Rating,m_Rating_Count)
+	VALUES('The Shawshank Redemption2', '1999-03-10', 'United States', '2:22:00', 'English', '8.9', 10);
+    
+    
+INSERT INTO Movie(m_Title,m_Year,m_Country,movie_Time,m_Language,m_Rating,m_Rating_Count)
+	VALUES('The Shawshank Redemption3', '1999-03-10', 'United States', '2:22:00', 'English', '8.9', 10);
+    
+INSERT INTO People(p_Title, p_First_Name, p_Last_Name, p_Birthday, p_Birth_place,
+	p_Gender, actor_flag,director_flag, writer_flag) 
+		VALUES('Tim Robbins - IMDB', 'Tim', 'Robbins', '1958-10-16', 'West Covina, California, USA',
+			'M', 'Y', 'Y', 'N');
