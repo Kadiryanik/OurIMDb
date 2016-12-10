@@ -27,7 +27,7 @@ public class Top10Component {
 		
 		JPanel panel = new JPanel();
 		if(Id % 2 == 0){
-			panel.setBackground(new Color(192, 192, 192));
+			panel.setBackground(new Color(230, 230, 245));
 		}
 		else{
 			panel.setBackground(new Color(255, 255, 255));
@@ -76,9 +76,23 @@ public class Top10Component {
 		lblImdbrating.setBounds(361, 15, 66, 36);
 		panel.add(lblImdbrating);
 		
-		JLabel lblAddwatchlist = new JLabel("AddWatchList");
-		lblAddwatchlist.setBounds(437, 16, 66, 36);
-		panel.add(lblAddwatchlist);
+		final JLabel lblAddwatchlist = new JLabel("");
+		lblAddwatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblAddwatchlist.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//Kullanýcý izlenicek listesine ekle
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblAddwatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026a.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblAddwatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026.png"));
+			}
+		});
+		lblAddwatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026.png"));
 		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);

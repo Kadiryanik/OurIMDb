@@ -1,17 +1,10 @@
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import javax.swing.JTextArea;
 import javax.swing.JButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import java.awt.Color;
 import javax.swing.JPanel;
@@ -22,6 +15,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+
+import com.mysql.jdbc.Statement;
+
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
@@ -31,25 +27,19 @@ import java.awt.Window.Type;
 import java.awt.Frame;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.Properties;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import javax.swing.border.MatteBorder;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
 import java.awt.Cursor;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 
-import java.awt.Scrollbar;
-import javax.swing.JSpinner;
-import javax.swing.JList;
-import javax.swing.ScrollPaneConstants;
 import java.awt.FlowLayout;
+import javax.swing.JTabbedPane;
+import java.awt.Dimension;
 
 //Finalde sformdaki bi butnu mesela tutup baþka yere taþýmak için hangi eventlerle ilgilenilmeli nasýl yapýlýr
 public class MainForm {
@@ -57,9 +47,15 @@ public class MainForm {
 	private JFrame frmOurmdb;
 	private JTextField textFieldId;
 	private JPasswordField textFieldPw;
-	private JPanel panelCelebs;
+
 	public int xMouse;
 	public int yMouse;
+	private JTextField textFieldYourName;
+	private JTextField textFieldEmail;
+	private JPasswordField passwordFieldPass;
+	private JPasswordField passwordFieldPassA;
+	private int userId;
+	private boolean isLogined;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -74,17 +70,43 @@ public class MainForm {
 		});
 		
 	}
-
-	/**
-	 * Create the application.
-	 */
+	/*Database Connection*/
+	public Connection getConnection(){
+		Connection con;
+		try{
+			//Creating connection with variable which named "con" 	 DB address		user		pw
+			Properties properties = new Properties();
+			properties.setProperty("user", "root");
+			properties.setProperty("password", "81035241");
+			properties.setProperty("useSSL", "false");
+			properties.setProperty("autoReconnect", "true");
+			
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imdb", properties);
+			return con;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	//Execute SQL query
+	public void executeSqlQuery(String query){
+		Connection con = getConnection();
+		Statement statement;
+		try {
+			statement = (Statement) con.createStatement();
+			statement.executeUpdate(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public MainForm() {
+		userId = -1;
+		isLogined = false;
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frmOurmdb = new JFrame();
 		frmOurmdb.setResizable(false);
@@ -96,6 +118,9 @@ public class MainForm {
 		frmOurmdb.setBounds(100, 100, 550, 750);
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
+		
+		final JButton btnWatchList = new JButton("");
+		JButton btnLogin = new JButton("");
 		
 		final JLabel labelExit = new JLabel("");
 		labelExit.addMouseListener(new MouseAdapter() {
@@ -122,6 +147,7 @@ public class MainForm {
 		labelIcon.setBounds(0, 0, 24, 24);
 		frmOurmdb.getContentPane().add(labelIcon);
 		
+		/*Panels Inýt*/
 		final JPanel panelTop = new JPanel();
 		panelTop.setBackground(new Color(255, 255, 255, 0));
 		panelTop.setBounds(0, 25, 550, 45);
@@ -129,133 +155,55 @@ public class MainForm {
 		panelTop.setLayout(null);
 	
 		final JPanel panelHome = new JPanel();
-		panelHome.setBackground(new Color(0, 128, 128, 80));
+		panelHome.setBackground(UIManager.getColor("Button.shadow"));
 		panelHome.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelHome);
 		
 		final JPanel panelMovies = new JPanel();
 		panelMovies.setVisible(false);
-		panelMovies.setBackground(new Color(119, 136, 153, 50));
+		panelMovies.setBackground(UIManager.getColor("windowBorder"));
 		panelMovies.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelMovies);
+		panelMovies.setLayout(null);
 		
-		panelCelebs = new JPanel();
+		final JPanel panelRegister = new JPanel();
+		panelRegister.setBackground(Color.WHITE);
+		panelRegister.setVisible(false);
+		panelRegister.setBounds(0, 75, 550, 675);
+		frmOurmdb.getContentPane().add(panelRegister);
+		panelRegister.setLayout(null);
+		
+		JPanel panelInTheaters = new JPanel();
+		panelInTheaters.setBackground(Color.GRAY);
+		JPanel panelComingSoon = new JPanel();
+		panelComingSoon.setBackground(Color.LIGHT_GRAY);
+
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(UIManager.getColor("windowBorder"));
+		tabbedPane.setBounds(0, 0, 550, 675);
+		tabbedPane.addTab("In Theaters", panelInTheaters);
+		tabbedPane.addTab("Coming Soon", panelComingSoon);
+		panelMovies.add(tabbedPane);
+		
+		final JPanel panelCelebs = new JPanel();
 		panelCelebs.setVisible(false);
-		panelCelebs.setBackground(new Color(221, 160, 221, 50));
+		panelCelebs.setBackground(new Color(30, 144, 255));
 		panelCelebs.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelCelebs);
+		panelCelebs.setLayout(null);
 		
 		final JPanel panelTop10 = new JPanel();
 		panelTop10.setVisible(false);
-		panelTop10.setBackground(new Color(210, 180, 140, 50));
+		panelTop10.setBackground(UIManager.getColor("windowBorder"));
 		panelTop10.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelTop10);
 		panelTop10.setLayout(null);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 550, 675);
-		panelTop10.add(scrollPane);
-		
-		JPanel panelTop10Scroll = new JPanel();
-		panelTop10Scroll.setBackground(new Color(30, 144, 255));
-		panelTop10Scroll.setLayout(new WrapLayout());
-		panelTop10Scroll.setBounds(0, 0, 10, 10);
-		
-		Top10Component temp = new Top10Component(1, "YüzüklerinEdendisi", 8.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-		
-		
-		
-		scrollPane.add(panelTop10Scroll);
-		scrollPane.setViewportView(panelTop10Scroll);
 		
 		final JPanel panelUser = new JPanel();
 		panelUser.setVisible(false);
 		panelUser.setBackground(new Color(106, 90, 205, 50));
 		panelUser.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelUser);
-		
-		JButton btnHome = new JButton("");
-		btnHome.setBackground(UIManager.getColor("CheckBox.light"));
-		btnHome.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\home.png"));
-		btnHome.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelHome.setVisible(true);
-				panelMovies.setVisible(false);
-				panelCelebs.setVisible(false);
-				panelTop10.setVisible(false);
-			}
-		});
-		btnHome.setBounds(10, 8, 46, 26);
-		panelTop.add(btnHome);
-		
-		JButton btnMovies = new JButton("");
-		btnMovies.setBackground(UIManager.getColor("CheckBox.light"));
-		btnMovies.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\movies.png"));
-		btnMovies.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelHome.setVisible(false);
-				panelMovies.setVisible(true);
-				panelCelebs.setVisible(false);
-				panelTop10.setVisible(false);
-			}
-		});
-		btnMovies.setBounds(57, 8, 54, 26);
-		panelTop.add(btnMovies);
-		
-		JButton btnCelebs = new JButton("");
-		btnCelebs.setBackground(UIManager.getColor("CheckBox.light"));
-		btnCelebs.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\celebs.png"));
-		btnCelebs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelHome.setVisible(false);
-				panelMovies.setVisible(false);
-				panelCelebs.setVisible(true);
-				panelTop10.setVisible(false);
-			}
-		});
-		btnCelebs.setBounds(112, 8, 52, 26);
-		panelTop.add(btnCelebs);
-		
-		JButton btnTop50 = new JButton("");
-		btnTop50.setBackground(UIManager.getColor("CheckBox.light"));
-		btnTop50.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Top50.png"));
-		btnTop50.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Top10Component.Id = 0;
-				panelHome.setVisible(false);
-				panelMovies.setVisible(false);
-				panelCelebs.setVisible(false);
-				panelTop10.setVisible(true);
-			}
-		});
-		btnTop50.setBounds(165, 8, 50, 26);
-		panelTop.add(btnTop50);
-		
-		final JButton btnWatchList = new JButton("");
-		btnWatchList.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watchlist.png"));
-		btnWatchList.setEnabled(false);
-		btnWatchList.setVisible(true);
-		btnWatchList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnWatchList.setBounds(217, 8, 76, 26);
-		panelTop.add(btnWatchList);
 		
 		final JPanel panelUnLogin = new JPanel();
 		panelUnLogin.setBackground(new Color(255, 255, 255, 0));
@@ -315,16 +263,6 @@ public class MainForm {
 		textFieldPw.setEchoChar('•');
 		textFieldPw.setColumns(10);
 		
-		JButton btnLogin = new JButton("");
-		btnLogin.setBounds(117, 10, 44, 26);
-		panelUnLogin.add(btnLogin);
-		btnLogin.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\login.png"));
-		
-		JButton btnRegister = new JButton("");
-		btnRegister.setBounds(165, 10, 64, 26);
-		panelUnLogin.add(btnRegister);
-		btnRegister.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\register.png"));
-		
 		final JPanel panelLogined = new JPanel();
 		panelLogined.setVisible(false);
 		panelLogined.setBackground(new Color(255, 255, 255, 0));
@@ -340,20 +278,27 @@ public class MainForm {
 		panelLogined.add(lblWelcome);
 		
 		final JLabel lblUser = new JLabel("User");
+		lblUser.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				panelHome.setVisible(false);
+				panelMovies.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(true);
+			}
+		});
+		lblUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblUser.setHorizontalAlignment(SwingConstants.CENTER);
 		lblUser.setForeground(new Color(0, 0, 0));
 		lblUser.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
 		lblUser.setBounds(30, 25, 116, 19);
 		panelLogined.add(lblUser);
 		
-		final JButton btnProfile = new JButton("");
-		btnProfile.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\profile.png"));
-		btnProfile.setVisible(false);
-		btnProfile.setBounds(294, 8, 52, 26);
-		panelTop.add(btnProfile);
+		/*EndOf Panel Inýt*/
+		
 		
 		JLabel labelDrag = new JLabel("     OurIMDb");
-		
 		labelDrag.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
 		labelDrag.setForeground(new Color(0, 0, 0));
 		labelDrag.addMouseListener(new MouseAdapter() {
@@ -371,11 +316,384 @@ public class MainForm {
 				frmOurmdb.setLocation(x - xMouse, y - yMouse);
 			}
 		});
+		
 		labelDrag.setBounds(0, 0, 550, 15);
 		frmOurmdb.getContentPane().add(labelDrag);
 		
+		/*-------------------------------Buttons-------------------------------*/
+		
+		JButton btnHome = new JButton("");
+		btnHome.setBackground(UIManager.getColor("CheckBox.light"));
+		btnHome.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\home.png"));
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelHome.setVisible(true);
+				panelMovies.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+				
+				executeSqlQuery("SELECT m_title FROM movie");
+				
+			}
+		});
+		btnHome.setBounds(10, 8, 46, 26);
+		panelTop.add(btnHome);
+		
+		JButton btnMovies = new JButton("");
+		btnMovies.setBackground(UIManager.getColor("CheckBox.light"));
+		btnMovies.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\movies.png"));
+		btnMovies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelHome.setVisible(false);
+				panelMovies.setVisible(true);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+			}
+		});
+		btnMovies.setBounds(57, 8, 54, 26);
+		panelTop.add(btnMovies);
+		
+		JButton btnCelebs = new JButton("");
+		btnCelebs.setBackground(UIManager.getColor("CheckBox.light"));
+		btnCelebs.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\celebs.png"));
+		btnCelebs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*Celebs Inýt*/
+				JScrollPane scrollPaneC = new JScrollPane();
+				scrollPaneC.setBounds(0, 0, 550, 675);
+				panelCelebs.add(scrollPaneC);
+				
+				JPanel panelCelebsScroll = new JPanel();
+				panelCelebsScroll.setBackground(UIManager.getColor("Button.shadow"));
+				panelCelebsScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 10, 5));
+				panelCelebsScroll.setBounds(0, 0, 10, 10);
+				scrollPaneC.add(panelCelebsScroll);
+				scrollPaneC.setViewportView(panelCelebsScroll);
+				
+				
+				JLabel lblSortBy = new JLabel("Sort by: ");
+				panelCelebsScroll.add(lblSortBy);
+				
+				JLabel lblAz = new JLabel("A-Z,");
+				panelCelebsScroll.add(lblAz);
+				
+				JLabel lblHeight = new JLabel("Height,");
+				panelCelebsScroll.add(lblHeight);
+				
+				JLabel lblBirthDate = new JLabel("Birth Date");
+				panelCelebsScroll.add(lblBirthDate);
+				
+				JLabel lblLine = new JLabel("");
+				lblLine.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+				panelCelebsScroll.add(lblLine);
+				
+				JLabel lblTotalNames = new JLabel("Total Names:");
+				panelCelebsScroll.add(lblTotalNames);
+				
+				JLabel lblNamescount = new JLabel("NamesCount");
+				panelCelebsScroll.add(lblNamescount);
+				/*EndOF Celebs Inýt*/
+				
+				CelebsComponent.Id = 0;
+				
+				CelebsComponent tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
+						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
+						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
+						panelCelebsScroll);
+				
+				panelHome.setVisible(false);
+				panelMovies.setVisible(false);
+				panelCelebs.setVisible(true);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+			}
+		});
+		btnCelebs.setBounds(112, 8, 52, 26);
+		panelTop.add(btnCelebs);
+		
+		JButton btnTop50 = new JButton("");
+		btnTop50.setBackground(UIManager.getColor("CheckBox.light"));
+		btnTop50.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Top50.png"));
+		btnTop50.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Top10Component.Id = 0;
+				/*Top10 Inýt*/
+				JScrollPane scrollPane = new JScrollPane();
+				scrollPane.setBounds(0, 0, 550, 675);
+				panelTop10.add(scrollPane);
+				
+				JPanel panelTop10Scroll = new JPanel();
+				panelTop10Scroll.setBackground(UIManager.getColor("Button.shadow"));
+				panelTop10Scroll.setLayout(new WrapLayout(FlowLayout.CENTER, 10, 10));
+				panelTop10Scroll.setBounds(0, 0, 10, 10);
+				
+				scrollPane.add(panelTop10Scroll);
+				scrollPane.setViewportView(panelTop10Scroll);
+				/*EndOf Top10 Inýt*/
+				
+				Top10Component temp = new Top10Component(1, "YüzüklerinEdendisi", 8.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "ASD", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "DEF", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				
+				panelHome.setVisible(false);
+				panelMovies.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(true);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+			}
+		});
+		btnTop50.setBounds(165, 8, 50, 26);
+		panelTop.add(btnTop50);
+		
+		//btnWatchList
+		btnWatchList.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watchlist.png"));
+		btnWatchList.setEnabled(false);
+		btnWatchList.setVisible(true);
+		btnWatchList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnWatchList.setBounds(217, 8, 76, 26);
+		panelTop.add(btnWatchList);
+		
+		//btnLogin
+		btnLogin.setBounds(117, 10, 44, 26);
+		panelUnLogin.add(btnLogin);
+		btnLogin.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\login.png"));
+		
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if("aa".equals(textFieldId.getText()) && "123".equals(textFieldPw.getText())){
+					//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
+					panelTop.setVisible(false);
+					panelUnLogin.setVisible(false);
+					panelLogined.setVisible(true);
+					btnWatchList.setEnabled(true);
+					panelTop.setVisible(true);
+					
+					lblUser.setText(textFieldId.getText());
+					textFieldId.setText("");
+					textFieldPw.setText("");
+					
+					isLogined = true;
+					//TODO: userId setle
+				}
+				else{
+					//TODO:
+				}
+			}
+		});
+		
+		JButton btnRegister = new JButton("");
+		btnRegister.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				/*Initilize Panel*/
+				
+				JLabel lblCreateAccount = new JLabel("Create Account");
+				lblCreateAccount.setFont(new Font("Comic Sans MS", Font.BOLD, 19));
+				lblCreateAccount.setForeground(Color.BLACK);
+				lblCreateAccount.setBounds(120, 41, 160, 45);
+				panelRegister.add(lblCreateAccount);
+				
+				JLabel lblRegInfo1 = new JLabel("YourName");
+				lblRegInfo1.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+				lblRegInfo1.setBounds(120, 97, 187, 14);
+				panelRegister.add(lblRegInfo1);
+				
+				JLabel lblRegInfo2 = new JLabel("Email");
+				lblRegInfo2.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+				lblRegInfo2.setBounds(120, 172, 46, 14);
+				panelRegister.add(lblRegInfo2);
+				
+				JLabel lblRegInfo3 = new JLabel("Password");
+				lblRegInfo3.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+				lblRegInfo3.setBounds(120, 247, 97, 14);
+				panelRegister.add(lblRegInfo3);
+				
+				JLabel lblRegInfo4 = new JLabel("Password again");
+				lblRegInfo4.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
+				lblRegInfo4.setBounds(120, 322, 112, 14);
+				panelRegister.add(lblRegInfo4);
+				
+				final JLabel lblYourname = new JLabel("YourName");
+				textFieldYourName = new JTextField();
+				textFieldYourName.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent arg0) {
+						lblYourname.setVisible(true);
+					}
+					@Override
+					public void focusLost(FocusEvent arg0) {
+						lblYourname.setVisible(false);
+					}
+				});
+				textFieldYourName.setBounds(120, 126, 310, 30);
+				panelRegister.add(textFieldYourName);
+				textFieldYourName.setColumns(10);
+				
+				
+				lblYourname.setVisible(false);
+				lblYourname.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				lblYourname.setBounds(116, 122, 318, 37);
+				panelRegister.add(lblYourname);
+				
+				final JLabel labelEmail = new JLabel("");
+				textFieldEmail = new JTextField();
+				textFieldEmail.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent arg0) {
+						labelEmail.setVisible(true);
+					}
+					@Override
+					public void focusLost(FocusEvent arg0) {
+						labelEmail.setVisible(false);
+					}
+				});
+				textFieldEmail.setColumns(10);
+				textFieldEmail.setBounds(120, 201, 310, 30);
+				panelRegister.add(textFieldEmail);
+				
+				labelEmail.setVisible(false);
+				labelEmail.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				labelEmail.setBounds(116, 197, 318, 37);
+				panelRegister.add(labelEmail);
+				
+				final JLabel labelPassword = new JLabel("");
+				passwordFieldPass = new JPasswordField();
+				passwordFieldPass.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent arg0) {
+						labelPassword.setVisible(true);
+					}
+					@Override
+					public void focusLost(FocusEvent arg0) {
+						labelPassword.setVisible(false);
+					}
+				});
+				passwordFieldPass.setBounds(120, 276, 310, 30);
+				panelRegister.add(passwordFieldPass);
+				
+				labelPassword.setVisible(false);
+				labelPassword.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				labelPassword.setBounds(116, 272, 318, 37);
+				panelRegister.add(labelPassword);
+				
+				final JLabel labelPassworda = new JLabel("");
+				passwordFieldPassA = new JPasswordField();
+				passwordFieldPassA.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent arg0) {
+						labelPassworda.setVisible(true);
+					}
+					@Override
+					public void focusLost(FocusEvent arg0) {
+						labelPassworda.setVisible(false);
+					}
+				});
+				passwordFieldPassA.setBounds(120, 351, 310, 30);
+				panelRegister.add(passwordFieldPassA);
+				
+				labelPassworda.setVisible(false);
+				labelPassworda.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				labelPassworda.setBounds(116, 347, 318, 37);
+				panelRegister.add(labelPassworda);
+				
+				final JLabel lblButton = new JLabel("");
+				lblButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				lblButton.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						lblButton.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterButtonA.png"));
+					}
+					@Override
+					public void mouseExited(MouseEvent arg0) {
+						lblButton.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterButton.png"));
+					}
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						//TODO: Veri tabanýyla veya alanlarla ilgili sorun yoksa kaydet
+					}
+				});
+				lblButton.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterButton.png"));
+				lblButton.setBounds(120, 397, 312, 31);
+				panelRegister.add(lblButton);
+				/*EndOf Initialize*/
+				
+				panelHome.setVisible(false);
+				panelMovies.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(true);
+			}
+		});
+		btnRegister.setBounds(165, 10, 64, 26);
+		panelUnLogin.add(btnRegister);
+		btnRegister.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\register.png"));
+		/*----------------------------EndOf-Buttons----------------------------*/
+		
+		/*BackgroundPanel*/
 		JPanel panelBackground = new JPanel();
-		panelBackground.setBackground(new Color(30,144,255));
+		panelBackground.setBackground(UIManager.getColor("windowBorder"));
 		/*Background image*/
 		/*JPanel panelBackground = new JPanel(){
 			public void paintComponent(Graphics g){
@@ -387,25 +705,6 @@ public class MainForm {
 		};*/
 		panelBackground.setBounds(0, 0, 550, 750);
 		frmOurmdb.getContentPane().add(panelBackground);
-		btnLogin.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if("aa".equals(textFieldId.getText()) && "123".equals(textFieldPw.getText())){
-					//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
-					panelTop.setVisible(false);
-					panelUnLogin.setVisible(false);
-					panelLogined.setVisible(true);
-					btnWatchList.setEnabled(true);
-					btnProfile.setVisible(true);
-					panelTop.setVisible(true);
-					
-					lblUser.setText(textFieldId.getText());
-					textFieldId.setText("");
-					textFieldPw.setText("");
-				}
-				else{
-					
-				}
-			}
-		});
+		/*EndOf-BackgroundPanel*/
 	}
 }
