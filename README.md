@@ -7,3 +7,4 @@ Secondly you have to copy this JAR file which is in "mysql-connector-java-5.1.40
 into the "C:\Wokplace" folder
 
 All these are done! You are ready to go!
+..
