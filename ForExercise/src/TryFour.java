@@ -17,6 +17,9 @@ import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.Map;
 import java.awt.Cursor;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TryFour {
 
@@ -58,34 +61,26 @@ public class TryFour {
 		panel.setBackground(new Color(192, 192, 192));
 		panel.setBounds(0, 0, 540, 400);
 		frame.getContentPane().add(panel);
-		panel.setLayout(null);
+		
+		JPanel panelName = new JPanel();
+		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		JLabel lblImage = new JLabel("");
 		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Movies140x209.jpg"));
 		lblImage.setBackground(UIManager.getColor("menu"));
-		lblImage.setBounds(10, 11, 140, 209);
-		panel.add(lblImage);
-		
-		JLabel lblName = new JLabel("Name");
-		lblName.setForeground(new Color(19, 152, 216));
-		lblName.setBackground(Color.LIGHT_GRAY);
-		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
-		lblName.setBounds(160, 11, 300, 14);
-		panel.add(lblName);
 		
 		JLabel lblMin = new JLabel("128 min");
 		lblMin.setForeground(new Color(102, 102, 102));
-		lblMin.setBounds(160, 36, 49, 14);
-		panel.add(lblMin);
 		
 		JLabel label = new JLabel("-");
-		label.setBounds(214, 36, 12, 14);
-		panel.add(label);
 		
 		JPanel panelGenres = new JPanel();
-		panelGenres.setBounds(234, 36, 296, 14);
-		panel.add(panelGenres);
-		panelGenres.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelGenres.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		
+		LabelWithoutLink temp = new LabelWithoutLink("Comedy", 123, 102, 102, 102, false, panelGenres);
+		temp = new LabelWithoutLink("Dram", 124, 102, 102, 102, false, panelGenres);
+		temp = new LabelWithoutLink("Musical", 125, 102, 102, 102, true, panelGenres);
+		
 		
 		JTextArea textInfo = new JTextArea();
 		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
@@ -98,10 +93,7 @@ public class TryFour {
 		textInfo.setWrapStyleWord(true);
 		
 		JScrollPane scroll = new JScrollPane(textInfo);
-		scroll.setLocation(160, 61);
-		scroll.setSize(370, 83);
 	    scroll.setViewportView(textInfo);
-		panel.add(scroll);
 		
 		final JLabel lblWatchTrailer = new JLabel("watch trailer");
 		lblWatchTrailer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -120,8 +112,6 @@ public class TryFour {
 			}
 		});
 		lblWatchTrailer.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchTrailerButton.png"));
-		lblWatchTrailer.setBounds(160, 200, 75, 18);
-		panel.add(lblWatchTrailer);
 		
 		final JLabel lblAddWatchlist = new JLabel("add watchlist");
 		lblAddWatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -140,20 +130,14 @@ public class TryFour {
 			}
 		});
 		lblAddWatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistButton.png"));
-		lblAddWatchlist.setBounds(245, 200, 93, 18);
-		panel.add(lblAddWatchlist);
 		
 		JLabel lblDirector = new JLabel("Director  :");
 		lblDirector.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblDirector.setForeground(new Color(102, 102, 102));
-		lblDirector.setBounds(160, 148, 58, 14);
-		panel.add(lblDirector);
 		
 		JLabel lblStars = new JLabel("Stars       :");
 		lblStars.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblStars.setForeground(new Color(102, 102, 102));
-		lblStars.setBounds(161, 164, 58, 14);
-		panel.add(lblStars);
 		
 		JTextArea textBuzz = new JTextArea();
 		textBuzz.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
@@ -166,40 +150,85 @@ public class TryFour {
 		textBuzz.setWrapStyleWord(true);
 		
 		JScrollPane scrollBuzz = new JScrollPane(textBuzz);
-		scrollBuzz.setLocation(10, 230);
-		scrollBuzz.setSize(520, 159);
 		scrollBuzz.setViewportView(textBuzz);
-		panel.add(scrollBuzz);
 		
-		final JLabel lblDirectorLink = new JLabel("Director link");
-		lblDirectorLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblDirectorLink.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent arg0) {
-				Font font = lblDirectorLink.getFont();
-				Map attributes = font.getAttributes();
-				attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-				lblDirectorLink.setFont(font.deriveFont(attributes));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				lblDirectorLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//TODO: Goto eachCelebs for director
-			}
-		});
-		lblDirectorLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblDirectorLink.setForeground(new Color(74, 134, 232));
-		lblDirectorLink.setBounds(222, 147, 123, 14);
-		panel.add(lblDirectorLink);
+		JPanel panelDirector = new JPanel();
+		panelDirector.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		JLabel lblStarLinks = new JLabel("Stars");
-		lblStarLinks.setForeground(new Color(74, 134, 232));
-		lblStarLinks.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblStarLinks.setBounds(222, 164, 116, 14);
-		panel.add(lblStarLinks);
+		JPanel panelStars = new JPanel();
+		panelStars.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(10)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(scrollBuzz, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+							.addComponent(lblImage)
+							.addGap(10)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(1)
+									.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+									.addGap(3)
+									.addComponent(panelStars, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblWatchTrailer, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+									.addGap(10)
+									.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
+								.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+									.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(panelDirector, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addComponent(scroll, 0, 0, Short.MAX_VALUE)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+									.addGap(5)
+									.addComponent(label, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+									.addGap(8)
+									.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE)))))
+					.addGap(19))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(11)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblImage)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+							.addGap(9)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblMin)
+								.addComponent(label)
+								.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+							.addGap(9)
+							.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(4)
+									.addComponent(lblDirector))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(2)
+									.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(7)
+									.addComponent(lblStars))
+								.addGroup(gl_panel.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+							.addGap(21)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblWatchTrailer)
+								.addComponent(lblAddWatchlist))))
+					.addGap(10)
+					.addComponent(scrollBuzz, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		panel.setLayout(gl_panel);
 		
 	}
 }

@@ -18,6 +18,8 @@ import javax.swing.UIManager;
 
 import com.mysql.jdbc.Statement;
 
+import chrriis.dj.nativeswing.swtimpl.NativeInterface;
+
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 
@@ -40,6 +42,7 @@ import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
+import javax.swing.ScrollPaneConstants;
 
 //Finalde sformdaki bi butnu mesela tutup baþka yere taþýmak için hangi eventlerle ilgilenilmeli nasýl yapýlýr
 public class MainForm {
@@ -58,6 +61,8 @@ public class MainForm {
 	private boolean isLogined;
 	
 	public static void main(String[] args) {
+		NativeInterface.open();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -68,13 +73,19 @@ public class MainForm {
 				}
 			}
 		});
-		
+		NativeInterface.runEventPump();
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable(){
+			@Override
+			public void run(){
+				NativeInterface.close();
+			}
+		}));
 	}
 	/*Database Connection*/
 	public Connection getConnection(){
 		Connection con;
 		try{
-			//Creating connection with variable which named "con" 	 DB address		user		pw
+			//Creating connection with variable which named "con" 
 			Properties properties = new Properties();
 			properties.setProperty("user", "root");
 			properties.setProperty("password", "81035241");
@@ -158,6 +169,7 @@ public class MainForm {
 		panelHome.setBackground(UIManager.getColor("Button.shadow"));
 		panelHome.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelHome);
+		panelHome.setLayout(null);
 		
 		final JPanel panelMovies = new JPanel();
 		panelMovies.setVisible(false);
@@ -173,18 +185,7 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(panelRegister);
 		panelRegister.setLayout(null);
 		
-		JPanel panelInTheaters = new JPanel();
-		panelInTheaters.setBackground(Color.GRAY);
-		JPanel panelComingSoon = new JPanel();
-		panelComingSoon.setBackground(Color.LIGHT_GRAY);
-
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBackground(UIManager.getColor("windowBorder"));
-		tabbedPane.setBounds(0, 0, 550, 675);
-		tabbedPane.addTab("In Theaters", panelInTheaters);
-		tabbedPane.addTab("Coming Soon", panelComingSoon);
-		panelMovies.add(tabbedPane);
-		
+	
 		final JPanel panelCelebs = new JPanel();
 		panelCelebs.setVisible(false);
 		panelCelebs.setBackground(new Color(30, 144, 255));
@@ -327,15 +328,14 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				EachMovie temp = new EachMovie(11, panelHome);
+				
 				panelHome.setVisible(true);
 				panelMovies.setVisible(false);
 				panelCelebs.setVisible(false);
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
 				panelRegister.setVisible(false);
-				
-				executeSqlQuery("SELECT m_title FROM movie");
-				
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
@@ -346,12 +346,49 @@ public class MainForm {
 		btnMovies.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\movies.png"));
 		btnMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				MovieTabComponents.Id = 0;
+				/*Movies Init*/
+				JPanel panelInTheaters = new JPanel();
+				panelInTheaters.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 5));
+				panelInTheaters.setBackground(Color.GRAY);
+				
+				JPanel panelComingSoon = new JPanel();
+				panelComingSoon.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 5));
+				panelComingSoon.setBackground(Color.LIGHT_GRAY);
+			
+				JScrollPane scrollPaneInThe = new JScrollPane();
+				scrollPaneInThe.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPaneInThe.setBounds(0, 0, 550, 675);
+				scrollPaneInThe.add(panelInTheaters);
+				scrollPaneInThe.setViewportView(panelInTheaters);
+				
+				JScrollPane scrollPaneComing = new JScrollPane();
+				scrollPaneComing.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPaneComing.setBounds(0, 0, 550, 675);
+				scrollPaneComing.add(panelComingSoon);
+				scrollPaneComing.setViewportView(panelComingSoon);
+				
+				JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+				tabbedPane.setBackground(UIManager.getColor("windowBorder"));
+				tabbedPane.setBounds(0, 0, 550, 675);
+				tabbedPane.addTab("In Theaters", scrollPaneInThe);
+				tabbedPane.addTab("Coming Soon", scrollPaneComing);
+				panelMovies.add(tabbedPane);
+				/*EndOf-Movies Init*/
+				
+				MovieTabComponents temp = new MovieTabComponents(123, panelInTheaters);
+				temp = new MovieTabComponents(123, panelInTheaters);
+				temp = new MovieTabComponents(333, panelInTheaters);
+				
+				temp = new MovieTabComponents(123, panelComingSoon);
+				temp = new MovieTabComponents(333, panelComingSoon);
+				
 				panelHome.setVisible(false);
-				panelMovies.setVisible(true);
 				panelCelebs.setVisible(false);
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
 				panelRegister.setVisible(false);
+				panelMovies.setVisible(true);
 			}
 		});
 		btnMovies.setBounds(57, 8, 54, 26);

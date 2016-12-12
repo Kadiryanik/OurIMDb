@@ -6,6 +6,8 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.JLabel;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -22,6 +24,10 @@ import java.awt.event.FocusEvent;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import chrriis.dj.nativeswing.swtimpl.NativeInterface;
+import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -35,6 +41,7 @@ public class TryThree {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		NativeInterface.open();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -45,6 +52,14 @@ public class TryThree {
 				}
 			}
 		});
+		NativeInterface.runEventPump();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable(){
+			@Override
+			public void run(){
+				NativeInterface.close();
+			}
+		}));
 	}
 
 	/**
@@ -63,9 +78,11 @@ public class TryThree {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		final JLabel lblAddedWatch = new JLabel("");
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(0, 0, 550, 1016);
+		panel.setBounds(0, 0, 550, 1108);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
@@ -73,36 +90,27 @@ public class TryThree {
 		panelInfo.setBackground(new Color(231, 231, 231));
 		panelInfo.setBounds(0, 324, 550, 170);
 		panel.add(panelInfo);
-		panelInfo.setLayout(null);
 		
 		JTextArea textInfo = new JTextArea();
 		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
 		textInfo.setBackground(new Color(231, 231, 231));
-		textInfo.setBounds(0, 5, 550, 83);
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
 		textInfo.setText("Bubiracýklamadýr.. ..");
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
-		panelInfo.add(textInfo);
 		
 		JLabel lblDirector = new JLabel("Director  :");
 		lblDirector.setForeground(new Color(51, 51, 51));
 		lblDirector.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblDirector.setBounds(10, 99, 59, 14);
-		panelInfo.add(lblDirector);
 		
 		JLabel lblWriters = new JLabel("Writers   :");
 		lblWriters.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblWriters.setForeground(new Color(51, 51, 51));
-		lblWriters.setBounds(10, 120, 59, 14);
-		panelInfo.add(lblWriters);
 		
 		JLabel lblStars = new JLabel("Stars       :");
 		lblStars.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblStars.setForeground(new Color(51, 51, 51));
-		lblStars.setBounds(10, 141, 59, 14);
-		panelInfo.add(lblStars);
 		
 		
 		JPanel panelDirectorLinks = new JPanel();
@@ -110,8 +118,6 @@ public class TryThree {
 		panelDirectorLinks.setBackground(new Color(231, 231, 231));
 		panelDirectorLinks.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelDirectorLinks.setForeground(new Color(19, 148, 209));
-		panelDirectorLinks.setBounds(79, 98, 461, 16);
-		panelInfo.add(panelDirectorLinks);
 		panelDirectorLinks.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		//TODO: adding label on these panels make them link
@@ -120,8 +126,6 @@ public class TryThree {
 		panelWriterLinks.setBackground(new Color(231, 231, 231));
 		panelWriterLinks.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelWriterLinks.setForeground(new Color(19, 148, 209));
-		panelWriterLinks.setBounds(79, 118, 461, 16);
-		panelInfo.add(panelWriterLinks);
 		panelWriterLinks.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		JPanel panelStarLinks = new JPanel();
@@ -129,8 +133,6 @@ public class TryThree {
 		panelStarLinks.setBackground(new Color(231, 231, 231));
 		panelStarLinks.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelStarLinks.setForeground(new Color(19, 148, 209));
-		panelStarLinks.setBounds(79, 139, 325, 16);
-		panelInfo.add(panelStarLinks);
 		panelStarLinks.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		
@@ -169,8 +171,56 @@ public class TryThree {
 		});
 		lblSeeFullCast.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblSeeFullCast.setForeground(new Color(19, 148, 209));
-		lblSeeFullCast.setBounds(414, 140, 126, 14);
-		panelInfo.add(lblSeeFullCast);
+		GroupLayout gl_panelInfo = new GroupLayout(panelInfo);
+		gl_panelInfo.setHorizontalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
+				.addComponent(textInfo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addGroup(gl_panelInfo.createSequentialGroup()
+					.addGap(10)
+					.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(panelDirectorLinks, GroupLayout.PREFERRED_SIZE, 461, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panelInfo.createSequentialGroup()
+					.addGap(10)
+					.addComponent(lblWriters, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(panelWriterLinks, GroupLayout.PREFERRED_SIZE, 461, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panelInfo.createSequentialGroup()
+					.addGap(10)
+					.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(panelStarLinks, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(lblSeeFullCast, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panelInfo.setVerticalGroup(
+			gl_panelInfo.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelInfo.createSequentialGroup()
+					.addGap(5)
+					.addComponent(textInfo, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addGap(1)
+							.addComponent(lblDirector))
+						.addComponent(panelDirectorLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+					.addGap(4)
+					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addGap(2)
+							.addComponent(lblWriters))
+						.addComponent(panelWriterLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+					.addGap(5)
+					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addGap(2)
+							.addComponent(lblStars))
+						.addComponent(panelStarLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addGap(1)
+							.addComponent(lblSeeFullCast, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE))))
+		);
+		panelInfo.setLayout(gl_panelInfo);
 		
 		JPanel panelTop = new JPanel();
 		panelTop.setBackground(new Color(51, 51, 51));
@@ -407,16 +457,22 @@ public class TryThree {
 		panelTop.add(labelImage);
 		
 		JPanel panelYoutube = new JPanel();
-		panelYoutube.setBackground(new Color(135, 206, 250));
 		panelYoutube.setBounds(163, 97, 387, 226);
 		panelTop.add(panelYoutube);
-		panelYoutube.setLayout(null);
+		panelYoutube.setLayout(new BorderLayout(0, 0));
+		
+		JWebBrowser wb = new JWebBrowser();
+		panelYoutube.add(wb);
+		wb.setBarsVisible(false);
+		wb.navigate("https://www.youtube.com/embed/pZTXv5NpgaI");
 		
 		final JLabel lblAddWatch = new JLabel("");
 		lblAddWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				//TODO: Kullanýcý izlenicek listesine ekle
+				lblAddWatch.setVisible(false);
+				lblAddedWatch.setVisible(true);
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -532,6 +588,28 @@ public class TryThree {
 		lblLinevertical.setBounds(468, 27, 3, 38);
 		panelTop.add(lblLinevertical);
 		lblLinevertical.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\LineVertical.png"));
+		
+		/*lblAddedWatch*/
+		
+		lblAddedWatch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAddedA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAdded.png"));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//TODO: kullanýcý listesinden çýkar
+				lblAddedWatch.setVisible(false);
+				lblAddWatch.setVisible(true);
+			}
+		});
+		lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAdded.png"));
+		lblAddedWatch.setBounds(28, 21, 39, 49);
+		panelTop.add(lblAddedWatch);
 		
 		JPanel panelAward = new JPanel();
 		panelAward.setBackground(new Color(239, 227, 165));
