@@ -25,7 +25,7 @@ public class CelebsComponent {
 		panel.add(label);
 		
 		JLabel lblImage = new JLabel();
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Celebs_1s.jpg"));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Celebs_1s.jpg"));
 		lblImage.setBounds(62, 11, 57, 78);
 		panel.add(lblImage);
 		

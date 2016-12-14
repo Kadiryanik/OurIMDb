@@ -247,11 +247,11 @@ public class TryThree {
 		lblExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_Exit.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_Exit.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -266,11 +266,11 @@ public class TryThree {
 		lblR1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_1.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_1.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -284,11 +284,11 @@ public class TryThree {
 		lblR2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_2.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_2.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -303,11 +303,11 @@ public class TryThree {
 		lblR3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_3.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_3.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -322,11 +322,11 @@ public class TryThree {
 		lblR4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_4.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_4.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -341,11 +341,11 @@ public class TryThree {
 		lblR5.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_5.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_5.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -360,11 +360,11 @@ public class TryThree {
 		lblR6.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_6.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_6.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -379,11 +379,11 @@ public class TryThree {
 		lblR7.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_7.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_7.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -398,11 +398,11 @@ public class TryThree {
 		lblR8.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_8.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_8.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -417,11 +417,11 @@ public class TryThree {
 		lblR9.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_9.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_9.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -436,11 +436,11 @@ public class TryThree {
 		lblR10.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_10.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_10.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -451,12 +451,12 @@ public class TryThree {
 		lblR10.setBounds(222, 14, 16, 15);
 		panelRate.add(lblR10);
 		
-		lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Rate_0.png"));
+		lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
 		lblBackground.setBounds(0, 0, 251, 42);
 		panelRate.add(lblBackground);
 		
 		JLabel labelImage = new JLabel("");
-		labelImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\jackie_153x226.jpg"));
+		labelImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\jackie_153x226.jpg"));
 		labelImage.setForeground(new Color(0, 0, 0));
 		labelImage.setBackground(Color.CYAN);
 		labelImage.setBounds(0, 97, 153, 226);
@@ -482,14 +482,14 @@ public class TryThree {
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblAddWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch_39x49a.png"));
+				lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch_39x49a.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblAddWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch_39x49.png"));
+				lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch_39x49.png"));
 			}
 		});
-		lblAddWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch_39x49.png"));
+		lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch_39x49.png"));
 		lblAddWatch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblAddWatch.setBounds(27, 22, 39, 49);
 		panelTop.add(lblAddWatch);
@@ -532,7 +532,7 @@ public class TryThree {
 		panelDesc.add(lblDate);
 		
 		JLabel lblStar = new JLabel("");
-		lblStar.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\StarYellow.png"));
+		lblStar.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarYellow.png"));
 		lblStar.setBounds(370, 30, 28, 25);
 		panelTop.add(lblStar);
 		
@@ -576,7 +576,7 @@ public class TryThree {
 		JLabel lblStarRight = new JLabel("");
 		lblStarRight.setBounds(0, 0, 37, 38);
 		panelHover.add(lblStarRight);
-		lblStarRight.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Star.png"));
+		lblStarRight.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Star.png"));
 		
 		JLabel lblRate = new JLabel("Rate");
 		lblRate.setBounds(42, 7, 26, 14);
@@ -593,18 +593,18 @@ public class TryThree {
 		JLabel lblLinevertical = new JLabel("");
 		lblLinevertical.setBounds(446, 24, 3, 38);
 		panelTop.add(lblLinevertical);
-		lblLinevertical.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\LineVertical.png"));
+		lblLinevertical.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\LineVertical.png"));
 		
 		/*lblAddedWatch*/
 		
 		lblAddedWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAddedA.png"));
+				lblAddedWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAddedA.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAdded.png"));
+				lblAddedWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAdded.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -613,7 +613,7 @@ public class TryThree {
 				lblAddWatch.setVisible(true);
 			}
 		});
-		lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAdded.png"));
+		lblAddedWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAdded.png"));
 		lblAddedWatch.setBounds(28, 21, 39, 49);
 		panelTop.add(lblAddedWatch);
 		

@@ -99,7 +99,7 @@ public class TryOne {
 		});
 		
 		JLabel lblImage = new JLabel("");
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\icon32.png"));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon32.png"));
 		
 		JLabel label = new JLabel("1.");
 		label.setForeground(new Color(30, 144, 255));
@@ -119,14 +119,14 @@ public class TryOne {
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblAddwatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026a.png"));
+				lblAddwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026a.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblAddwatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026.png"));
+				lblAddwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 			}
 		});
-		lblAddwatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026.png"));
+		lblAddwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
