@@ -18,7 +18,7 @@ public class MostRatedComponent {
 		
 		
 		JLabel lblIcon = new JLabel("");
-		lblIcon.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\MostRated100x156.jpg"));
+		lblIcon.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRated100x156.jpg"));
 		lblIcon.setBounds(10, 10, 100, 156);
 		panel.add(lblIcon);
 		
@@ -35,7 +35,7 @@ public class MostRatedComponent {
 		
 		JLabel lblRate = new JLabel("10");
 		lblRate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblRate.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\MostRatedStar.png"));
+		lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRatedStar.png"));
 		lblRate.setBounds(44, 192, 35, 15);
 		
 		panelRate.add(lblRate);

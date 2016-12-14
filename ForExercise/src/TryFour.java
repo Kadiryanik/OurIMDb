@@ -67,7 +67,7 @@ public class TryFour {
 		
 		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(10, 11, 140, 209);
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Movies140x209.jpg"));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Movies140x209.jpg"));
 		lblImage.setBackground(UIManager.getColor("menu"));
 		
 		JLabel lblMin = new JLabel("128 min");
@@ -101,36 +101,36 @@ public class TryFour {
 		lblWatchTrailer.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblWatchTrailer.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchTrailerButtonA.png"));
+				lblWatchTrailer.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchTrailerButtonA.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblWatchTrailer.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchTrailerButton.png"));
+				lblWatchTrailer.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchTrailerButton.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: Yönlendir
 			}
 		});
-		lblWatchTrailer.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchTrailerButton.png"));
+		lblWatchTrailer.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchTrailerButton.png"));
 		
 		final JLabel lblAddWatchlist = new JLabel("add watchlist");
 		lblAddWatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblAddWatchlist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				lblAddWatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistButtonA.png"));
+				lblAddWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistButtonA.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblAddWatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistButton.png"));
+				lblAddWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistButton.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: Yönlendir
 			}
 		});
-		lblAddWatchlist.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistButton.png"));
+		lblAddWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistButton.png"));
 		
 		JLabel lblDirector = new JLabel("Director  :");
 		lblDirector.setFont(new Font("Tahoma", Font.BOLD, 11));

@@ -135,7 +135,7 @@ public class MainForm {
 		frmOurmdb = new JFrame();
 		frmOurmdb.setResizable(false);
 		frmOurmdb.setUndecorated(true);
-		frmOurmdb.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\SadneS\\Desktop\\Button Png\\icon.png"));
+		frmOurmdb.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon.png"));
 		frmOurmdb.setTitle("OurIMDb");
 		frmOurmdb.setBackground(Color.LIGHT_GRAY);
 		frmOurmdb.getContentPane().setBackground(SystemColor.scrollbar);
@@ -154,11 +154,11 @@ public class MainForm {
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				labelExit.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\rsz_x_kýrmýzý.png"));
+				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_kýrmýzý.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				labelExit.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\rsz_x_siyah.png"));
+				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_siyah.png"));
 			}
 		});
 		
@@ -175,12 +175,12 @@ public class MainForm {
 		panelComment.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 5));
 		
 		labelExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		labelExit.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\rsz_x_siyah.png"));
+		labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_siyah.png"));
 		labelExit.setBounds(510, 0, 24, 24);
 		frmOurmdb.getContentPane().add(labelExit);
 		
 		JLabel labelIcon = new JLabel("");
-		labelIcon.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\icon.png"));
+		labelIcon.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon.png"));
 		labelIcon.setBounds(0, 0, 24, 24);
 		frmOurmdb.getContentPane().add(labelIcon);
 		
@@ -431,7 +431,7 @@ public class MainForm {
 		
 		JButton btnHome = new JButton("");
 		btnHome.setBackground(UIManager.getColor("CheckBox.light"));
-		btnHome.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\home.png"));
+		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new EachMovie(11, panelHome);
@@ -452,7 +452,7 @@ public class MainForm {
 		
 		JButton btnMovies = new JButton("");
 		btnMovies.setBackground(UIManager.getColor("CheckBox.light"));
-		btnMovies.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\movies.png"));
+		btnMovies.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\movies.png"));
 		btnMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MovieTabComponents.Id = 0;
@@ -508,7 +508,7 @@ public class MainForm {
 		
 		JButton btnCelebs = new JButton("");
 		btnCelebs.setBackground(UIManager.getColor("CheckBox.light"));
-		btnCelebs.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\celebs.png"));
+		btnCelebs.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\celebs.png"));
 		btnCelebs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*Celebs Inýt*/
@@ -537,7 +537,7 @@ public class MainForm {
 				panelCelebsScroll.add(lblBirthDate);
 				
 				JLabel lblLine = new JLabel("");
-				lblLine.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+				lblLine.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
 				panelCelebsScroll.add(lblLine);
 				
 				JLabel lblTotalNames = new JLabel("Total Names:");
@@ -610,7 +610,7 @@ public class MainForm {
 		
 		JButton btnTop50 = new JButton("");
 		btnTop50.setBackground(UIManager.getColor("CheckBox.light"));
-		btnTop50.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Top50.png"));
+		btnTop50.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Top50.png"));
 		btnTop50.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Top10Component.Id = 0;
@@ -659,7 +659,7 @@ public class MainForm {
 		panelTop.add(btnTop50);
 		
 		//btnWatchList
-		btnWatchList.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watchlist.png"));
+		btnWatchList.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watchlist.png"));
 		btnWatchList.setEnabled(false);
 		btnWatchList.setVisible(true);
 		btnWatchList.addActionListener(new ActionListener() {
@@ -694,7 +694,7 @@ public class MainForm {
 		//btnLogin
 		btnLogin.setBounds(117, 10, 44, 26);
 		panelUnLogin.add(btnLogin);
-		btnLogin.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\login.png"));
+		btnLogin.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\login.png"));
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -772,7 +772,7 @@ public class MainForm {
 				
 				
 				lblYourname.setVisible(false);
-				lblYourname.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				lblYourname.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterTextBackgroundA.png"));
 				lblYourname.setBounds(116, 122, 318, 37);
 				panelRegister.add(lblYourname);
 				
@@ -793,7 +793,7 @@ public class MainForm {
 				panelRegister.add(textFieldEmail);
 				
 				labelEmail.setVisible(false);
-				labelEmail.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				labelEmail.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterTextBackgroundA.png"));
 				labelEmail.setBounds(116, 197, 318, 37);
 				panelRegister.add(labelEmail);
 				
@@ -813,7 +813,7 @@ public class MainForm {
 				panelRegister.add(passwordFieldPass);
 				
 				labelPassword.setVisible(false);
-				labelPassword.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				labelPassword.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterTextBackgroundA.png"));
 				labelPassword.setBounds(116, 272, 318, 37);
 				panelRegister.add(labelPassword);
 				
@@ -833,7 +833,7 @@ public class MainForm {
 				panelRegister.add(passwordFieldPassA);
 				
 				labelPassworda.setVisible(false);
-				labelPassworda.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterTextBackgroundA.png"));
+				labelPassworda.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterTextBackgroundA.png"));
 				labelPassworda.setBounds(116, 347, 318, 37);
 				panelRegister.add(labelPassworda);
 				
@@ -842,18 +842,18 @@ public class MainForm {
 				lblButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseEntered(MouseEvent arg0) {
-						lblButton.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterButtonA.png"));
+						lblButton.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterButtonA.png"));
 					}
 					@Override
 					public void mouseExited(MouseEvent arg0) {
-						lblButton.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterButton.png"));
+						lblButton.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterButton.png"));
 					}
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						//TODO: Veri tabanýyla veya alanlarla ilgili sorun yoksa kaydet
 					}
 				});
-				lblButton.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\RegisterButton.png"));
+				lblButton.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterButton.png"));
 				lblButton.setBounds(120, 397, 312, 31);
 				panelRegister.add(lblButton);
 				/*EndOf Initialize*/
@@ -871,7 +871,7 @@ public class MainForm {
 		});
 		btnRegister.setBounds(165, 10, 64, 26);
 		panelUnLogin.add(btnRegister);
-		btnRegister.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\register.png"));
+		btnRegister.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\register.png"));
 		/*----------------------------EndOf-Buttons----------------------------*/
 		
 		/*BackgroundPanel*/
@@ -880,7 +880,7 @@ public class MainForm {
 		/*Background image*/
 		/*JPanel panelBackground = new JPanel(){
 			public void paintComponent(Graphics g){
-				ImageIcon icon = new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\back.jpg");
+				ImageIcon icon = new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\back.jpg");
 				Image i = icon.getImage();
 				
 				g.drawImage(i, 0, 0, this.getSize().width, this.getSize().height, this);

@@ -65,7 +65,7 @@ public class TryFive {
 		panel.add(lblInfo);
 		
 		JLabel lblLine = new JLabel("");
-		lblLine.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+		lblLine.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
 		lblLine.setBounds(0, 80, 500, 2);
 		panel.add(lblLine);
 		
@@ -100,12 +100,12 @@ public class TryFive {
 		
 		JLabel lblBackground = new JLabel("");
 		lblBackground.setBackground(Color.WHITE);
-		lblBackground.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\UserPagePanelBackground.png"));
+		lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\UserPagePanelBackground.png"));
 		lblBackground.setBounds(0, 62, 500, 250);
 		panelYourRatings.add(lblBackground);
 		
 		JLabel lblLine2 = new JLabel("");
-		lblLine2.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+		lblLine2.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
 		lblLine2.setBounds(0, 400, 500, 2);
 		panel.add(lblLine2);
 		
@@ -131,7 +131,7 @@ public class TryFive {
 		temp = new MostRatedComponent(12, panelContentWatch);
 		
 		JLabel lblBackground2 = new JLabel("");
-		lblBackground2.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\UserPagePanelBackground.png"));
+		lblBackground2.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\UserPagePanelBackground.png"));
 		lblBackground2.setBackground(Color.WHITE);
 		lblBackground2.setBounds(0, 37, 500, 250);
 		panelYourWatchlist.add(lblBackground2);

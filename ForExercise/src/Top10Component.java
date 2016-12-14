@@ -29,7 +29,7 @@ public class Top10Component {
 		
 		
 		JLabel lblImage = new JLabel("");
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\icon32.png"));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon32.png"));
 		lblImage.setBounds(10, 5, 43, 58);
 		panel.add(lblImage);
 		

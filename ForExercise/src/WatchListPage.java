@@ -137,7 +137,7 @@ public class WatchListPage {
 		final JLabel lblAddedWatch = new JLabel("");
 		lblAddedWatch.setVisible(false);
 		lblAddedWatch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAdded_20x26.png"));
+		lblAddedWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAdded_20x26.png"));
 		
 		JPanel panelName = new JPanel();
 		panelName.setBackground(new Color(255, 255, 255));
@@ -156,24 +156,24 @@ public class WatchListPage {
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblAddWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026a.png"));
+				lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026a.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblAddWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026.png"));
+				lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 			}
 		});
-		lblAddWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\watch2026.png"));
+		lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 		lblAddWatch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		lblAddedWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAddedA_20x26.png"));
+				lblAddedWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAddedA_20x26.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblAddedWatch.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\WatchlistAdded_20x26.png"));
+				lblAddedWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAdded_20x26.png"));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -184,19 +184,19 @@ public class WatchListPage {
 		});
 		
 		JLabel lblImage = new JLabel("");
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\TheShawshankRedemption.jpg"));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
 		
 		JLabel lblYourratingpoint = new JLabel("9");
 		lblYourratingpoint.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 		
 		JLabel lblStarb = new JLabel("");
-		lblStarb.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\StarBlueXXsmal.png"));
+		lblStarb.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarBlueXXsmal.png"));
 		
 		JLabel lblRatingPoint = new JLabel("8,3");
 		lblRatingPoint.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 		
 		JLabel lblStary = new JLabel("");
-		lblStary.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\StarYellowXXsmal.png"));
+		lblStary.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarYellowXXsmal.png"));
 		
 		JTextArea textInfo = new JTextArea();
 		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));

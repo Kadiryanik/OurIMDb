@@ -56,7 +56,7 @@ public class TrySix {
 		frame.getContentPane().add(panel);
 		
 		JLabel lblImage = new JLabel("image");
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\TheShawshankRedemption.jpg"));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
 		lblImage.setBounds(10, 11, 67, 98);
 		
 		JPanel panelName = new JPanel();
@@ -76,7 +76,7 @@ public class TrySix {
 		
 		JLabel lblLine = new JLabel("");
 		lblLine.setBounds(88, 121, 442, 14);
-		lblLine.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+		lblLine.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
 		
 		JLabel lblWrittenBy = new JLabel("Written by");
 		lblWrittenBy.setBounds(10, 177, 77, 14);
@@ -84,7 +84,7 @@ public class TrySix {
 		
 		JLabel lblLine2 = new JLabel("");
 		lblLine2.setBounds(87, 178, 443, 14);
-		lblLine2.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+		lblLine2.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
 		
 		JPanel panelDirecters = new JPanel();
 		panelDirecters.setBackground(new Color(245, 245, 245));
@@ -107,7 +107,7 @@ public class TrySix {
 		
 		JLabel lblline3 = new JLabel("");
 		lblline3.setBounds(87, 231, 443, 14);
-		lblline3.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\line.png"));
+		lblline3.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
 		
 		JPanel panelCast = new JPanel();
 		panelCast.setBackground(new Color(245, 245, 245));
