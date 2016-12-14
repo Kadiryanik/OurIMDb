@@ -59,13 +59,14 @@ public class TryFour {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(192, 192, 192));
-		panel.setBounds(0, 0, 540, 400);
+		panel.setBounds(0, 0, 524, 233);
 		frame.getContentPane().add(panel);
 		
 		JPanel panelName = new JPanel();
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		JLabel lblImage = new JLabel("");
+		lblImage.setBounds(10, 11, 140, 209);
 		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Movies140x209.jpg"));
 		lblImage.setBackground(UIManager.getColor("menu"));
 		
@@ -139,19 +140,6 @@ public class TryFour {
 		lblStars.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblStars.setForeground(new Color(102, 102, 102));
 		
-		JTextArea textBuzz = new JTextArea();
-		textBuzz.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
-		textBuzz.setBackground(new Color(231, 231, 231));
-		textBuzz.setBounds(160, 61, 370, 83);
-		textBuzz.setEditable(false);
-		textBuzz.setFocusable(false);
-		textBuzz.setText("BuAciklama");
-		textBuzz.setLineWrap(true);
-		textBuzz.setWrapStyleWord(true);
-		
-		JScrollPane scrollBuzz = new JScrollPane(textBuzz);
-		scrollBuzz.setViewportView(textBuzz);
-		
 		JPanel panelDirector = new JPanel();
 		panelDirector.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
@@ -162,33 +150,31 @@ public class TryFour {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(10)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(scrollBuzz, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-							.addComponent(lblImage)
+					.addComponent(lblImage)
+					.addGap(10)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(panelName, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+							.addGap(8)
+							.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(1)
+							.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+							.addGap(3)
+							.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(175)
+							.addComponent(lblWatchTrailer, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(1)
-									.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addGap(3)
-									.addComponent(panelStars, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblWatchTrailer, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-									.addGap(10)
-									.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-									.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(panelDirector, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addComponent(scroll, 0, 0, Short.MAX_VALUE)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-									.addGap(5)
-									.addComponent(label, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
-									.addGap(8)
-									.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE)))))
+							.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scroll, 0, 0, Short.MAX_VALUE))
 					.addGap(19))
 		);
 		gl_panel.setVerticalGroup(
@@ -206,27 +192,22 @@ public class TryFour {
 								.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
 							.addGap(9)
 							.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGap(2)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(4)
-									.addComponent(lblDirector))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGap(2)
-									.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(lblDirector))
+								.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+							.addGap(6)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(7)
+									.addGap(1)
 									.addComponent(lblStars))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
 							.addGap(21)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblWatchTrailer)
-								.addComponent(lblAddWatchlist))))
-					.addGap(10)
-					.addComponent(scrollBuzz, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+								.addComponent(lblAddWatchlist)))))
 		);
 		panel.setLayout(gl_panel);
 		

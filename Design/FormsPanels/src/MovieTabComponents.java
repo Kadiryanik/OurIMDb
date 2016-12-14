@@ -28,7 +28,6 @@ public class MovieTabComponents {
 		
 		JPanel panelName = new JPanel();
 		JTextArea textInfo = new JTextArea();
-		JTextArea textBuzz = new JTextArea();
 		JPanel panelDirector = new JPanel();
 		JPanel panelStars = new JPanel();
 		JPanel panelGenres = new JPanel();
@@ -37,7 +36,6 @@ public class MovieTabComponents {
 			panel.setBackground(new Color(230, 230, 230));
 			panelName.setBackground(new Color(230, 230, 230));
 			textInfo.setBackground(new Color(230, 230, 230));
-			textBuzz.setBackground(new Color(230, 230, 230));
 			panelDirector.setBackground(new Color(230, 230, 230));
 			panelStars.setBackground(new Color(230, 230, 230));
 			panelGenres.setBackground(new Color(230, 230, 230));
@@ -46,39 +44,46 @@ public class MovieTabComponents {
 			panel.setBackground(new Color(245, 245, 245));
 			panelName.setBackground(new Color(245, 245, 245));
 			textInfo.setBackground(new Color(245, 245, 245));
-			textBuzz.setBackground(new Color(245, 245, 245));
 			panelDirector.setBackground(new Color(245, 245, 245));
 			panelStars.setBackground(new Color(245, 245, 245));
 			panelGenres.setBackground(new Color(245, 245, 245));
 		}
 		
-		/*panelName*/
+		
+		panel.setBackground(new Color(192, 192, 192));
+		panel.setBounds(0, 0, 524, 233);
+		
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		JLabel lblImage = new JLabel("");
-		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Movies140x209.jpg"));/*TODO: movId den çek*/
+		lblImage.setBounds(10, 11, 140, 209);
+		lblImage.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\Movies140x209.jpg"));
+		lblImage.setBackground(UIManager.getColor("menu"));
 		
-		JLabel lblMin = new JLabel(128+"min");/*TODO: movId den çek*/
+		JLabel lblMin = new JLabel("128 min");
 		lblMin.setForeground(new Color(102, 102, 102));
 		
 		JLabel label = new JLabel("-");
 		
-		/*panelGenres*/
 		panelGenres.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		/*textInfo*/
+		LabelWithoutLink temp = new LabelWithoutLink("Comedy",  102, 102, 102, false, panelGenres);
+		temp = new LabelWithoutLink("Dram",  102, 102, 102, false, panelGenres);
+		temp = new LabelWithoutLink("Musical", 102, 102, 102, true, panelGenres);
+		
 		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
+		textInfo.setBackground(new Color(231, 231, 231));
 		textInfo.setBounds(160, 61, 370, 83);
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
-		textInfo.setText("bu bir aciklama");/*TODO: movId den çek*/
+		textInfo.setText("bu bir a\u00E7\u0131klama");
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
 		
 		JScrollPane scroll = new JScrollPane(textInfo);
 	    scroll.setViewportView(textInfo);
 		
-		final JLabel lblWatchTrailer = new JLabel("");
+		final JLabel lblWatchTrailer = new JLabel("watch trailer");
 		lblWatchTrailer.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblWatchTrailer.addMouseListener(new MouseAdapter() {
 			@Override
@@ -122,57 +127,39 @@ public class MovieTabComponents {
 		lblStars.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblStars.setForeground(new Color(102, 102, 102));
 		
-		/*textBuzz*/
-		textBuzz.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
-		textBuzz.setBounds(160, 61, 370, 83);
-		textBuzz.setEditable(false);
-		textBuzz.setFocusable(false);
-		textBuzz.setText("BuAciklama");/*TODO: movId den çek*/
-		textBuzz.setLineWrap(true);
-		textBuzz.setWrapStyleWord(true);
-		
-		JScrollPane scrollBuzz = new JScrollPane(textBuzz);
-		scrollBuzz.setViewportView(textBuzz);
-		
-		/*panelDirector*/
 		panelDirector.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		/*panelStars*/
 		panelStars.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		
-		/*GruopLayout*/
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(10)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(scrollBuzz, Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-						.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-							.addComponent(lblImage)
+					.addComponent(lblImage)
+					.addGap(10)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(panelName, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+							.addGap(5)
+							.addComponent(label, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
+							.addGap(8)
+							.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(1)
+							.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+							.addGap(3)
+							.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(175)
+							.addComponent(lblWatchTrailer, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 296, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(1)
-									.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addGap(3)
-									.addComponent(panelStars, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblWatchTrailer, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-									.addGap(10)
-									.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
-								.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-									.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(panelDirector, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addComponent(scroll, 0, 0, Short.MAX_VALUE)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-									.addGap(5)
-									.addComponent(label, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
-									.addGap(8)
-									.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE)))))
+							.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scroll, 0, 0, Short.MAX_VALUE))
 					.addGap(19))
 		);
 		gl_panel.setVerticalGroup(
@@ -190,27 +177,22 @@ public class MovieTabComponents {
 								.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
 							.addGap(9)
 							.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+							.addGap(2)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(4)
-									.addComponent(lblDirector))
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGap(2)
-									.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(lblDirector))
+								.addComponent(panelDirector, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
+							.addGap(6)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_panel.createSequentialGroup()
-									.addGap(7)
+									.addGap(1)
 									.addComponent(lblStars))
-								.addGroup(gl_panel.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(panelStars, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
 							.addGap(21)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblWatchTrailer)
-								.addComponent(lblAddWatchlist))))
-					.addGap(10)
-					.addComponent(scrollBuzz, GroupLayout.PREFERRED_SIZE, 159, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+								.addComponent(lblAddWatchlist)))))
 		);
 		panel.setLayout(gl_panel);
 		

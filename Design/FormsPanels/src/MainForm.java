@@ -1,6 +1,7 @@
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JButton;
@@ -12,6 +13,9 @@ import javax.swing.JPasswordField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -43,6 +47,14 @@ import java.awt.FlowLayout;
 import javax.swing.JTabbedPane;
 import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
+import java.awt.GridLayout;
+import java.awt.CardLayout;
+import net.miginfocom.swing.MigLayout;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 
 //Finalde sformdaki bi butnu mesela tutup baþka yere taþýmak için hangi eventlerle ilgilenilmeli nasýl yapýlýr
 public class MainForm {
@@ -50,15 +62,16 @@ public class MainForm {
 	private JFrame frmOurmdb;
 	private JTextField textFieldId;
 	private JPasswordField textFieldPw;
-
+	
+	private int loggedUserId;
+	private boolean isLogined;
+	
 	public int xMouse;
 	public int yMouse;
 	private JTextField textFieldYourName;
 	private JTextField textFieldEmail;
 	private JPasswordField passwordFieldPass;
 	private JPasswordField passwordFieldPassA;
-	private int userId;
-	private boolean isLogined;
 	
 	public static void main(String[] args) {
 		NativeInterface.open();
@@ -111,12 +124,12 @@ public class MainForm {
 		}
 	}
 	
-	
 	public MainForm() {
-		userId = -1;
+		loggedUserId = -1;
 		isLogined = false;
 		initialize();
 	}
+	
 
 	private void initialize() {
 		frmOurmdb = new JFrame();
@@ -148,6 +161,19 @@ public class MainForm {
 				labelExit.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\rsz_x_siyah.png"));
 			}
 		});
+		
+		final JPanel panelEachOne = new JPanel();
+		panelEachOne.setVisible(false);
+		panelEachOne.setBounds(0, 24, 100, 726);
+		frmOurmdb.getContentPane().add(panelEachOne);
+		panelEachOne.setLayout(null);
+		
+		final JPanel panelComment = new JPanel();
+		panelComment.setVisible(false);
+		panelComment.setBounds(0, 24, 100, 726);
+		frmOurmdb.getContentPane().add(panelComment);
+		panelComment.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 5));
+		
 		labelExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		labelExit.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\rsz_x_siyah.png"));
 		labelExit.setBounds(510, 0, 24, 24);
@@ -190,8 +216,8 @@ public class MainForm {
 		panelCelebs.setVisible(false);
 		panelCelebs.setBackground(new Color(30, 144, 255));
 		panelCelebs.setBounds(0, 75, 550, 675);
-		frmOurmdb.getContentPane().add(panelCelebs);
 		panelCelebs.setLayout(null);
+		frmOurmdb.getContentPane().add(panelCelebs);
 		
 		final JPanel panelTop10 = new JPanel();
 		panelTop10.setVisible(false);
@@ -201,10 +227,22 @@ public class MainForm {
 		panelTop10.setLayout(null);
 		
 		final JPanel panelUser = new JPanel();
+		panelUser.setBounds(0, 75, 550, 675);
 		panelUser.setVisible(false);
 		panelUser.setBackground(new Color(106, 90, 205, 50));
-		panelUser.setBounds(0, 75, 550, 675);
+		panelUser.setLayout(null);
 		frmOurmdb.getContentPane().add(panelUser);
+		
+		final JPanel panelUserScroll = new JPanel();
+		panelUserScroll.setBounds(0, 75, 550, 675);
+		
+		JScrollPane scrollPaneUser = new JScrollPane();
+		panelUser.add(scrollPaneUser);
+		scrollPaneUser.setBounds(0, 0, 550, 675);	
+		
+		scrollPaneUser.add(panelUserScroll);
+		scrollPaneUser.setViewportView(panelUserScroll);
+		panelUserScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 1));
 		
 		final JPanel panelUnLogin = new JPanel();
 		panelUnLogin.setBackground(new Color(255, 255, 255, 0));
@@ -213,14 +251,11 @@ public class MainForm {
 		panelUnLogin.setLayout(null);
 		
 		textFieldId = new JTextField("ID");
-		//textFieldId.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.WHITE));
-		//textFieldId.setBackground(new Color(255, 255, 255, 80));
 		textFieldId.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		textFieldId.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				if(textFieldId.getText().equals("")){
-					//textFieldId.setFont(new Font("Tahoma", Font.ITALIC, 11));
 					textFieldId.setText("ID");
 				}
 			}
@@ -229,10 +264,7 @@ public class MainForm {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(textFieldId.getText().equals("ID")){
-					//panelTop.setVisible(false);
-					//textFieldId.setFont(new Font("Tahoma", Font.BOLD, 11));
 					textFieldId.setText("");
-					//panelTop.setVisible(true);
 				}
 			}
 		});
@@ -241,8 +273,6 @@ public class MainForm {
 		textFieldId.setColumns(10);
 		
 		textFieldPw = new JPasswordField("......");
-		//textFieldPw.setBorder(new MatteBorder(1, 1, 1, 1, (Color) Color.WHITE));
-		//textFieldPw.setBackground(new Color(255, 255, 255, 80));
 		textFieldPw.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -282,6 +312,9 @@ public class MainForm {
 		lblUser.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				/*UserPage Init*/
+				
+				
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -318,6 +351,79 @@ public class MainForm {
 			}
 		});
 		
+		final JPanel panelWatchList = new JPanel();
+		panelWatchList.setBounds(0, 75, 550, 675);
+		frmOurmdb.getContentPane().add(panelWatchList);
+		panelWatchList.setLayout(null);
+		
+		final JPanel WatchScroll = new JPanel();
+
+		JScrollPane scrollPaneWatch = new JScrollPane();
+		scrollPaneWatch.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		panelWatchList.add(scrollPaneWatch);
+		scrollPaneWatch.setBounds(0, 0, 550, 675);	
+		
+		scrollPaneWatch.add(WatchScroll);
+		scrollPaneWatch.setViewportView(WatchScroll);
+		WatchScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 1));
+		
+		final JPanel WatchScrollTop = new JPanel();
+		WatchScrollTop.setBackground(new Color(238, 238, 238));
+		WatchScroll.add(WatchScrollTop);
+		
+		
+		
+		JLabel lblYourwatchlist = new JLabel("YourWatchlist");
+		lblYourwatchlist.setForeground(new Color(66, 66, 66));
+		lblYourwatchlist.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
+		
+		JLabel lblWithname = new JLabel("Name");
+		lblWithname.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		
+		JLabel lblSortBy = new JLabel("Sort by:");
+		lblSortBy.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		
+		JLabel lblRating = new JLabel("Rating");
+		lblRating.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		
+		JLabel lblYourRating = new JLabel("Your Rating");
+		lblYourRating.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		
+		JLabel lblForSize = new JLabel("");
+		GroupLayout gl_WatchScrollTop = new GroupLayout(WatchScrollTop);
+		gl_WatchScrollTop.setHorizontalGroup(
+			gl_WatchScrollTop.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_WatchScrollTop.createSequentialGroup()
+					.addGap(549)
+					.addComponent(lblForSize, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_WatchScrollTop.createSequentialGroup()
+					.addGap(10)
+					.addComponent(lblYourwatchlist, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_WatchScrollTop.createSequentialGroup()
+					.addGap(10)
+					.addComponent(lblSortBy, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(lblWithname, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addComponent(lblRating, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+					.addGap(8)
+					.addComponent(lblYourRating))
+		);
+		gl_WatchScrollTop.setVerticalGroup(
+			gl_WatchScrollTop.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_WatchScrollTop.createSequentialGroup()
+					.addComponent(lblForSize, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(lblYourwatchlist, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addGroup(gl_WatchScrollTop.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblSortBy, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblWithname, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblRating, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblYourRating, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)))
+		);
+		WatchScrollTop.setLayout(gl_WatchScrollTop);
+		
 		labelDrag.setBounds(0, 0, 550, 15);
 		frmOurmdb.getContentPane().add(labelDrag);
 		
@@ -328,7 +434,7 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				EachMovie temp = new EachMovie(11, panelHome);
+				new EachMovie(11, panelHome);
 				
 				panelHome.setVisible(true);
 				panelMovies.setVisible(false);
@@ -336,6 +442,9 @@ public class MainForm {
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
 				panelRegister.setVisible(false);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+				panelWatchList.setVisible(false);
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
@@ -389,6 +498,9 @@ public class MainForm {
 				panelUser.setVisible(false);
 				panelRegister.setVisible(false);
 				panelMovies.setVisible(true);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+				panelWatchList.setVisible(false);
 			}
 		});
 		btnMovies.setBounds(57, 8, 54, 26);
@@ -488,6 +600,9 @@ public class MainForm {
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
 				panelRegister.setVisible(false);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+				panelWatchList.setVisible(false);
 			}
 		});
 		btnCelebs.setBounds(112, 8, 52, 26);
@@ -535,6 +650,9 @@ public class MainForm {
 				panelTop10.setVisible(true);
 				panelUser.setVisible(false);
 				panelRegister.setVisible(false);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+				panelWatchList.setVisible(false);
 			}
 		});
 		btnTop50.setBounds(165, 8, 50, 26);
@@ -546,6 +664,28 @@ public class MainForm {
 		btnWatchList.setVisible(true);
 		btnWatchList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				final JPanel WatchScrollContent = new JPanel();
+				WatchScroll.add(WatchScrollContent);
+				WatchScrollContent.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 2));
+				WatchScrollContent.setMinimumSize(new Dimension(530,0));
+				
+				new WatchlistComponent(12, WatchScrollContent);
+				new WatchlistComponent(12, WatchScrollContent);
+				new WatchlistComponent(12, WatchScrollContent);
+				new WatchlistComponent(12, WatchScrollContent);
+				
+				
+				//TODO::diðer butonlarda bu paneli invis yap
+				panelHome.setVisible(false);
+				panelMovies.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+				panelWatchList.setVisible(true);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
 			}
 		});
 		btnWatchList.setBounds(217, 8, 76, 26);
@@ -572,9 +712,12 @@ public class MainForm {
 					
 					isLogined = true;
 					//TODO: userId setle
+					//loggedUserId = from sql db
 				}
 				else{
-					//TODO:
+					//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
+					textFieldPw.setText("");
+					JOptionPane.showMessageDialog(null, "Username or Password wrong!");
 				}
 			}
 		});
@@ -721,6 +864,9 @@ public class MainForm {
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
 				panelRegister.setVisible(true);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+				panelWatchList.setVisible(false);
 			}
 		});
 		btnRegister.setBounds(165, 10, 64, 26);
@@ -744,4 +890,6 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(panelBackground);
 		/*EndOf-BackgroundPanel*/
 	}
+	
+	
 }

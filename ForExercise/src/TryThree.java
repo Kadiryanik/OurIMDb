@@ -174,43 +174,49 @@ public class TryThree {
 		GroupLayout gl_panelInfo = new GroupLayout(panelInfo);
 		gl_panelInfo.setHorizontalGroup(
 			gl_panelInfo.createParallelGroup(Alignment.LEADING)
-				.addComponent(textInfo, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 				.addGroup(gl_panelInfo.createSequentialGroup()
-					.addGap(10)
-					.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(panelDirectorLinks, GroupLayout.PREFERRED_SIZE, 461, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panelInfo.createSequentialGroup()
-					.addGap(10)
-					.addComponent(lblWriters, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(panelWriterLinks, GroupLayout.PREFERRED_SIZE, 461, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panelInfo.createSequentialGroup()
-					.addGap(10)
-					.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(panelStarLinks, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(lblSeeFullCast, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addGap(10)
+							.addComponent(lblStars, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(panelStarLinks, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
+							.addGap(10)
+							.addComponent(lblSeeFullCast, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panelInfo.createParallelGroup(Alignment.TRAILING, false)
+							.addGroup(gl_panelInfo.createSequentialGroup()
+								.addGap(10)
+								.addComponent(lblWriters, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+								.addGap(10)
+								.addComponent(panelWriterLinks, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGroup(gl_panelInfo.createSequentialGroup()
+								.addGap(10)
+								.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+								.addGap(10)
+								.addComponent(panelDirectorLinks, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addComponent(textInfo, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 528, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(10, Short.MAX_VALUE))
 		);
 		gl_panelInfo.setVerticalGroup(
 			gl_panelInfo.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panelInfo.createSequentialGroup()
 					.addGap(5)
 					.addComponent(textInfo, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
 					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelInfo.createSequentialGroup()
-							.addGap(1)
+							.addGap(11)
 							.addComponent(lblDirector))
-						.addComponent(panelDirectorLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-					.addGap(4)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addGap(10)
+							.addComponent(panelDirectorLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
 					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelInfo.createSequentialGroup()
-							.addGap(2)
+							.addGap(8)
 							.addComponent(lblWriters))
-						.addComponent(panelWriterLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE))
-					.addGap(5)
+						.addGroup(gl_panelInfo.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(panelWriterLinks, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_panelInfo.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panelInfo.createSequentialGroup()
 							.addGap(2)
@@ -230,7 +236,7 @@ public class TryThree {
 		
 		final JPanel panelRate = new JPanel();
 		panelRate.setVisible(false);
-		panelRate.setBounds(215, 25, 251, 42);
+		panelRate.setBounds(193, 22, 251, 42);
 		panelTop.add(panelRate);
 		panelRate.setLayout(null);
 		
@@ -457,7 +463,7 @@ public class TryThree {
 		panelTop.add(labelImage);
 		
 		JPanel panelYoutube = new JPanel();
-		panelYoutube.setBounds(163, 97, 387, 226);
+		panelYoutube.setBounds(163, 97, 365, 226);
 		panelTop.add(panelYoutube);
 		panelYoutube.setLayout(new BorderLayout(0, 0));
 		
@@ -491,7 +497,7 @@ public class TryThree {
 		JLabel lblName = new JLabel("Jackie");
 		lblName.setForeground(Color.WHITE);
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-		lblName.setBounds(76, 22, 306, 19);
+		lblName.setBounds(76, 22, 306, 28);
 		panelTop.add(lblName);
 		
 		JPanel panelDesc = new JPanel();
@@ -527,20 +533,20 @@ public class TryThree {
 		
 		JLabel lblStar = new JLabel("");
 		lblStar.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\StarYellow.png"));
-		lblStar.setBounds(392, 33, 28, 25);
+		lblStar.setBounds(370, 30, 28, 25);
 		panelTop.add(lblStar);
 		
 		JLabel lblPoint = new JLabel("7,9");
 		lblPoint.setForeground(Color.WHITE);
 		lblPoint.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		lblPoint.setBounds(426, 33, 33, 19);
+		lblPoint.setBounds(404, 30, 33, 19);
 		panelTop.add(lblPoint);
 		
 		JLabel lblPointcount = new JLabel("912");
 		lblPointcount.setForeground(new Color(192, 192, 192));
 		lblPointcount.setBackground(new Color(245, 245, 245));
 		lblPointcount.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
-		lblPointcount.setBounds(426, 49, 39, 14);
+		lblPointcount.setBounds(404, 46, 39, 14);
 		panelTop.add(lblPointcount);
 		
 		//TODO:
@@ -563,7 +569,7 @@ public class TryThree {
 			}
 		});
 		panelHover.setBackground(new Color(51, 51, 51));
-		panelHover.setBounds(469, 27, 81, 38);
+		panelHover.setBounds(447, 24, 81, 38);
 		panelTop.add(panelHover);
 		panelHover.setLayout(null);
 		
@@ -585,7 +591,7 @@ public class TryThree {
 		lblThis.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 		
 		JLabel lblLinevertical = new JLabel("");
-		lblLinevertical.setBounds(468, 27, 3, 38);
+		lblLinevertical.setBounds(446, 24, 3, 38);
 		panelTop.add(lblLinevertical);
 		lblLinevertical.setIcon(new ImageIcon("C:\\Users\\SadneS\\Desktop\\Button Png\\LineVertical.png"));
 		

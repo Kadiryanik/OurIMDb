@@ -14,15 +14,13 @@ import javax.swing.SwingConstants;
 
 public class LabelWithoutLink {
 	private String name;
-	private int celebId;
 	private int r;
 	private int g;
 	private int b;
 	private boolean isLast = false;
 	
-	LabelWithoutLink(String n, int c, int r, int g, int b, boolean L, JPanel panelReal){
+	LabelWithoutLink(String n, int r, int g, int b, boolean L, JPanel panelReal){
 		name = n;
-		celebId = c;
 		isLast = L;
 		
 		JSeparator seperator = new JSeparator(SwingConstants.VERTICAL);
