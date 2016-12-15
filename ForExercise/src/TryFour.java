@@ -78,9 +78,9 @@ public class TryFour {
 		JPanel panelGenres = new JPanel();
 		panelGenres.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		LabelWithoutLink temp = new LabelWithoutLink("Comedy", 123, 102, 102, 102, false, panelGenres);
-		temp = new LabelWithoutLink("Dram", 124, 102, 102, 102, false, panelGenres);
-		temp = new LabelWithoutLink("Musical", 125, 102, 102, 102, true, panelGenres);
+		LabelWithoutLink temp = new LabelWithoutLink("Comedy",  102, 102, 102, false, panelGenres);
+		temp = new LabelWithoutLink("Dram", 102, 102, 102, false, panelGenres);
+		temp = new LabelWithoutLink("Musical", 102, 102, 102, true, panelGenres);
 		
 		
 		JTextArea textInfo = new JTextArea();

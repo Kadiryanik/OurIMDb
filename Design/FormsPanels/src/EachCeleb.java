@@ -1,56 +1,20 @@
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
-import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.FlowLayout;
-import javax.swing.SwingConstants;
 
-public class TrySeven {
-
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TrySeven window = new TrySeven();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public TrySeven() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 744, 865);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
+public class EachCeleb {
+	private int celebId;
+	
+	public EachCeleb(int cId, JPanel panelReal) {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 550, 726);
-		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblImage = new JLabel("image");
@@ -142,5 +106,6 @@ public class TrySeven {
 		new FilmographyComponent(12, 13, panelFilmographyScroll);
 		new FilmographyComponent(12, 13, panelFilmographyScroll);
 		
+		panelReal.add(panel);
 	}
 }

@@ -1,59 +1,20 @@
-import java.awt.Dimension;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
-import javax.swing.JFrame;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.ImageIcon;
-import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Color;
 import javax.swing.ScrollPaneConstants;
 
-public class TrySix {
-
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TrySix window = new TrySix();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public TrySix() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(0, 0, 128));
-		frame.setBounds(100, 100, 699, 988);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		
+public class FullCastClass {
+	private int movieId;
+	
+	public FullCastClass(int mId, JPanel panelReal) {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(245, 245, 245));
 		panel.setBounds(0, 0, 550, 726);
-		frame.getContentPane().add(panel);
 		
 		JLabel lblImage = new JLabel("image");
 		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
@@ -160,5 +121,7 @@ public class TrySix {
 		panel.add(lblCast);
 		panel.add(lblline3);
 		panel.add(panelCast);
+		
+		panelReal.add(panel);
 	}
 }

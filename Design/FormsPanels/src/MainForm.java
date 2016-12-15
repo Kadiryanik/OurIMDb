@@ -73,6 +73,9 @@ public class MainForm {
 	private JPasswordField passwordFieldPass;
 	private JPasswordField passwordFieldPassA;
 	
+	//OtherClass referances
+	public EachMovie tempEachMovie;
+	
 	public static void main(String[] args) {
 		NativeInterface.open();
 		
@@ -150,6 +153,7 @@ public class MainForm {
 		labelExit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				frmOurmdb.getContentPane().removeAll();
 				System.exit(0);
 			}
 			@Override
@@ -161,12 +165,29 @@ public class MainForm {
 				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_siyah.png"));
 			}
 		});
+
+		//------------------------------------------
 		
 		final JPanel panelEachOne = new JPanel();
 		panelEachOne.setVisible(false);
-		panelEachOne.setBounds(0, 24, 100, 726);
-		frmOurmdb.getContentPane().add(panelEachOne);
+		panelEachOne.setBackground(Color.BLACK);
+		panelEachOne.setBounds(0, 24, 550, 726);
 		panelEachOne.setLayout(null);
+		
+		final JPanel panelEachOneScroll = new JPanel();
+		panelEachOneScroll.setBackground(Color.WHITE);
+	
+		JScrollPane scrollPaneEachOne = new JScrollPane();
+		scrollPaneEachOne.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneEachOne.setBounds(0, 0, 550, 726);
+		
+		scrollPaneEachOne.add(panelEachOneScroll);
+		scrollPaneEachOne.setViewportView(panelEachOneScroll);
+		panelEachOneScroll.setLayout(null);
+		
+		panelEachOne.add(scrollPaneEachOne);
+		frmOurmdb.getContentPane().add(panelEachOne);
+		//------------------------------------------
 		
 		final JPanel panelComment = new JPanel();
 		panelComment.setVisible(false);
@@ -332,6 +353,22 @@ public class MainForm {
 		/*EndOf Panel Inýt*/
 		
 		
+		JLabel lblBack = new JLabel("");
+		lblBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				panelEachOneScroll.removeAll();
+				//TODO:panelComment Yerine scroll ekleyip düzelt
+				panelComment.removeAll();
+				panelTop.setVisible(true);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+			}
+		});
+		lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon.png"));
+		lblBack.setBounds(475, 0, 24, 24);
+		frmOurmdb.getContentPane().add(lblBack);
+		
 		JLabel labelDrag = new JLabel("     OurIMDb");
 		labelDrag.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
 		labelDrag.setForeground(new Color(0, 0, 0));
@@ -455,8 +492,25 @@ public class MainForm {
 		btnMovies.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\movies.png"));
 		btnMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//panelEachOneScroll.setPreferredSize(new Dimension(550,1108));
+				//tempEachMovie = new EachMovie(1, panelEachOneScroll);
+				//new UserPageClass(12, panelEachOneScroll);
+				//new EachCeleb(12, panelEachOneScroll);
+				new FullCastClass(12, panelEachOneScroll);
+				
+				panelTop.setVisible(false);
+				panelHome.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+				panelEachOne.setVisible(false);
+				panelComment.setVisible(false);
+				panelWatchList.setVisible(false);
+				panelEachOne.setVisible(true);
+				/*
 				MovieTabComponents.Id = 0;
-				/*Movies Init*/
+				//Movies Init
 				JPanel panelInTheaters = new JPanel();
 				panelInTheaters.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 5));
 				panelInTheaters.setBackground(Color.GRAY);
@@ -483,7 +537,7 @@ public class MainForm {
 				tabbedPane.addTab("In Theaters", scrollPaneInThe);
 				tabbedPane.addTab("Coming Soon", scrollPaneComing);
 				panelMovies.add(tabbedPane);
-				/*EndOf-Movies Init*/
+				//EndOf-Movies Init
 				
 				MovieTabComponents temp = new MovieTabComponents(123, panelInTheaters);
 				temp = new MovieTabComponents(123, panelInTheaters);
@@ -501,6 +555,7 @@ public class MainForm {
 				panelEachOne.setVisible(false);
 				panelComment.setVisible(false);
 				panelWatchList.setVisible(false);
+				*/
 			}
 		});
 		btnMovies.setBounds(57, 8, 54, 26);
@@ -890,6 +945,4 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(panelBackground);
 		/*EndOf-BackgroundPanel*/
 	}
-	
-	
 }

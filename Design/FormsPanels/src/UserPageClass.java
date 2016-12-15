@@ -1,53 +1,21 @@
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 
-public class TryFive {
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-	private JFrame frame;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TryFive window = new TryFive();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public TryFive() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 630, 779);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+public class UserPageClass {
+	private int userId;
+	
+	
+	public UserPageClass(int uId, JPanel panelReal) {
+		userId = uId;
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 550, 726);
-		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblIcon = new JLabel("Icon");
@@ -135,5 +103,7 @@ public class TryFive {
 		lblBackground2.setBackground(Color.WHITE);
 		lblBackground2.setBounds(0, 37, 500, 250);
 		panelYourWatchlist.add(lblBackground2);
+		
+		panelReal.add(panel);
 	}
 }
