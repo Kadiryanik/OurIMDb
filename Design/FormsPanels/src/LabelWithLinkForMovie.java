@@ -18,10 +18,9 @@ public class LabelWithLinkForMovie {
 	private int movieId;
 	
 	LabelWithLinkForMovie(String n, int mId, JPanel panelReal){
-		
 		movieId = mId;
 		name = n;
-		final JLabel lblLink = new JLabel(n);
+		final JLabel lblLink = new JLabel(name);
 		
 		lblLink.setSize(15, 15);
 		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -46,7 +45,6 @@ public class LabelWithLinkForMovie {
 				MainForm.refPanelEachOne.removeAll();
 				new EachMovie(movieId,MainForm.refPanelEachOne);
 				MainForm.refPanelEachOne.setVisible(true);
-				System.out.println("");
 			}
 		});
 		panelReal.add(lblLink);

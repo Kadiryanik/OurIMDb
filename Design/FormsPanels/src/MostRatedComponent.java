@@ -8,9 +8,13 @@ import javax.swing.JPanel;
 
 
 public class MostRatedComponent {
+	private String name;
 	private int movieId;
 	
-	MostRatedComponent(int mId, JPanel panelReal) {
+	MostRatedComponent(String n, int mId, JPanel panelReal) {
+		name = n;
+		movieId = mId;
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 100, 230);
@@ -27,7 +31,7 @@ public class MostRatedComponent {
 		panelName.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel.add(panelName);
 		
-		LabelWithLinkForMovie temp = new LabelWithLinkForMovie("The", 12, panelName);
+		LabelWithLinkForMovie temp = new LabelWithLinkForMovie(name, movieId, panelName);
 		
 		JPanel panelRate = new JPanel();
 		panelRate.setLayout(new FlowLayout(FlowLayout.CENTER, 35, 0));

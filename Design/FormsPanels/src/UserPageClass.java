@@ -1,10 +1,13 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class UserPageClass {
 	private int userId;
@@ -61,10 +64,9 @@ public class UserPageClass {
 		panelYourRatings.add(panelContentMost);
 		panelContentMost.setLayout(new WrapLayout(FlowLayout.LEFT, 8, 5));
 		
-		MostRatedComponent temp = new MostRatedComponent(12, panelContentMost);
-		temp = new MostRatedComponent(12, panelContentMost);
-		temp = new MostRatedComponent(12, panelContentMost);
-		temp = new MostRatedComponent(12, panelContentMost);
+		MostRatedComponent temp = new MostRatedComponent("aa",1, panelContentMost);
+		new MostRatedComponent("aa",1, panelContentMost);
+		new MostRatedComponent("aa",1, panelContentMost);
 		
 		JLabel lblBackground = new JLabel("");
 		lblBackground.setBackground(Color.WHITE);
@@ -94,9 +96,9 @@ public class UserPageClass {
 		panelContentWatch.setBounds(10, 47, 480, 230);
 		panelYourWatchlist.add(panelContentWatch);
 		
-		temp = new MostRatedComponent(12, panelContentWatch);
-		temp = new MostRatedComponent(12, panelContentWatch);
-		temp = new MostRatedComponent(12, panelContentWatch);
+		new MostRatedComponent("aa",1, panelContentWatch);
+		new MostRatedComponent("aa",1, panelContentWatch);
+		new MostRatedComponent("aa",1, panelContentWatch);
 		
 		JLabel lblBackground2 = new JLabel("");
 		lblBackground2.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\UserPagePanelBackground.png"));
@@ -104,6 +106,17 @@ public class UserPageClass {
 		lblBackground2.setBounds(0, 37, 500, 250);
 		panelYourWatchlist.add(lblBackground2);
 		
-		panelReal.add(panel);
+		panel.setPreferredSize(new Dimension(550, 762));
+		
+		JScrollPane scrollPaneEachOne = new JScrollPane();
+		scrollPaneEachOne.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneEachOne.setBounds(0, 0, 550, 726);
+		
+		scrollPaneEachOne.add(panel);
+		scrollPaneEachOne.setViewportView(panel);
+		
+		panelReal.add(scrollPaneEachOne);
+		
+		// panelReal.add(panel);
 	}
 }
