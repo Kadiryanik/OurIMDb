@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.GroupLayout;
@@ -22,10 +23,23 @@ import javax.swing.SwingConstants;
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 
 public class EachMovie {
-	private int movieId;
 	
-	EachMovie(int mId, JPanel panelReal){
-		movieId = mId;
+	EachMovie(int movieId, final JPanel panelReal){
+		/*Getting informations from database*/
+		String starsQuery = "SELECT peopleId,pTitle,pFirstName FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 'Y') LIMIT 0,3";
+		
+		String directorsQuery = "SELECT pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 'Y') LIMIT 0,3";
+		
+		String writersQuery = "SELECT pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND writerFlag = 'Y') LIMIT 0,3";
+		
+		ArrayList<Movie> movieList = SqlOperations.getMovie("SELECT * FROM Movie WHERE movieId = " + movieId);
+		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
+		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery);
+		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
+		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
 		
 		final JLabel lblAddedWatch = new JLabel("");
 		
@@ -44,7 +58,7 @@ public class EachMovie {
 		textInfo.setBackground(new Color(231, 231, 231));
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
-		textInfo.setText("Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. .Bubiracýklamadýr.. ..");
+		textInfo.setText(movieList.get(0).getmDescription());//movie description
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
 		
@@ -68,13 +82,26 @@ public class EachMovie {
 		panelDirectorLinks.setForeground(new Color(19, 148, 209));
 		panelDirectorLinks.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		//TODO: adding label on these panels make them link
+		/*adding directors with link on panelDirektorLinks's panel*/
+		for(int i = 0; i < directorsList.size(); i++){
+			boolean isLast = false;
+			if(i == directorsList.size() - 1) isLast = true;
+			new LabelWithLink(directorsList.get(i).getpTitle(), directorsList.get(i).getPeopleId(), isLast, panelDirectorLinks);
+		}
+		
 		JPanel panelWriterLinks = new JPanel();
 		panelWriterLinks.setPreferredSize(new Dimension(10, 14));
 		panelWriterLinks.setBackground(new Color(231, 231, 231));
 		panelWriterLinks.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		panelWriterLinks.setForeground(new Color(19, 148, 209));
 		panelWriterLinks.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		
+		/*adding writers with link on panelWritersLinks's panel*/
+		for(int i = 0; i < writersList.size(); i++){
+			boolean isLast = false;
+			if(i == writersList.size() - 1) isLast = true;
+			new LabelWithLink(writersList.get(i).getpTitle(), writersList.get(i).getPeopleId(), isLast, panelWriterLinks);
+		}
 		
 		JPanel panelStarLinks = new JPanel();
 		panelStarLinks.setPreferredSize(new Dimension(10, 14));
@@ -83,20 +110,16 @@ public class EachMovie {
 		panelStarLinks.setForeground(new Color(19, 148, 209));
 		panelStarLinks.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
+		/*adding actors with link on panelStarLinks's panel*/
+		for(int i = 0; i < starsList.size(); i++){
+			boolean isLast = false;
+			if(i == starsList.size() - 1) isLast = true;
+			new LabelWithLink(starsList.get(i).getpTitle(), starsList.get(i).getPeopleId(), isLast, panelStarLinks);
+		}
 		
 		JSeparator seperator = new JSeparator(SwingConstants.VERTICAL);
 		seperator.setForeground(new Color(51, 51, 51));
 		seperator.setPreferredSize(new Dimension(2, 10));
-		
-		/*Examples*/
-		LabelWithLink temp = new LabelWithLink("Johny Deep", 12, false, panelStarLinks); 
-		temp = new LabelWithLink("Johny Deep", 14, false, panelStarLinks);
-		temp = new LabelWithLink("Johny Deep", 15, true, panelStarLinks);
-		
-		temp = new LabelWithLink("Yonetmen Filancý", 18, true, panelDirectorLinks);
-
-		temp = new LabelWithLink("Johny Deep", 13, false, panelWriterLinks);
-		temp = new LabelWithLink("Johny Deep", 13, true, panelWriterLinks);
 		
 		final JLabel lblSeeFullCast = new JLabel("See full cast & crew >>");
 		lblSeeFullCast.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -114,9 +137,13 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Full cast page
+				panelReal.setVisible(false);
+				panelReal.removeAll();
+				new FullCastClass(1, panelReal);
+				panelReal.setVisible(true);
 			}
 		});
+		
 		lblSeeFullCast.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblSeeFullCast.setForeground(new Color(19, 148, 209));
 		GroupLayout gl_panelInfo = new GroupLayout(panelInfo);
@@ -404,10 +431,12 @@ public class EachMovie {
 		panelRate.add(lblBackground);
 		
 		JLabel labelImage = new JLabel("");
-		labelImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\jackie_153x226.jpg"));
+		labelImage.setBounds(0, 97, 153, 226);
+		/*adding movie image on labelImage*/
+		labelImage.setIcon(SqlOperations.getMovieImage(movieId, labelImage));
 		labelImage.setForeground(new Color(0, 0, 0));
 		labelImage.setBackground(Color.CYAN);
-		labelImage.setBounds(0, 97, 153, 226);
+		
 		panelTop.add(labelImage);
 		
 		JPanel panelYoutube = new JPanel();
@@ -418,7 +447,8 @@ public class EachMovie {
 		JWebBrowser wb = new JWebBrowser();
 		panelYoutube.add(wb);
 		wb.setBarsVisible(false);
-		wb.navigate("https://www.youtube.com/embed/pZTXv5NpgaI");
+		/*getting youtube link for trailer*/
+		wb.navigate(movieList.get(0).getmUrlLink());
 		
 		final JLabel lblAddWatch = new JLabel("");
 		lblAddWatch.addMouseListener(new MouseAdapter() {
@@ -442,7 +472,8 @@ public class EachMovie {
 		lblAddWatch.setBounds(27, 22, 39, 49);
 		panelTop.add(lblAddWatch);
 		
-		JLabel lblName = new JLabel("Jackieq");
+		/*movie title*/
+		JLabel lblName = new JLabel(movieList.get(0).getmTitle());
 		lblName.setForeground(Color.WHITE);
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
 		lblName.setBounds(76, 22, 306, 28);
@@ -454,43 +485,32 @@ public class EachMovie {
 		panelTop.add(panelDesc);
 		panelDesc.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		JLabel lblhmin = new JLabel("1h 39min");
-		lblhmin.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblhmin.setForeground(new Color(192, 192, 192));
-		panelDesc.add(lblhmin);
-		
-		JLabel lblSeperate1 = new JLabel("l");
-		lblSeperate1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSeperate1.setForeground(new Color(192, 192, 192));
-		panelDesc.add(lblSeperate1);
-		
-		JLabel lblType = new JLabel("Biography, Drama");
-		lblType.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblType.setForeground(new Color(192, 192, 192));
-		panelDesc.add(lblType);
-		
-		JLabel lblSeperate2 = new JLabel("l");
-		lblSeperate2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblSeperate2.setForeground(new Color(192, 192, 192));
-		panelDesc.add(lblSeperate2);
-		
-		JLabel lblDate = new JLabel("2 December 2016");
-		lblDate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblDate.setForeground(new Color(192, 192, 192));
-		panelDesc.add(lblDate);
+		/*setting panelDesc min, genre, year*/
+		new LabelWithoutLink(movieList.get(0).getmTime() + "min", 102, 102, 102, false, panelDesc);
+		String genres = new String();
+		for(int i = 0; i < genreList.size(); i++){
+			genres = genres + genreList.get(i).getmType();
+			if(i != genreList.size() - 1){
+				genres = genres + ",";
+			}
+		}
+		new LabelWithoutLink(genres, 102, 102, 102, false, panelDesc);
+		new LabelWithoutLink("" + movieList.get(0).getmYear(), 102, 102, 102, true, panelDesc);
 		
 		JLabel lblStar = new JLabel("");
 		lblStar.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarYellow.png"));
 		lblStar.setBounds(370, 30, 28, 25);
 		panelTop.add(lblStar);
-		
-		JLabel lblPoint = new JLabel("7,9");
+	
+		/*movie rating*/
+		JLabel lblPoint = new JLabel("" + movieList.get(0).getmRating());
 		lblPoint.setForeground(Color.WHITE);
 		lblPoint.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		lblPoint.setBounds(404, 30, 33, 19);
 		panelTop.add(lblPoint);
 		
-		JLabel lblPointcount = new JLabel("912");
+		/*movie rating count*/
+		JLabel lblPointcount = new JLabel("" + movieList.get(0).getmRatingCount());
 		lblPointcount.setForeground(new Color(192, 192, 192));
 		lblPointcount.setBackground(new Color(245, 245, 245));
 		lblPointcount.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
@@ -634,18 +654,13 @@ public class EachMovie {
 		);
 		panelCastTop.setLayout(gl_panelCastTop);
 		
-		CastComponentForEachMovie tempCast = new CastComponentForEachMovie(11, "Natalie Portman", "Jackie Kennedy", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		/*
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		tempCast = new CastComponentForEachMovie(11, "cc", "dd", panelCast);
-		*/
+		/*creating cast component */ 
+		for(int i = 0; i < starsList.size(); i++){
+			
+			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),
+					starsList.get(i).getpFirstName(), panelCast);
+		}
+	
 		/*lblSeeFullCast button for panelCast*/
 		final JLabel lblSeeFullCastForPanelCast = new JLabel("See full cast & crew >>");
 		lblSeeFullCastForPanelCast.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -663,7 +678,7 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Full cast page
+				
 			}
 		});
 		lblSeeFullCastForPanelCast.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));

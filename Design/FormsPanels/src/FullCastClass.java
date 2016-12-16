@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -16,16 +17,34 @@ public class FullCastClass {
 		panel.setBackground(new Color(245, 245, 245));
 		panel.setBounds(0, 0, 550, 726);
 		
+		/*getting directors informations with movieId*/
+		String directorsQuery = "SELECT pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND directorFlag = 'Y') LIMIT 0,3";
+		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery); 
+		
+		/*getting writers informations with movieId*/
+		String writersQuery = "SELECT pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND writerFlag = 'Y') LIMIT 0,3";
+		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
+		
+		/*getting actors informations with movieId*/
+		String starsQuery = "SELECT peopleId,pTitle,pFirstName FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND actorFlag = 'Y') LIMIT 0,3";
+		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
+		
 		JLabel lblImage = new JLabel("image");
-		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
 		lblImage.setBounds(20, 11, 67, 98);
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
+		//lblImage.setIcon(SqlOperations.getMovieImage(mId, lblImage));
 		
 		JPanel panelName = new JPanel();
 		panelName.setBackground(new Color(245, 245, 245));
 		panelName.setBounds(97, 11, 443, 27);
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		new LabelWithLink("shawshank", 123, true, panelName);
+		/* adding movie title with link*/ 
+		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = " + mId).get(0).getmTitle()
+				, mId, panelName);
 		
 		JLabel lblFullcastcrew = new JLabel("Full Cast & Crew");
 		lblFullcastcrew.setBounds(97, 42, 167, 35);
@@ -52,15 +71,24 @@ public class FullCastClass {
 		panelDirecters.setBounds(20, 144, 520, 20);
 		panelDirecters.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		new LabelWithLink("shawshank", 123, true, panelDirecters);
+		/*directors with link*/
+		for(int i = 0; i < directorsList.size(); i++){
+			boolean isLast = false;
+			if(i == directorsList.size() - 1) isLast = true;
+			new LabelWithLink(directorsList.get(i).getpTitle(), directorsList.get(i).getPeopleId(), isLast, panelDirecters);
+		}
 		
 		JPanel panelWriters = new JPanel();
 		panelWriters.setBackground(new Color(245, 245, 245));
 		panelWriters.setBounds(20, 200, 520, 20);
 		panelWriters.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
-		new LabelWithLink("shawshank", 123, false, panelWriters);
-		new LabelWithLink("shawshank", 123, true, panelWriters);
+		/*writers with link*/
+		for(int i = 0; i < writersList.size(); i++){
+			boolean isLast = false;
+			if(i == writersList.size() - 1) isLast = true;
+			new LabelWithLink(writersList.get(i).getpTitle(), writersList.get(i).getPeopleId(), isLast, panelWriters);
+		}
 		
 		JLabel lblCast = new JLabel("Cast");
 		lblCast.setBounds(20, 230, 77, 14);
@@ -87,26 +115,12 @@ public class FullCastClass {
 		scrollPaneCast.setViewportView(panelCastScroll);
 		panelCastScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 1));
 		
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
-		new CastComponentForEachMovie(12, "nativee", "asd", panelCastScroll);
+		System.out.println(starsList.size());
+		for(int i = 0; i < starsList.size(); i++){
+			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),"asd", panelCastScroll);
+		}
+
+		
 		
 		panel.setLayout(null);
 		panel.add(lblImage);
