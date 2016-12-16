@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.JLabel;
@@ -17,11 +18,11 @@ public class LabelWithLinkForMovie {
 	private int movieId;
 	
 	LabelWithLinkForMovie(String n, int mId, JPanel panelReal){
-		name = n;
+		
 		movieId = mId;
-		
-		
+		name = n;
 		final JLabel lblLink = new JLabel(n);
+		
 		lblLink.setSize(15, 15);
 		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblLink.setForeground(new Color(19, 148, 209));
@@ -41,7 +42,11 @@ public class LabelWithLinkForMovie {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: Goto eachCelebs with id
-				System.out.println("" + name + movieId);
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				new EachMovie(movieId,MainForm.refPanelEachOne);
+				MainForm.refPanelEachOne.setVisible(true);
+				System.out.println("");
 			}
 		});
 		panelReal.add(lblLink);
