@@ -74,7 +74,9 @@ public class MainForm {
 	private JPasswordField passwordFieldPassA;
 	
 	//OtherClass referances
+	public static JPanel refPanelEachOne;
 	public EachMovie tempEachMovie;
+	private JTextField textFieldSearch;
 	
 	public static void main(String[] args) {
 		NativeInterface.open();
@@ -146,6 +148,9 @@ public class MainForm {
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
 		
+		SqlOperations.postPeopleImage("b");
+		SqlOperations.postMovieImage("a");
+		
 		final JButton btnWatchList = new JButton("");
 		JButton btnLogin = new JButton("");
 		
@@ -169,23 +174,12 @@ public class MainForm {
 		//------------------------------------------
 		
 		final JPanel panelEachOne = new JPanel();
+		refPanelEachOne = panelEachOne;
 		panelEachOne.setVisible(false);
 		panelEachOne.setBackground(Color.BLACK);
 		panelEachOne.setBounds(0, 24, 550, 726);
 		panelEachOne.setLayout(null);
 		
-		final JPanel panelEachOneScroll = new JPanel();
-		panelEachOneScroll.setBackground(Color.WHITE);
-	
-		JScrollPane scrollPaneEachOne = new JScrollPane();
-		scrollPaneEachOne.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPaneEachOne.setBounds(0, 0, 550, 726);
-		
-		scrollPaneEachOne.add(panelEachOneScroll);
-		scrollPaneEachOne.setViewportView(panelEachOneScroll);
-		panelEachOneScroll.setLayout(null);
-		
-		panelEachOne.add(scrollPaneEachOne);
 		frmOurmdb.getContentPane().add(panelEachOne);
 		//------------------------------------------
 		
@@ -206,6 +200,84 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(labelIcon);
 		
 		/*Panels Inýt*/
+		
+		
+		//SearchField 
+		final JLabel lblSearch = new JLabel("");
+		lblSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButtonA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButton.png"));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//TODO: arama iþlemleri
+			}
+		});
+		lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButton.png"));
+		lblSearch.setBounds(450, 0, 24, 24);
+		frmOurmdb.getContentPane().add(lblSearch);
+		
+		final JLabel lblRight = new JLabel("");
+		lblRight.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		
+		final JLabel lblLeft = new JLabel("");
+		lblLeft.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblLeft.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblLeft.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchLeftA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblLeft.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchLeft.png"));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lblLeft.setVisible(false);
+				textFieldSearch.setVisible(true);
+				lblRight.setVisible(true);
+			}
+		});
+		lblLeft.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchLeft.png"));
+		lblLeft.setBounds(442, 0, 8, 24);
+		frmOurmdb.getContentPane().add(lblLeft);
+		
+		//lblRight
+		lblRight.setVisible(false);
+		lblRight.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblRight.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchRightA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblRight.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchRight.png"));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				textFieldSearch.setVisible(false);
+				lblRight.setVisible(false);
+				lblLeft.setVisible(true);
+			}
+		});
+		lblRight.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchRight.png"));
+		lblRight.setBounds(102, 0, 8, 24);
+		frmOurmdb.getContentPane().add(lblRight);
+		
+		textFieldSearch = new JTextField();
+		textFieldSearch.setVisible(false);
+		textFieldSearch.setBounds(110, 0, 342, 25);
+		frmOurmdb.getContentPane().add(textFieldSearch);
+		textFieldSearch.setColumns(10);
+		
+		//SearchField End
+		
 		final JPanel panelTop = new JPanel();
 		panelTop.setBackground(new Color(255, 255, 255, 0));
 		panelTop.setBounds(0, 25, 550, 45);
@@ -352,21 +424,39 @@ public class MainForm {
 		
 		/*EndOf Panel Inýt*/
 		
-		
-		JLabel lblBack = new JLabel("");
+		final JLabel lblGoBackD = new JLabel("");
+		final JLabel lblBack = new JLabel("");
+		lblBack.setVisible(false);
+		lblBack.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				panelEachOneScroll.removeAll();
+				panelEachOne.removeAll();
 				//TODO:panelComment Yerine scroll ekleyip düzelt
+
+				lblBack.setVisible(false);
+				lblGoBackD.setVisible(true);
 				panelComment.removeAll();
 				panelTop.setVisible(true);
 				panelEachOne.setVisible(false);
 				panelComment.setVisible(false);
 			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBackA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBack.png"));
+			}
 		});
-		lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon.png"));
-		lblBack.setBounds(475, 0, 24, 24);
+		
+		
+		lblGoBackD.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBackDA.png"));
+		lblGoBackD.setBounds(480, 0, 24, 24);
+		frmOurmdb.getContentPane().add(lblGoBackD);
+		lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBack.png"));
+		lblBack.setBounds(480, 0, 24, 24);
 		frmOurmdb.getContentPane().add(lblBack);
 		
 		JLabel labelDrag = new JLabel("     OurIMDb");
@@ -471,7 +561,6 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new EachMovie(11, panelHome);
 				
 				panelHome.setVisible(true);
 				panelMovies.setVisible(false);
@@ -492,12 +581,15 @@ public class MainForm {
 		btnMovies.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\movies.png"));
 		btnMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//panelEachOneScroll.setPreferredSize(new Dimension(550,1108));
-				//tempEachMovie = new EachMovie(1, panelEachOneScroll);
-				//new UserPageClass(12, panelEachOneScroll);
-				//new EachCeleb(12, panelEachOneScroll);
-				new FullCastClass(12, panelEachOneScroll);
+				//panelEachOne.setPreferredSize(new Dimension(550,1108));
+				//tempEachMovie = new EachMovie(1, panelEachOne);
+				//new UserPageClass(1, panelEachOne);
+				//new EachCeleb(1, panelEachOne);
+				//new FullCastClass(1, panelEachOne);
+				new EachMovie(1, panelEachOne);
 				
+				lblGoBackD.setVisible(false);
+				lblBack.setVisible(true);
 				panelTop.setVisible(false);
 				panelHome.setVisible(false);
 				panelCelebs.setVisible(false);

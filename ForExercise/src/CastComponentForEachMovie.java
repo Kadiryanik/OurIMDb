@@ -24,10 +24,9 @@ public class CastComponentForEachMovie {
 		panelCastComponent.setBackground(new Color(192, 192, 192));
 		panelCastComponent.setBounds(0, 0, 530, 44);
 		
-		/*setting image with id*/
+		//TODO: Image ide nesneye baðlý seç
 		JLabel lblImage = new JLabel("");
-		lblImage.setBounds(0, 0, 32, 44);
-		lblImage.setIcon(SqlOperations.getPeopleImage(c, lblImage));
+		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\NataliePortman_32x44.png"));
 		
 		JPanel panelRealName = new JPanel();
 		panelRealName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 2));

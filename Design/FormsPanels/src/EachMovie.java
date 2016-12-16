@@ -15,9 +15,11 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
@@ -609,7 +611,7 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Full cast page
+				//TODO: Full award page
 			}
 		});
 		labelSeeFullAward.setForeground(new Color(19, 148, 209));
@@ -678,7 +680,10 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				panelReal.setVisible(false);
+				panelReal.removeAll();
+				new FullCastClass(1, panelReal);
+				panelReal.setVisible(true);
 			}
 		});
 		lblSeeFullCastForPanelCast.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
@@ -688,7 +693,16 @@ public class EachMovie {
 		
 		panelCast.add(lblSeeFullCastForPanelCast);
 		
+		panel.setPreferredSize(new Dimension(550, 1108));
 		
-		panelReal.add(panel);
+		JScrollPane scrollPaneEachOne = new JScrollPane();
+		scrollPaneEachOne.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPaneEachOne.setBounds(0, 0, 550, 726);
+		
+		scrollPaneEachOne.add(panel);
+		scrollPaneEachOne.setViewportView(panel);
+		
+		panelReal.add(scrollPaneEachOne);
+		//panelReal.add(panel);
 	}
 }
