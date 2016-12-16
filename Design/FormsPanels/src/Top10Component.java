@@ -81,7 +81,7 @@ public class Top10Component {
 		lblAddwatchlist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//Kullanıcı izlenicek listesine ekle
+				//KullanÃ½cÃ½ izlenicek listesine ekle
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
