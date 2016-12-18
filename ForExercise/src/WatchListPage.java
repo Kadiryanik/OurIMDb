@@ -130,6 +130,7 @@ public class WatchListPage {
 		WatchScrollContent.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 1));
 		
 		JPanel panel = new JPanel();
+		WatchScrollContent.add(panel);
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 450, 164);
 		
@@ -263,7 +264,6 @@ public class WatchListPage {
 							.addComponent(scrollInfo, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))))
 		);
 		panel.setLayout(gl_panel);
-		WatchScroll.add(panel);
 		
 		
 	}

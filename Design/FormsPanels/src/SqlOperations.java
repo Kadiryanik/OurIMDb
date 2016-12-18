@@ -208,9 +208,9 @@ public class SqlOperations {
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/imdb";
+			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
-			String password = "81035241";
+			String password = "h3b9er1po";
 			Class.forName(driver);
 
 			Connection conn = DriverManager.getConnection(url, username, password);

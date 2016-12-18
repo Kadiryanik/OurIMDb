@@ -11,6 +11,7 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 
 
 public class Top10Component {
@@ -32,19 +33,14 @@ public class Top10Component {
 		else{
 			panel.setBackground(new Color(255, 255, 255));
 		}
-		panel.setBounds(0, 0, 500, 300);
-		
+		panel.setPreferredSize(new Dimension(440, 60));
 		
 		JLabel lblImage = new JLabel("");
 		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon32.png"));
-		lblImage.setBounds(10, 5, 43, 58);
-		panel.add(lblImage);
 		
 		JLabel label = new JLabel(Id + ".");
 		label.setForeground(new Color(30, 144, 255));
 		label.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
-		label.setBounds(63, 15, 28, 36);
-		panel.add(label);
 		
 		final JLabel lblTextname = new JLabel(n);
 		lblTextname.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -67,21 +63,20 @@ public class Top10Component {
 			}
 		});
 		lblTextname.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
-		lblTextname.setBounds(99, 15, 239, 36);
-		panel.add(lblTextname);
 		
 		JLabel lblImdbrating = new JLabel("" + r);
 		lblImdbrating.setForeground(new Color(30, 144, 255));
 		lblImdbrating.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
-		lblImdbrating.setBounds(361, 15, 66, 36);
-		panel.add(lblImdbrating);
 		
+		final JLabel lblAddedwatchlist = new JLabel("");
 		final JLabel lblAddwatchlist = new JLabel("");
 		lblAddwatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblAddwatchlist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//KullanÃ½cÃ½ izlenicek listesine ekle
+				lblAddwatchlist.setVisible(false);
+				lblAddedwatchlist.setVisible(true);
+				//Kullanýcý izlenicek listesine ekle
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -92,44 +87,61 @@ public class Top10Component {
 				lblAddwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 			}
 		});
-		lblAddwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 		
+		
+		lblAddedwatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblAddedwatchlist.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				lblAddedwatchlist.setVisible(false);
+				lblAddwatchlist.setVisible(true);
+				//Kullanici izlenicek listesinden cikar
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				lblAddedwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAddedA_20x26.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblAddedwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAdded_20x26.png"));
+			}
+		});
+		lblAddedwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAdded_20x26.png"));
+		lblAddwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(7)
-					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addGap(4)
-					.addComponent(label, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addGap(4)
-					.addComponent(lblTextname, GroupLayout.PREFERRED_SIZE, 263, GroupLayout.PREFERRED_SIZE)
-					.addGap(27)
-					.addComponent(lblImdbrating)
+					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblAddwatchlist)
-					.addGap(26))
+					.addComponent(label, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
+					.addGap(2)
+					.addComponent(lblTextname, GroupLayout.PREFERRED_SIZE, 251, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblImdbrating, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addGap(4)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblAddwatchlist)
+						.addComponent(lblAddedwatchlist)))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(20)
+					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(label)
+						.addComponent(lblTextname)))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(20)
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(7)
-							.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(20)
-							.addComponent(label))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(20)
-							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblAddwatchlist)
-								.addComponent(lblImdbrating)))
-						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(20)
-							.addComponent(lblTextname)))
-					.addContainerGap(10, Short.MAX_VALUE))
+						.addComponent(lblAddwatchlist)
+						.addComponent(lblAddedwatchlist)))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(20)
+					.addComponent(lblImdbrating))
+				.addComponent(lblImage, GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
 		);
 		panel.setLayout(gl_panel);
 		

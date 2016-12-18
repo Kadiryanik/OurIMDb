@@ -110,7 +110,7 @@ public class UserPageClass {
 		
 		JScrollPane scrollPaneEachOne = new JScrollPane();
 		scrollPaneEachOne.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPaneEachOne.setBounds(0, 0, 550, 726);
+		scrollPaneEachOne.setBounds(0, 0, 550, 675);
 		
 		scrollPaneEachOne.add(panel);
 		scrollPaneEachOne.setViewportView(panel);
