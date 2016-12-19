@@ -46,7 +46,16 @@ public class LabelWithLink {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Goto eachCelebs with id
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelGoBackD.setVisible(false);
+				MainForm.refLabelBack.setVisible(true);
+				
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();
 				new EachCeleb(celebId,MainForm.refPanelEachOne);

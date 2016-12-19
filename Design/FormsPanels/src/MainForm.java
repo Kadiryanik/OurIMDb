@@ -74,6 +74,17 @@ public class MainForm {
 	
 	//OtherClass referances
 	public static JPanel refPanelEachOne;
+	public static JPanel refPanelTop;	
+	public static JPanel refPanelHome;
+	public static JPanel refPanelMovies;
+	public static JPanel refPanelCelebs;
+	public static JPanel refPanelTop10;
+	public static JPanel refPanelUser;
+	public static JPanel refPanelWatchlist;
+	public static JPanel refPanelRegister;
+	public static JLabel refLabelBack;
+	public static JLabel refLabelGoBackD;
+	
 	private JTextField textFieldSearch;
 	
 	public static void main(String[] args) {
@@ -195,18 +206,21 @@ public class MainForm {
 		/*Panels Inýt*/
 		
 		final JPanel panelTop = new JPanel();
+		refPanelTop = panelTop;
 		panelTop.setBackground(new Color(255, 255, 255, 0));
 		panelTop.setBounds(0, 25, 550, 45);
 		frmOurmdb.getContentPane().add(panelTop);
 		panelTop.setLayout(null);
 	
 		final JPanel panelHome = new JPanel();
+		refPanelHome = panelHome;
 		panelHome.setBackground(UIManager.getColor("Button.shadow"));
 		panelHome.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelHome);
 		panelHome.setLayout(null);
 		
 		final JPanel panelMovies = new JPanel();
+		refPanelMovies = panelMovies;
 		panelMovies.setVisible(false);
 		panelMovies.setBackground(UIManager.getColor("windowBorder"));
 		panelMovies.setBounds(0, 75, 550, 675);
@@ -214,6 +228,7 @@ public class MainForm {
 		panelMovies.setLayout(null);
 		
 		final JPanel panelRegister = new JPanel();
+		refPanelRegister = panelRegister;
 		panelRegister.setBackground(Color.WHITE);
 		panelRegister.setVisible(false);
 		panelRegister.setBounds(0, 75, 550, 675);
@@ -222,6 +237,7 @@ public class MainForm {
 		
 	
 		final JPanel panelCelebs = new JPanel();
+		refPanelCelebs = panelCelebs;
 		panelCelebs.setVisible(false);
 		panelCelebs.setBackground(new Color(30, 144, 255));
 		panelCelebs.setBounds(0, 75, 550, 675);
@@ -229,6 +245,7 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(panelCelebs);
 		
 		final JPanel panelTop10 = new JPanel();
+		refPanelTop10 = panelTop10;
 		panelTop10.setVisible(false);
 		panelTop10.setBackground(UIManager.getColor("windowBorder"));
 		panelTop10.setBounds(0, 75, 550, 675);
@@ -236,6 +253,7 @@ public class MainForm {
 		panelTop10.setLayout(null);
 		
 		final JPanel panelUser = new JPanel();
+		refPanelUser = panelUser;
 		panelUser.setBounds(0, 75, 550, 675);
 		panelUser.setVisible(false);
 		panelUser.setBackground(new Color(106, 90, 205, 50));
@@ -243,6 +261,7 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(panelUser);
 		
 		final JPanel panelWatchList = new JPanel();
+		refPanelWatchlist = panelWatchList;
 		
 		final JPanel panelUnLogin = new JPanel();
 		panelUnLogin.setBackground(new Color(255, 255, 255, 0));
@@ -456,7 +475,10 @@ public class MainForm {
 		
 		//Back Button 
 		final JLabel lblGoBackD = new JLabel("");
+		refLabelGoBackD = lblGoBackD;
 		final JLabel lblBack = new JLabel("");
+		refLabelBack = lblBack;
+		
 		lblBack.setVisible(false);
 		lblBack.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblBack.addMouseListener(new MouseAdapter() {
@@ -639,7 +661,28 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int a = -1;
+				if(isLogined == true){
+					a = 0;
+				}
+				new EachMovie(2, panelEachOne, a);
+				//new SearchResult("babaanne", panelEachOne);
+				//new UserReviews(1, panelEachOne);
+				//new ParentChildCommentPage(1, panelEachOne);
 				
+				
+				lblGoBackD.setVisible(false);
+				lblBack.setVisible(true);
+				panelTop.setVisible(false);
+				panelHome.setVisible(false);
+				panelCelebs.setVisible(false);
+				panelTop10.setVisible(false);
+				panelUser.setVisible(false);
+				panelRegister.setVisible(false);
+				panelEachOne.setVisible(false);
+				panelWatchList.setVisible(false);
+				panelEachOne.setVisible(true);
+				/*
 				panelHome.setVisible(true);
 				panelMovies.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -648,6 +691,7 @@ public class MainForm {
 				panelRegister.setVisible(false);
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
+				*/
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
