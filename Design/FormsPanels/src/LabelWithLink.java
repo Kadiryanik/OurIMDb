@@ -47,7 +47,10 @@ public class LabelWithLink {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: Goto eachCelebs with id
-				System.out.println("" + name + celebId);
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				new EachCeleb(celebId,MainForm.refPanelEachOne);
+				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});
 		panelReal.add(lblLink);

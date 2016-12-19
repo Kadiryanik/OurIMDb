@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,16 +13,22 @@ public class EachCeleb {
 	private int celebId;
 	
 	public EachCeleb(int cId, JPanel panelReal) {
+		celebId = cId;
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 550, 726);
 		panel.setLayout(null);
 		
-		JLabel lblImage = new JLabel("image");
+		String peopleQuery = "SELECT peopleId,pTitle,pDescription,pBirthday,pBirthPlace "
+				+ "FROM People WHERE peopleId = " + celebId;
+		ArrayList<People> peopleList = SqlOperations.getPeople(peopleQuery);
+		
+		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(20, 11, 175, 245);
+		lblImage.setIcon(SqlOperations.getPeopleImage(celebId, lblImage));
 		panel.add(lblImage);
 		
-		JLabel lblName = new JLabel("Adam Sandler");
+		JLabel lblName = new JLabel(peopleList.get(0).getpTitle());
 		lblName.setForeground(new Color(40, 40, 40));
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		lblName.setBounds(205, 11, 325, 32);
@@ -33,10 +40,19 @@ public class EachCeleb {
 		panel.add(panelInfo);
 		panelInfo.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
-		new LabelWithoutLink("Actor", 100, 172, 228, false, panelInfo);
-		new LabelWithoutLink("Producer", 100, 172, 228, false, panelInfo);
-		new LabelWithoutLink("Writer", 100, 172, 228, true, panelInfo);
-		
+		/*setting the roles of people(actor,director,writer) in the movie*/
+		String castQuery = "SELECT castName,actorFlag,directorFlag,writerFlag FROM MoviePeople WHERE "
+				 + "fkPeopleId = " + celebId;
+		ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(castQuery);
+		boolean isActor=false,isDirector=false,isWriter=false;
+		for(int i = 0; i < castInfo.size(); i++){
+			if(castInfo.get(i).getActorFlag() == 1)isActor = true;
+			if(castInfo.get(i).getDirectorFlag() == 1)isDirector = true;
+			if(castInfo.get(i).getWriterFlag() == 1)isWriter = true;
+		}
+		if(isActor)new LabelWithoutLink("Actor", 100, 172, 228, (!isDirector && !isWriter), panelInfo);
+		if(isDirector) new LabelWithoutLink("Director", 100, 172, 228, !isWriter, panelInfo);
+		if(isWriter)new LabelWithoutLink("Writer", 100, 172, 228, true, panelInfo);
 		
 		JTextArea textBuzz = new JTextArea();
 		textBuzz.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
@@ -44,7 +60,7 @@ public class EachCeleb {
 		textBuzz.setBounds(160, 61, 370, 83);
 		textBuzz.setEditable(false);
 		textBuzz.setFocusable(false);
-		textBuzz.setText("BuAciklama");
+		textBuzz.setText(peopleList.get(0).getpDescription());
 		textBuzz.setLineWrap(true);
 		textBuzz.setWrapStyleWord(true);
 		
@@ -61,7 +77,7 @@ public class EachCeleb {
 		panel.add(panelBorn);
 		panelBorn.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 1));
 		
-		JLabel lblBorn = new JLabel("Born: ");
+		JLabel lblBorn = new JLabel("Born: " + peopleList.get(0).getpBirthday() + "  " + peopleList.get(0).getpBirthPlace());
 		lblBorn.setForeground(new Color(40, 40, 40));
 		lblBorn.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		panelBorn.add(lblBorn);
@@ -91,20 +107,14 @@ public class EachCeleb {
 		lblFilmography.setBounds(20, 267, 510, 21);
 		panel.add(lblFilmography);
 		
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
-		new FilmographyComponent(12, 13, panelFilmographyScroll);
+		String movieQuery = "SELECT movieId FROM Movie WHERE movieId IN"
+				+ "(SELECT fkMovieId FROM MoviePeople WHERE fkPeopleId = " + celebId + ") ORDER BY mYear DESC";
+		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+		
+		for(int i = 0; i < movieList.size(); i++){
+			new FilmographyComponent(movieList.get(i).getMovieId(), peopleList.get(0).getPeopleId(), 
+					panelFilmographyScroll);
+		}
 		
 		panelReal.add(panel);
 	}

@@ -16,14 +16,15 @@ import javax.swing.SwingConstants;
 public class LabelWithLinkForMovie {
 	private String name;
 	private int movieId;
-	
-	LabelWithLinkForMovie(String n, int mId, JPanel panelReal){
+	private int fontSize;
+	LabelWithLinkForMovie(String n, int mId, int f, JPanel panelReal){
 		movieId = mId;
 		name = n;
+		fontSize = f;
 		final JLabel lblLink = new JLabel(name);
 		
 		lblLink.setSize(15, 15);
-		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, fontSize));
 		lblLink.setForeground(new Color(19, 148, 209));
 		lblLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblLink.addMouseListener(new MouseAdapter() {
@@ -36,14 +37,14 @@ public class LabelWithLinkForMovie {
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+				lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, fontSize));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: Goto eachCelebs with id
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();
-				new EachMovie(movieId,MainForm.refPanelEachOne);
+				new EachMovie(movieId, MainForm.refPanelEachOne, 0);
 				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});

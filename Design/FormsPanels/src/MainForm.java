@@ -35,6 +35,7 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -49,10 +50,6 @@ import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
 import java.awt.GridLayout;
 import java.awt.CardLayout;
-import net.miginfocom.swing.MigLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
@@ -65,7 +62,7 @@ public class MainForm {
 	private JTextField textFieldId;
 	private JPasswordField textFieldPw;
 	
-	private int loggedUserId;
+	private static int loggedUserId;
 	private boolean isLogined;
 	
 	public int xMouse;
@@ -135,7 +132,9 @@ public class MainForm {
 		isLogined = false;
 		initialize();
 	}
-	
+	public static int getLoggedUserId(){
+		return loggedUserId;
+	}
 
 	private void initialize() {
 		frmOurmdb = new JFrame();
@@ -178,7 +177,7 @@ public class MainForm {
 		refPanelEachOne = panelEachOne;
 		panelEachOne.setVisible(false);
 		panelEachOne.setBackground(Color.BLACK);
-		panelEachOne.setBounds(0, 24, 100, 726);
+		panelEachOne.setBounds(0, 24, 550, 726);
 		panelEachOne.setLayout(null);
 		
 		frmOurmdb.getContentPane().add(panelEachOne);
@@ -254,7 +253,7 @@ public class MainForm {
 		final JPanel panelLogined = new JPanel();
 		final JLabel lblUser = new JLabel("User");
 		
-		textFieldId = new JTextField("ID");
+		textFieldId = new JTextField("cagatay");
 		textFieldId.setFocusTraversalKeysEnabled(false);
 		textFieldId.addKeyListener(new KeyAdapter() {
 			@Override
@@ -265,27 +264,37 @@ public class MainForm {
 					textFieldPw.setText("");
 				}
 				if(e.getKeyChar() == e.VK_ENTER){
-					if("aa".equals(textFieldId.getText()) && "123".equals(textFieldPw.getText())){
-						//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
-						panelTop.setVisible(false);
-						panelUnLogin.setVisible(false);
-						panelLogined.setVisible(true);
-						btnWatchList.setEnabled(true);
-						panelTop.setVisible(true);
-						
-						lblUser.setText(textFieldId.getText());
-						textFieldId.setText("");
-						textFieldPw.setText("");
-						
-						isLogined = true;
-						//TODO: userId setle
-						//loggedUserId = from sql db
+					String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldId.getText() + "'";
+					ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
+					if(userInfo.size() != 0){
+						if(textFieldPw.getText().equals(userInfo.get(0).getuPassword())){
+							//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
+							panelTop.setVisible(false);
+							panelUnLogin.setVisible(false);
+							panelLogined.setVisible(true);
+							btnWatchList.setEnabled(true);
+							panelTop.setVisible(true);
+							
+							lblUser.setText(textFieldId.getText());
+							textFieldId.setText("");
+							textFieldPw.setText("");
+							
+							isLogined = true;
+							//TODO: userId setle
+							loggedUserId = userInfo.get(0).getUserId();
+						}
+						else{
+							//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
+							textFieldPw.setText("");
+							JOptionPane.showMessageDialog(null, "Password wrong!");
+						}
 					}
 					else{
-						//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
-						textFieldPw.setText("");
+						textFieldPw.setText("......");
+						textFieldId.setText("ID");
 						JOptionPane.showMessageDialog(null, "Username or Password wrong!");
 					}
+					
 				}
 			}
 		});
@@ -324,25 +333,34 @@ public class MainForm {
 					}
 				}
 				if(e.getKeyChar() == e.VK_ENTER){
-					if("aa".equals(textFieldId.getText()) && "123".equals(textFieldPw.getText())){
-						//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
-						panelTop.setVisible(false);
-						panelUnLogin.setVisible(false);
-						panelLogined.setVisible(true);
-						btnWatchList.setEnabled(true);
-						panelTop.setVisible(true);
-						
-						lblUser.setText(textFieldId.getText());
-						textFieldId.setText("");
-						textFieldPw.setText("");
-						
-						isLogined = true;
-						//TODO: userId setle
-						//loggedUserId = from sql db
+					String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldId.getText() + "'";
+					ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
+					if(userInfo.size() != 0){
+						if(textFieldPw.getText().equals(userInfo.get(0).getuPassword())){
+							//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
+							panelTop.setVisible(false);
+							panelUnLogin.setVisible(false);
+							panelLogined.setVisible(true);
+							btnWatchList.setEnabled(true);
+							panelTop.setVisible(true);
+							
+							lblUser.setText(textFieldId.getText());
+							textFieldId.setText("");
+							textFieldPw.setText("");
+							
+							isLogined = true;
+							//TODO: userId setle
+							loggedUserId = userInfo.get(0).getUserId();
+						}
+						else{
+							//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
+							textFieldPw.setText("");
+							JOptionPane.showMessageDialog(null, "Password wrong!");
+						}
 					}
 					else{
-						//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
-						textFieldPw.setText("");
+						textFieldPw.setText("......");
+						textFieldId.setText("ID");
 						JOptionPane.showMessageDialog(null, "Username or Password wrong!");
 					}
 				}
@@ -382,7 +400,7 @@ public class MainForm {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*UserPage Init*/
-				new UserPageClass(1, panelUser);
+				new UserPageClass(loggedUserId, panelUser);
 				
 				panelWatchList.setVisible(false);
 				panelHome.setVisible(false);
@@ -418,7 +436,7 @@ public class MainForm {
 				btnWatchList.setEnabled(false);
 				panelTop.setVisible(true);
 				
-				textFieldId.setText("Id");
+				textFieldId.setText("ID");
 				textFieldPw.setText("......");
 				
 				isLogined = false;
@@ -643,10 +661,15 @@ public class MainForm {
 				//new UserPageClass(1, panelEachOne);
 				//new EachCeleb(1, panelEachOne);
 				//new FullCastClass(1, panelEachOne);
-				//new EachMovie(2, panelEachOne);
+				//TODO:add 3. paramater with control ?
+				int a = -1;
+				if(isLogined == true){
+					a = 0;
+				}
+				new EachMovie(1, panelEachOne, a);
 				//new SearchResult("babaanne", panelEachOne);
 				//new UserReviews(1, panelEachOne);
-				new ParentChildCommentPage(1, panelEachOne);
+				//new ParentChildCommentPage(1, panelEachOne);
 				
 				
 				lblGoBackD.setVisible(false);
@@ -942,11 +965,12 @@ public class MainForm {
 				WatchScrollContent.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 2));
 				WatchScrollContent.setMinimumSize(new Dimension(530,0));
 				
-				new WatchlistComponent(12, WatchScrollContent);
-				new WatchlistComponent(12, WatchScrollContent);
-				new WatchlistComponent(12, WatchScrollContent);
-				new WatchlistComponent(12, WatchScrollContent);
-				
+				String movieQuery = "SELECT movieId,mTitle FROM Movie WHERE movieId IN"
+						+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + loggedUserId + ")ORDER BY mTitle";
+				ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
+				for(int i = 0; i < watchList.size(); i++){
+					new WatchlistComponent(loggedUserId, watchList.get(i).getMovieId(), WatchScrollContent);
+				}
 				
 				//TODO::diðer butonlarda bu paneli invis yap
 				panelHome.setVisible(false);
@@ -969,27 +993,39 @@ public class MainForm {
 		
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if("aa".equals(textFieldId.getText()) && "123".equals(textFieldPw.getText())){
-					//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
-					panelTop.setVisible(false);
-					panelUnLogin.setVisible(false);
-					panelLogined.setVisible(true);
-					btnWatchList.setEnabled(true);
-					panelTop.setVisible(true);
+				/*getting user name from database which is same with textFieldId*/
+				String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldId.getText() + "'";
+				ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
+				if(userInfo.size() != 0){
+					if(true/*textFieldPw.getText().equals(userInfo.get(0).getuPassword())*/){
+						//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
+						panelTop.setVisible(false);
+						panelUnLogin.setVisible(false);
+						panelLogined.setVisible(true);
+						btnWatchList.setEnabled(true);
+						panelTop.setVisible(true);
+						
+						lblUser.setText(textFieldId.getText());
+						textFieldId.setText("");
+						textFieldPw.setText("");
+						
+						isLogined = true;
+						//TODO: userId setle
+						loggedUserId = userInfo.get(0).getUserId();
+					}
+					else{
+						//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
+						textFieldPw.setText("");
+						JOptionPane.showMessageDialog(null, "Password wrong!");
+					}
 					
-					lblUser.setText(textFieldId.getText());
-					textFieldId.setText("");
-					textFieldPw.setText("");
-					
-					isLogined = true;
-					//TODO: userId setle
-					//loggedUserId = from sql db
 				}
 				else{
-					//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
-					textFieldPw.setText("");
+					textFieldPw.setText("......");
+					textFieldId.setText("ID");
 					JOptionPane.showMessageDialog(null, "Username or Password wrong!");
 				}
+				
 			}
 		});
 		

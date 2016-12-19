@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -16,12 +17,17 @@ import javax.swing.JTextArea;
 
 public class WatchlistComponent {
 	private int movieId;
-		
-
-	WatchlistComponent(int mId, JPanel panelReal){
+	private int userId;
+	WatchlistComponent(int uId, int mId, JPanel panelReal){
 		movieId = mId;
-		
-		
+		userId = uId;
+		int isAdded = 0;
+		String Query = "SELECT movieId FROM Movie WHERE movieId = " + movieId + " AND movieId IN"
+				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")";
+		ArrayList<Movie> watchList = SqlOperations.getMovie(Query);
+		if(watchList.size() > 0){
+			isAdded = 1;
+		}
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 500, 164);
@@ -40,7 +46,8 @@ public class WatchlistComponent {
 		lblAddWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//TODO: Kullanýcý izlenicek listesine ekle
+				String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
+				SqlOperations.insert(query);
 				lblAddWatch.setVisible(false);
 				lblAddedWatch.setVisible(true);
 			}
@@ -56,13 +63,23 @@ public class WatchlistComponent {
 		lblAddWatch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watch2026.png"));
 		lblAddWatch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		JLabel lblYourratingpoint = new JLabel("9");
-		lblYourratingpoint.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
-		
+	
+		JLabel lblYourratingpoint = new JLabel();
 		JLabel lblStarb = new JLabel("");
-		lblStarb.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarBlueXXsmal.png"));
 		
-		JLabel lblRatingPoint = new JLabel("8,3");
+		/*getting movie rating which user rated*/
+		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " AND fkMovieId = " + movieId;
+		ArrayList<UserRatings> rating = SqlOperations.getUserRating(ratingQuery);
+		if(rating.size() != 0){//if there is no rating don't need this field
+			lblYourratingpoint.setText("" + rating.get(0).getRating());
+			lblYourratingpoint.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
+			lblStarb.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarBlueXXsmal.png"));
+		}
+		
+		/*getting movie informations*/
+		String movieQuery = "SELECT mRating,mDescription,mImage FROM Movie WHERE movieId = " + movieId;
+		ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+		JLabel lblRatingPoint = new JLabel("" + movieInfo.get(0).getmRating());
 		lblRatingPoint.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 		
 		JLabel lblStary = new JLabel("");
@@ -74,7 +91,7 @@ public class WatchlistComponent {
 		textInfo.setBounds(160, 61, 370, 83);
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
-		textInfo.setText("BuAciklama");
+		textInfo.setText(movieInfo.get(0).getmDescription());
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
 		
@@ -96,14 +113,26 @@ public class WatchlistComponent {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: kullanýcý listesinden çýkar
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+				SqlOperations.delete(query);
 				lblAddedWatch.setVisible(false);
 				lblAddWatch.setVisible(true);
 			}
 		});
 		
+		if(isAdded == 0){
+			lblAddWatch.setVisible(true);
+			lblAddedWatch.setVisible(false);
+		}
+		if(isAdded == 1){
+			lblAddWatch.setVisible(false);
+			lblAddedWatch.setVisible(true);
+		}
+		
 		JLabel lblImage = new JLabel("");
-		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
+		lblImage.setBounds(0,0,96,142);
+		lblImage.setIcon(SqlOperations.getMovieImage(movieId, lblImage));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

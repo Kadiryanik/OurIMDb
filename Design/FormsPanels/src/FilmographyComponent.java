@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -18,21 +19,38 @@ public class FilmographyComponent {
 		movieId = mId;
 		celebId = cId;
 		
+		String movieQuery = "SELECT mTitle,mYear,movieId FROM Movie WHERE movieId = " + movieId;
+		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+		
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 723, 510, 50);
 		
 		JPanel panelMovieName = new JPanel();
 		panelMovieName.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
-		new LabelWithLinkForMovie("Happy Gilmore",123, panelMovieName);
+		new LabelWithLinkForMovie(movieList.get(0).getmTitle(),movieList.get(0).getMovieId(),11, panelMovieName);
 		
 		JPanel panelRoleInMovie = new JPanel();
 		panelRoleInMovie.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
-		new LabelWithoutLink("Tom", 102, 102, 102, false, panelRoleInMovie);
-		new LabelWithoutLink("Actor", 102, 102, 102, true, panelRoleInMovie);
+		String castQuery = "SELECT castName,actorFlag,directorFlag,writerFlag FROM MoviePeople WHERE "
+				+ "fkMovieId = " + movieId + " AND fkPeopleId = " + celebId;
+		ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(castQuery);
 		
-		JLabel lblDate = new JLabel("2009");
+		/*castname in movie*/
+		new LabelWithoutLink(castInfo.get(0).getCastName(), 102, 102, 102, false, panelRoleInMovie);
+		
+		/*setting the roles of people(actor,director,writer) in the movie*/
+		boolean isActor=false,isDirector=false,isWriter=false;
+		if(castInfo.get(0).getActorFlag() == 1)isActor = true;
+		if(castInfo.get(0).getDirectorFlag() == 1)isDirector = true;
+		if(castInfo.get(0).getWriterFlag() == 1)isWriter = true;
+		if(isActor)new LabelWithoutLink("actor", 102, 102, 102, (!isDirector && !isWriter), panelRoleInMovie);
+		if(isDirector) new LabelWithoutLink("director", 102, 102, 102, !isWriter, panelRoleInMovie);
+		if(isWriter)new LabelWithoutLink("writer", 102, 102, 102, true, panelRoleInMovie);
+		
+		/*getting year format like 1900*/
+		JLabel lblDate = new JLabel("" + movieList.get(0).getmYear().toLocaleString().substring(7, 11));
 		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDate.setForeground(new Color(0, 191, 255));
 		lblDate.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));

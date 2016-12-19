@@ -27,7 +27,7 @@ public class SearchMovieComponent {
 		panelNameDate.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		
-		new LabelWithLinkForMovie(name, movieId, panelNameDate);
+		new LabelWithLinkForMovie(name, movieId, 11, panelNameDate);
 		
 		JLabel lblDate = new JLabel("(" + "2014" + ")");
 		lblDate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));

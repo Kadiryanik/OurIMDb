@@ -25,25 +25,40 @@ import javax.swing.SwingConstants;
 import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 
 public class EachMovie {
-	
-	EachMovie(int movieId, final JPanel panelReal){
+	private int movieId;
+	private int userRatePoint;
+	EachMovie(int mId, final JPanel panelReal, int isAdded){
+		movieId = mId;
+		userRatePoint = 0;
+		/*isAdded (-1 not logged in) (0,1 logged in and isAdded = 0 movie not in watchList*/
+		if(isAdded == 0){
+			String movieQuery = "SELECT movieId FROM Movie WHERE movieId = " + movieId + " AND movieId IN"
+					+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + ")";
+			ArrayList<Movie> d = SqlOperations.getMovie(movieQuery);
+			if(d.size() > 0){
+				isAdded = 1;
+			}
+		}
+		
 		/*Getting informations from database*/
-		String starsQuery = "SELECT peopleId,pTitle,pFirstName FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 'Y') LIMIT 0,3";
+		String starsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 1) LIMIT 0,3";
 		
-		String directorsQuery = "SELECT pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 'Y') LIMIT 0,3";
+		String directorsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 1) LIMIT 0,3";
 		
-		String writersQuery = "SELECT pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND writerFlag = 'Y') LIMIT 0,3";
+		String writersQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND writerFlag = 1) LIMIT 0,3";
 		
-		ArrayList<Movie> movieList = SqlOperations.getMovie("SELECT * FROM Movie WHERE movieId = " + movieId);
+		final ArrayList<Movie> movieList = SqlOperations.getMovie("SELECT * FROM Movie WHERE movieId = " + movieId);
 		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
 		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery);
 		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
 		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
 		
 		final JLabel lblAddedWatch = new JLabel("");
+		final JLabel lblPoint = new JLabel("" + movieList.get(0).getmRating());
+		final JLabel lblPointcount = new JLabel("" + movieList.get(0).getmRatingCount());
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
@@ -141,7 +156,7 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				panelReal.setVisible(false);
 				panelReal.removeAll();
-				new FullCastClass(1, panelReal);
+				new FullCastClass(movieId, panelReal);
 				panelReal.setVisible(true);
 			}
 		});
@@ -238,6 +253,12 @@ public class EachMovie {
 		lblExit.setBounds(12, 12, 15, 15);
 		panelRate.add(lblExit);
 		
+		ArrayList<UserRatings> ratingList = SqlOperations.getUserRating("SELECT rating FROM Rating "
+				+ "WHERE fkMovieId = " + movieId + " AND fkUserId = " + MainForm.getLoggedUserId());
+		if(ratingList.size() > 0){
+			userRatePoint = ratingList.get(0).getRating();
+		}
+		
 		JLabel lblR1 = new JLabel("");
 		lblR1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblR1.addMouseListener(new MouseAdapter() {
@@ -252,6 +273,36 @@ public class EachMovie {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 1 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 1);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 1;
+				}
+				if(userRatePoint != 1){
+					System.out.println("naeberererere---------------------------");
+					String query = "UPDATE Rating SET rating = 1 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 1, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 1;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR1.setBounds(42, 14, 17, 15);
@@ -269,7 +320,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 2 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 2);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 2;
+					
+				}
+				if(userRatePoint != 2){
+					String query = "UPDATE Rating SET rating = 2 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 2, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 2;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -288,7 +368,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 3 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 3);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 3;
+					
+				}
+				if(userRatePoint != 3){
+					String query = "UPDATE Rating SET rating = 3 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 3, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 3;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -307,7 +416,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 4 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 4);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 4;
+					
+				}
+				if(userRatePoint != 4){
+					String query = "UPDATE Rating SET rating = 4 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 4, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 4;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -326,7 +464,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 5 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 5);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 5;
+					
+				}
+				if(userRatePoint != 5){
+					String query = "UPDATE Rating SET rating = 5 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 5, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 5;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR5.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -345,7 +512,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 6 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 6);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 6;
+					
+				}
+				if(userRatePoint != 6){
+					String query = "UPDATE Rating SET rating = 6 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 6, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 6;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -364,7 +560,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 7 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 7);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 7;
+					
+				}
+				if(userRatePoint != 7){
+					String query = "UPDATE Rating SET rating = 7 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 7, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 7;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR7.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -383,7 +608,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 8 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 8);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 8;
+					
+				}
+				if(userRatePoint != 8){
+					String query = "UPDATE Rating SET rating = 8 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 8, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 8;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR8.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -402,7 +656,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 9 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 9);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 9;
+					
+				}
+				if(userRatePoint != 9){
+					String query = "UPDATE Rating SET rating = 9 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 9, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 9;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR9.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -421,7 +704,36 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
+				if(userRatePoint == 0){
+					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+							+ MainForm.getLoggedUserId() + ","
+							+ movieId + ","
+							+ 10 + ")";
+					SqlOperations.insert(query);
+					SqlOperations.updateMovieRating(movieId, 10);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRatingCount());
+					lblPoint.setVisible(true);
+					userRatePoint = 10;
+					
+				}
+				if(userRatePoint != 10){
+					String query = "UPDATE Rating SET rating = 10 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+					SqlOperations.updateMovieRatingAfterRated(movieId, 10, oldRate);
+					SqlOperations.update(query);
+					lblPoint.setVisible(false);
+					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+							+ movieId).get(0).getmRating());
+					lblPoint.setVisible(true);
+					userRatePoint = 10;
+				}
+				panelRate.setVisible(false);
 			}
 		});
 		lblR10.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -453,10 +765,23 @@ public class EachMovie {
 		wb.navigate(movieList.get(0).getmUrlLink());
 		
 		final JLabel lblAddWatch = new JLabel("");
+		if(isAdded == 0){
+			lblAddWatch.setVisible(true);
+			lblAddedWatch.setVisible(false);
+		}
+		if(isAdded == 1){
+			lblAddWatch.setVisible(false);
+			lblAddedWatch.setVisible(true);
+		}
+		if(isAdded == -1){
+			lblAddWatch.setVisible(false);
+			lblAddedWatch.setVisible(false);
+		}
 		lblAddWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//TODO: Kullanýcý izlenicek listesine ekle
+				String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
+				SqlOperations.insert(query);
 				lblAddWatch.setVisible(false);
 				lblAddedWatch.setVisible(true);
 			}
@@ -505,14 +830,14 @@ public class EachMovie {
 		panelTop.add(lblStar);
 	
 		/*movie rating*/
-		JLabel lblPoint = new JLabel("" + movieList.get(0).getmRating());
+		//lblPoint
 		lblPoint.setForeground(Color.WHITE);
 		lblPoint.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		lblPoint.setBounds(404, 30, 33, 19);
 		panelTop.add(lblPoint);
 		
 		/*movie rating count*/
-		JLabel lblPointcount = new JLabel("" + movieList.get(0).getmRatingCount());
+		//lblPointCount
 		lblPointcount.setForeground(new Color(192, 192, 192));
 		lblPointcount.setBackground(new Color(245, 245, 245));
 		lblPointcount.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
@@ -580,6 +905,9 @@ public class EachMovie {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//TODO: kullanýcý listesinden çýkar
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = " + movieId;
+				SqlOperations.delete(query);
 				lblAddedWatch.setVisible(false);
 				lblAddWatch.setVisible(true);
 			}
@@ -658,9 +986,11 @@ public class EachMovie {
 		
 		/*creating cast component */ 
 		for(int i = 0; i < starsList.size(); i++){
-			
+			/*getting cast name */
+			String castQuery = "SELECT castName,actorFlag,directorFlag,writerFlag FROM MoviePeople WHERE "
+					+ "fkMovieId = " + movieId + " AND fkPeopleId = " + starsList.get(i).getPeopleId();
 			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),
-					starsList.get(i).getpFirstName(), panelCast);
+					SqlOperations.getRole(castQuery).get(0).getCastName(), panelCast);
 		}
 	
 		/*lblSeeFullCast button for panelCast*/
@@ -682,7 +1012,7 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				panelReal.setVisible(false);
 				panelReal.removeAll();
-				new FullCastClass(1, panelReal);
+				new FullCastClass(movieId, panelReal);
 				panelReal.setVisible(true);
 			}
 		});
@@ -703,6 +1033,5 @@ public class EachMovie {
 		scrollPaneEachOne.setViewportView(panel);
 		
 		panelReal.add(scrollPaneEachOne);
-		//panelReal.add(panel);
 	}
 }

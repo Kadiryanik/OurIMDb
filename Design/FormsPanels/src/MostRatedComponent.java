@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -10,10 +11,11 @@ import javax.swing.JPanel;
 public class MostRatedComponent {
 	private String name;
 	private int movieId;
-	
-	MostRatedComponent(String n, int mId, JPanel panelReal) {
+	private int userId;
+	MostRatedComponent(String n,int uId, int mId, JPanel panelReal) {
 		name = n;
 		movieId = mId;
+		userId = uId;
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
@@ -22,8 +24,9 @@ public class MostRatedComponent {
 		
 		
 		JLabel lblIcon = new JLabel("");
-		lblIcon.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRated100x156.jpg"));
-		lblIcon.setBounds(10, 10, 100, 156);
+		lblIcon.setBounds(10, 10, 100, 150);
+		lblIcon.setIcon(SqlOperations.getMovieImage(movieId, lblIcon));
+		
 		panel.add(lblIcon);
 		
 		JPanel panelName = new JPanel();
@@ -31,15 +34,26 @@ public class MostRatedComponent {
 		panelName.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel.add(panelName);
 		
-		LabelWithLinkForMovie temp = new LabelWithLinkForMovie(name, movieId, panelName);
+		new LabelWithLinkForMovie(name, movieId, 11, panelName);
 		
 		JPanel panelRate = new JPanel();
 		panelRate.setLayout(new FlowLayout(FlowLayout.CENTER, 35, 0));
 		panelRate.setBackground(new Color(255, 255, 255));
 		
-		JLabel lblRate = new JLabel("10");
+		/*getting movie rating which user rated*/
+		JLabel lblRate = new JLabel("");
+		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " AND fkMovieId = " + movieId;
+		ArrayList<UserRatings> rating = SqlOperations.getUserRating(ratingQuery);
+		if(rating.size() != 0){
+			lblRate.setText("" + rating.get(0).getRating());
+			lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRatedStar.png"));
+		}
+		else{
+			lblRate.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = " + movieId).get(0).getmRating());
+			lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchListUnratedStar.png"));
+		}
 		lblRate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
-		lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRatedStar.png"));
+		
 		lblRate.setBounds(44, 192, 35, 15);
 		
 		panelRate.add(lblRate);
