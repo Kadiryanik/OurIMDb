@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,7 +16,8 @@ public class UserPageClass {
 	
 	public UserPageClass(int uId, JPanel panelReal) {
 		userId = uId;
-		
+		String userQuery = "SELECT userId,uDisplayName,uRegistrationDate FROM Users WHERE userId = " + userId;
+		ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 550, 726);
@@ -25,12 +27,13 @@ public class UserPageClass {
 		lblIcon.setBounds(35, 11, 74, 84);
 		panel.add(lblIcon);
 		
-		JLabel lblName = new JLabel("name");
+		JLabel lblName = new JLabel(userInfo.get(0).getuDisplayName());
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
 		lblName.setBounds(119, 11, 200, 25);
 		panel.add(lblName);
 		
-		JLabel lblInfo = new JLabel("IMDb member since December 2016");
+		JLabel lblInfo = new JLabel("IMDb member since " + userInfo.get(0).getuRegistrationDate().substring(0, 10));
+		System.out.println(userInfo.get(0).getuRegistrationDate().substring(0, 10));
 		lblInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
 		lblInfo.setBounds(119, 35, 200, 14);
 		panel.add(lblInfo);
@@ -64,14 +67,18 @@ public class UserPageClass {
 		panelYourRatings.add(panelContentMost);
 		panelContentMost.setLayout(new WrapLayout(FlowLayout.LEFT, 8, 5));
 		
-		MostRatedComponent temp = new MostRatedComponent("aa",1, panelContentMost);
-		new MostRatedComponent("aa",1, panelContentMost);
-		new MostRatedComponent("aa",1, panelContentMost);
+		/*getting rating with descending order*/
+		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " ORDER BY rating DESC";
+		ArrayList<UserRatings> ratingList = SqlOperations.getUserRating(ratingQuery);
+		for(int i = 0; i < ratingList.size(); i++){
+			String movieName = SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = " + ratingList.get(i).getFkMovieId()).get(0).getmTitle();
+			new MostRatedComponent(movieName, userId, ratingList.get(i).getFkMovieId(), panelContentMost);
+		}
 		
 		JLabel lblBackground = new JLabel("");
 		lblBackground.setBackground(Color.WHITE);
-		lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\UserPagePanelBackground.png"));
 		lblBackground.setBounds(0, 62, 500, 250);
+		lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\UserPagePanelBackground.png"));
 		panelYourRatings.add(lblBackground);
 		
 		JLabel lblLine2 = new JLabel("");
@@ -96,9 +103,12 @@ public class UserPageClass {
 		panelContentWatch.setBounds(10, 47, 480, 230);
 		panelYourWatchlist.add(panelContentWatch);
 		
-		new MostRatedComponent("aa",1, panelContentWatch);
-		new MostRatedComponent("aa",1, panelContentWatch);
-		new MostRatedComponent("aa",1, panelContentWatch);
+		String movieQuery = "SELECT movieId,mTitle FROM Movie WHERE movieId IN"
+				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")ORDER BY mTitle";
+		ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
+		for(int i = 0; i < watchList.size(); i++){
+			new MostRatedComponent(watchList.get(i).getmTitle(), userId, watchList.get(i).getMovieId(), panelContentWatch);
+		}
 		
 		JLabel lblBackground2 = new JLabel("");
 		lblBackground2.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\UserPagePanelBackground.png"));

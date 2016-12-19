@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -50,33 +51,67 @@ public class MovieTabComponents {
 		}
 		
 		
-		panel.setBackground(new Color(192, 192, 192));
+		//panel.setBackground(new Color(192, 192, 192));
 		panel.setBounds(0, 0, 524, 233);
 		
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
+		String movieQuery = "SELECT mTitle,mImage,mTime,mDescription FROM Movie WHERE movieId = " + movieId ;
+		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+		new LabelWithLinkForMovie(movieList.get(0).getmTitle(),movieList.get(0).getMovieId(),12,panelName);
+		//DONE
+		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
+		for(int i = 0;i < genreList.size(); i++){
+			boolean isLast = false;
+			if(i == genreList.size() - 1)
+				isLast = true;
+			
+			LabelWithoutLink temp = new LabelWithoutLink(genreList.get(i).getmType(),102,102,102,isLast,panelGenres);
+		}
+		
+		//DONE
+		String starsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 1) LIMIT 0,3";
+		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
+		for(int i = 0; i < starsList.size(); i++ ){
+			boolean isLast = false;
+			if(i == starsList.size() - 1)
+				isLast = true;
+			LabelWithLink temp = new LabelWithLink(starsList.get(i).getpTitle(),starsList.get(i).getPeopleId(),
+					isLast,panelStars);
+		}
+		
+		//DONE 
+		String directorQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 1) LIMIT 0,1";
+		
+		ArrayList<People> directorList = SqlOperations.getPeople(directorQuery);
+		for(int i = 0; i < directorList.size(); i++ ){
+			boolean isLast = false;
+			if(i == directorList.size() - 1)
+				isLast = true;
+			LabelWithLink temp = new LabelWithLink(directorList.get(i).getpTitle(),directorList.get(i).getPeopleId(),
+					isLast,panelDirector);
+		}
+		
 		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(10, 11, 140, 209);
-		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Movies140x209.jpg"));
+		lblImage.setIcon(SqlOperations.getMovieImage(movieId, lblImage));
 		lblImage.setBackground(UIManager.getColor("menu"));
 		
-		JLabel lblMin = new JLabel("128 min");
+		JLabel lblMin = new JLabel(movieList.get(0).getmTime() + "min");
 		lblMin.setForeground(new Color(102, 102, 102));
 		
 		JLabel label = new JLabel("-");
 		
 		panelGenres.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		LabelWithoutLink temp = new LabelWithoutLink("Comedy",  102, 102, 102, false, panelGenres);
-		temp = new LabelWithoutLink("Dram",  102, 102, 102, false, panelGenres);
-		temp = new LabelWithoutLink("Musical", 102, 102, 102, true, panelGenres);
-		
-		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
-		textInfo.setBackground(new Color(231, 231, 231));
+		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
+		//textInfo.setBackground(new Color(231, 231, 231));
 		textInfo.setBounds(160, 61, 370, 83);
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
-		textInfo.setText("bu bir a\u00E7\u0131klama");
+		textInfo.setText(movieList.get(0).getmDescription());
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
 		

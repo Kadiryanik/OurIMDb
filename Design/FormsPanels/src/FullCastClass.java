@@ -8,34 +8,34 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-
+//ÇAÐATAY 9:24(17)
 public class FullCastClass {
 	private int movieId;
 	
 	public FullCastClass(int mId, JPanel panelReal) {
+		movieId = mId;
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(245, 245, 245));
 		panel.setBounds(0, 0, 550, 726);
 		
 		/*getting directors informations with movieId*/
-		String directorsQuery = "SELECT pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND directorFlag = 'Y') LIMIT 0,3";
+		String directorsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND directorFlag = 1) LIMIT 0,3";
 		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery); 
 		
 		/*getting writers informations with movieId*/
-		String writersQuery = "SELECT pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND writerFlag = 'Y') LIMIT 0,3";
+		String writersQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND writerFlag = 1) LIMIT 0,3";
 		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
 		
 		/*getting actors informations with movieId*/
-		String starsQuery = "SELECT peopleId,pTitle,pFirstName FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND actorFlag = 'Y') LIMIT 0,3";
+		String starsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND actorFlag = 1) LIMIT 0,3";
 		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
 		
 		JLabel lblImage = new JLabel("image");
 		lblImage.setBounds(20, 11, 67, 98);
-		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\TheShawshankRedemption.jpg"));
-		//lblImage.setIcon(SqlOperations.getMovieImage(mId, lblImage));
+		lblImage.setIcon(SqlOperations.getMovieImage(mId, lblImage));
 		
 		JPanel panelName = new JPanel();
 		panelName.setBackground(new Color(245, 245, 245));
@@ -44,7 +44,7 @@ public class FullCastClass {
 		
 		/* adding movie title with link*/ 
 		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = " + mId).get(0).getmTitle()
-				, mId, panelName);
+				, mId,15, panelName);
 		
 		JLabel lblFullcastcrew = new JLabel("Full Cast & Crew");
 		lblFullcastcrew.setBounds(97, 42, 167, 35);
@@ -115,12 +115,13 @@ public class FullCastClass {
 		scrollPaneCast.setViewportView(panelCastScroll);
 		panelCastScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 1));
 		
-		System.out.println(starsList.size());
 		for(int i = 0; i < starsList.size(); i++){
-			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),"asd", panelCastScroll);
-		}
-
-		
+			String q = "SELECT castName,fkPeopleId FROM MoviePeople where fkMovieId = " + movieId
+					+ " AND fkPeopleId = " + starsList.get(i).getPeopleId();
+			ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(q);
+			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),
+					castInfo.get(0).getCastName(), panelCastScroll);
+		}	
 		
 		panel.setLayout(null);
 		panel.add(lblImage);

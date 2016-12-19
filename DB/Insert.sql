@@ -19,10 +19,10 @@ INSERT INTO People(pTitle, pFirstName, pLastName, pBirthday, pBirthPlace, pGende
 		VALUES('Stephen King', 'Stephen', 'King', '1947,09,21', 'Portland, Maine, USA' ,'M',
 			'Stephen Edwin King was born on September 21, 1947, at the Maine General Hospital in Portland. His parents were Nellie Ruth (Pillsbury), who worked as a caregiver at a mental institute, and Donald Edwin King, a merchant seaman. His father was born under the surname "Pollock", but used the last name "King", under which Stephen was born. He has an older brother, David. The Kings were a typical family until one night, when Donald said he was stepping out for cigarettes and was never heard from again. Ruth took over raising the family with help from relatives. They traveled throughout many states over several years, finally moving back to Durham, Maine, in 1958.');
 
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(1,1,'Andy Dufresne','Y');
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(1,2,'Ellis Boyd \'Red\' Redding','Y');
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,directorFlag) values(1,3,'Y');
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,writerFlag) values(1,4,'Y');
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(1,1,'Andy Dufresne',1);
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(1,2,'Ellis Boyd \'Red\' Redding',1);
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,directorFlag) values(1,3,1);
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,writerFlag) values(1,4,1);
 
 INSERT INTO Genre values ('Crime',1);
 INSERT INTO Genre values ('Drama',1);
@@ -45,9 +45,9 @@ INSERT INTO People(pTitle, pFirstName, pLastName, pBirthday, pBirthPlace, pGende
 	VALUES('Francis Ford Coppola', 'Francis Ford', 'Coppola', '1939-04-07', 'Detroit, Michigan, USA','M',
 		'Francis Ford Coppola was born in 1939 in Detroit, Michigan, but grew up in a New York suburb in a creative, supportive Italian-American family. His father, Carmine Coppola, was a composer and musician. His mother, Italia Coppola (née Pennino), had been an actress. Francis Ford Coppola graduated with a degree in drama from Hofstra University, and did graduate work at UCLA in filmmaking. He was training as assistant with filmmaker Roger Corman, working in such capacities as sound-man, dialogue director, associate producer and, eventually, director of Dementia 13 (1963), Coppola\'s first feature film.');
             
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(2,5,'Don Vito Corleone','Y');
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(2,6,'Michael Corleone','Y');   
-INSERT INTO MoviePeople(fkMovieId,fkPeopleId,directorFlag) values(2,7,'Y');         
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(2,5,'Don Vito Corleone',1);
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,castName,actorFlag) values(2,6,'Michael Corleone',1);   
+INSERT INTO MoviePeople(fkMovieId,fkPeopleId,directorFlag) values(2,7,1);         
             
 INSERT INTO Genre values ('Crime',2);
 INSERT INTO Genre values ('Drama',2);

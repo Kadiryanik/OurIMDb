@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Movie(
     mCountry VARCHAR(50) NOT NULL,
     mTime VARCHAR(10) NOT NULL,
     mLanguage VARCHAR(50) NOT NULL,
-    mRating DECIMAL(2,1) DEFAULT 0.0,
+    mRating DECIMAL(3,1) DEFAULT 0.0,
     mRatingCount INT DEFAULT 0,
     mDescription TEXT,
     mImage blob,
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS MoviePeople(
 	fkMovieId INT,
     fkPeopleId INT,
     castName VARCHAR(255),
-    actorFlag char(1) DEFAULT 'N' CHECK(VALUE IN('Y','N')),
-    directorFlag char(1) DEFAULT 'N' CHECK(VALUE IN('Y','N')),
-    writerFlag char(1) DEFAULT 'N' CHECK(VALUE IN('Y','N')),
+    actorFlag TINYINT(1) DEFAULT 0 CHECK(VALUE IN(0,1)),
+    directorFlag TINYINT(1) DEFAULT 0 CHECK(VALUE IN(0,1)),
+    writerFlag TINYINT(1) DEFAULT 0 CHECK(VALUE IN(0,1)),
     FOREIGN KEY (fkMovieId) REFERENCES Movie(movieId) ON UPDATE CASCADE ON DELETE NO ACTION,
     FOREIGN KEY (fkPeopleId) REFERENCES People(peopleId) ON UPDATE CASCADE ON DELETE NO ACTION,
 	CONSTRAINT PRIMARY KEY (fkMovieId,fkPeopleId)
@@ -78,10 +78,12 @@ CREATE TABLE IF NOT EXISTS PeopleAward(
 );
 
 CREATE TABLE IF NOT EXISTS Users(
-	userId INT NOT NULL AUTO_INCREMENT,
-    uEmail VARCHAR(80) NOT NULL,
+	uEmail VARCHAR(80) NOT NULL,
     uDisplayName VARCHAR(50) NOT NULL,
     uPassword CHAR(40) NOT NULL,
+    uRegistrationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    uImage blob,
+    userId INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY(userId)
 );
 
@@ -132,5 +134,13 @@ CREATE TABLE IF NOT EXISTS Rating(
     FOREIGN KEY (fkUserId) REFERENCES Users(userId) ON UPDATE CASCADE ON DELETE NO ACTION,
     FOREIGN KEY (fkMovieId) REFERENCES Movie(movieId) ON UPDATE CASCADE ON DELETE NO ACTION,
     PRIMARY KEY (fkUserId, fkMovieId)
+);
+
+CREATE TABLE IF NOT EXISTS WatchList(
+	fkUserId INT,
+    fkMovieId INT,
+    FOREIGN KEY (fkUserId) REFERENCES Users(userId) ON UPDATE CASCADE ON DELETE NO ACTION,
+    FOREIGN KEY (fkMovieId) REFERENCES Movie(movieId) ON UPDATE CASCADE ON DELETE NO ACTION,
+    PRIMARY KEY (fkUserId,fkMovieId)
 );
 

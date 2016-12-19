@@ -203,12 +203,147 @@ public class SqlOperations {
 		}
 		return null;
 	}//END OF getGenre
+	
+	public static ArrayList<RoleInMovie> getRole(String query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(query);
+			result = statement.executeQuery();
+			
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
+			
+			String[] attr = new String[]{"castName","actorFlag","directorFlag","writerFlag","fkPeopleId","fkMovieId"};
+			ArrayList<RoleInMovie> array = new ArrayList<RoleInMovie>();
+			
+			while(result.next()){
+				RoleInMovie a = new RoleInMovie();
+				if(columnCount == attr.length){
+					RoleInMovie temp = new RoleInMovie(result.getString(attr[0]),result.getInt(attr[1]),
+							result.getInt(attr[2]),result.getInt(attr[3]),result.getInt(attr[4]),
+							result.getInt(attr[5]));
+					array.add(temp);
+				}
+				else{
+					for(int i = 1; i <= columnCount ; i++){
+						String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
+						if(g.equals(attr[0])){a.setCastName(result.getString(attr[0]));}
+						if(g.equals(attr[1])){a.setActorFlag(result.getInt(attr[1]));}
+						if(g.equals(attr[2])){a.setDirectorFlag(result.getInt(attr[2]));}
+						if(g.equals(attr[3])){a.setWriterFlag(result.getInt(attr[3]));}
+						if(g.equals(attr[4])){a.setFkPeopleId(result.getInt(attr[4]));}
+						if(g.equals(attr[5])){a.setFkMovieId(result.getInt(attr[5]));}
+					}
+					array.add(a);
+				}
+				
+			}
+			System.out.println("All records have been selected here!");
+			return array;
+
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (result != null) result.close(); } catch (Exception e) {};
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return null;
+	}//END OF getRole
+
+	public static ArrayList<UserClass> getUserInfo(String query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(query);
+			result = statement.executeQuery();
+			
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
+			
+			String[] attr = new String[]{"uEmail","uDisplayName","uPassword","uRegistrationDate","userId"};
+			ArrayList<UserClass> array = new ArrayList<UserClass>();
+			
+			while(result.next()){
+				UserClass a = new UserClass();
+				for(int i = 1; i <= columnCount ; i++){
+					String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
+					if(g.equals(attr[0])){a.setuEmail(result.getString(attr[0]));}
+					if(g.equals(attr[1])){a.setuDisplayName(result.getString(attr[1]));}
+					if(g.equals(attr[2])){a.setuPassword(result.getString(attr[2]));}
+					if(g.equals(attr[3])){a.setuRegistrationDate(result.getString(attr[3]));}
+					if(g.equals(attr[4])){a.setUserId(result.getInt(attr[4]));}
+				}
+				array.add(a);
+				
+			}
+			System.out.println("All records have been selected userInfo!");
+			return array;
+
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (result != null) result.close(); } catch (Exception e) {};
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return null;
+	}//END OF userInfo
+	
+	public static ArrayList<UserRatings> getUserRating(String query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(query);
+			result = statement.executeQuery();
+			
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
+			
+			String[] attr = new String[]{"fkUserId","fkMovieId","rating"};
+			ArrayList<UserRatings> array = new ArrayList<UserRatings>();
+			
+			while(result.next()){
+				UserRatings a = new UserRatings();
+				for(int i = 1; i <= columnCount ; i++){
+					String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
+					if(g.equals(attr[0])){a.setFkUserId(result.getInt(attr[0]));}
+					if(g.equals(attr[1])){a.setFkMovieId(result.getInt(attr[1]));}
+					if(g.equals(attr[2])){a.setRating(result.getInt(attr[2]));}
+				}
+				array.add(a);
+			}
+			System.out.println("All records have been selected userInfo!");
+			return array;
+
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (result != null) result.close(); } catch (Exception e) {};
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return null;
+	}//END OF userRating
 
 	public static Connection getConnection(){
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3307/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "h3b9er1po";
 			Class.forName(driver);
@@ -296,5 +431,92 @@ public class SqlOperations {
 		return new ImageIcon(im);
 	}
 	
+	public static void insert(String query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(query);
+			statement.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+	}
 	
+	public static void delete(String query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(query);
+			statement.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+	}
+	
+	public static void update(String query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(query);
+			statement.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+	}
+	
+	public static void updateMovieRating(int mId, int userRating){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		try {
+			con = getConnection();
+			String query = "UPDATE Movie SET mRatingCount = mRatingCount + 1, "
+					+ "mRating = (mRating*(mRatingCount-1) + " + userRating + ")/mRatingCount WHERE movieId = " + mId;
+			statement = con.prepareStatement(query);
+			statement.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+	}
+	
+	public static void updateMovieRatingAfterRated(int mId, int userRating, int oldRate){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		try {
+			con = getConnection();
+			String query = "UPDATE Movie SET mRating = ((mRating*mRatingCount) + "
+					+ (userRating-oldRate) + ")/mRatingCount WHERE movieId = " + mId;
+			statement = con.prepareStatement(query);
+			statement.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+	}
 }
