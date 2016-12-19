@@ -63,7 +63,7 @@ public class MainForm {
 	private JPasswordField textFieldPw;
 	
 	private static int loggedUserId;
-	private boolean isLogined;
+	private static boolean isLogined;
 	
 	public int xMouse;
 	public int yMouse;
@@ -145,6 +145,9 @@ public class MainForm {
 	}
 	public static int getLoggedUserId(){
 		return loggedUserId;
+	}
+	public static boolean getIsLogined(){
+		return isLogined;
 	}
 
 	private void initialize() {
@@ -419,6 +422,7 @@ public class MainForm {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*UserPage Init*/
+				panelUser.removeAll();
 				new UserPageClass(loggedUserId, panelUser);
 				
 				panelWatchList.setVisible(false);

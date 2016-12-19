@@ -14,6 +14,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -55,10 +56,18 @@ public class EachMovie {
 		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery);
 		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
 		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
-		
+
+		//Need Early Implementation
 		final JLabel lblAddedWatch = new JLabel("");
 		final JLabel lblPoint = new JLabel("" + movieList.get(0).getmRating());
-		final JLabel lblPointcount = new JLabel("" + movieList.get(0).getmRatingCount());
+		final JLabel lblPointcount = new JLabel("" + movieList.get(0).getmRatingCount());		
+		
+		final JPanel panelHoverRated = new JPanel();
+		panelHoverRated.setVisible(false);
+		
+		final JLabel rateIcon = new JLabel("");
+		final JPanel panelHover = new JPanel();
+		panelHover.setVisible(false);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
@@ -259,6 +268,24 @@ public class EachMovie {
 			userRatePoint = ratingList.get(0).getRating();
 		}
 		
+		if(userRatePoint != 0){
+			rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+			rateIcon.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+				}
+				@Override
+				public void mouseExited(MouseEvent e) {
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+				}
+			});
+			panelHoverRated.setVisible(true);
+		}
+		if(!MainForm.getIsLogined()){
+			panelHover.setVisible(true);
+		}
+		
 		JLabel lblR1 = new JLabel("");
 		lblR1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblR1.addMouseListener(new MouseAdapter() {
@@ -272,40 +299,57 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: yýldýz oyla panelRate Visiblety false
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 1 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 1);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 1;
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 1 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 1);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 1;
+					}
+					if(userRatePoint != 1){
+						System.out.println("naeberererere---------------------------");
+						String query = "UPDATE Rating SET rating = 1 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 1, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 1;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 1){
-					System.out.println("naeberererere---------------------------");
-					String query = "UPDATE Rating SET rating = 1 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 1, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 1;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
-		lblR1.setBounds(42, 14, 17, 15);
+		lblR1.setBounds(42, 14, 19, 15);
 		panelRate.add(lblR1);
 		
 		JLabel lblR2 = new JLabel("");
@@ -320,40 +364,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 2 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 2);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 2;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 2 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 2);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 2;
+						
+					}
+					if(userRatePoint != 2){
+						String query = "UPDATE Rating SET rating = 2 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 2, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 2;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 2){
-					String query = "UPDATE Rating SET rating = 2 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 2, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 2;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR2.setBounds(62, 14, 17, 15);
+		lblR2.setBounds(61, 14, 19, 15);
 		panelRate.add(lblR2);
 		
 		JLabel lblR3 = new JLabel("");
@@ -368,40 +430,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 3 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 3);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 3;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 3 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 3);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 3;
+						
+					}
+					if(userRatePoint != 3){
+						String query = "UPDATE Rating SET rating = 3 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 3, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 3;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 3){
-					String query = "UPDATE Rating SET rating = 3 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 3, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 3;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR3.setBounds(82, 14, 17, 15);
+		lblR3.setBounds(81, 14, 20, 15);
 		panelRate.add(lblR3);
 		
 		JLabel lblR4 = new JLabel("");
@@ -416,40 +496,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 4 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 4);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 4;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 4 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 4);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 4;
+						
+					}
+					if(userRatePoint != 4){
+						String query = "UPDATE Rating SET rating = 4 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 4, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 4;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 4){
-					String query = "UPDATE Rating SET rating = 4 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 4, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 4;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR4.setBounds(102, 14, 17, 15);
+		lblR4.setBounds(101, 14, 20, 15);
 		panelRate.add(lblR4);
 		
 		JLabel lblR5 = new JLabel("");
@@ -464,40 +562,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 5 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 5);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 5;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 5 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 5);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 5;
+						
+					}
+					if(userRatePoint != 5){
+						String query = "UPDATE Rating SET rating = 5 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 5, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 5;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 5){
-					String query = "UPDATE Rating SET rating = 5 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 5, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 5;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR5.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR5.setBounds(122, 14, 17, 15);
+		lblR5.setBounds(121, 14, 20, 15);
 		panelRate.add(lblR5);
 		
 		JLabel lblR6 = new JLabel("");
@@ -512,40 +628,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 6 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 6);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 6;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 6 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 6);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 6;
+						
+					}
+					if(userRatePoint != 6){
+						String query = "UPDATE Rating SET rating = 6 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 6, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 6;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 6){
-					String query = "UPDATE Rating SET rating = 6 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 6, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 6;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR6.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR6.setBounds(142, 14, 17, 15);
+		lblR6.setBounds(141, 14, 19, 15);
 		panelRate.add(lblR6);
 		
 		JLabel lblR7 = new JLabel("");
@@ -560,40 +694,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 7 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 7);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 7;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 7 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 7);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 7;
+						
+					}
+					if(userRatePoint != 7){
+						String query = "UPDATE Rating SET rating = 7 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 7, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 7;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 7){
-					String query = "UPDATE Rating SET rating = 7 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 7, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 7;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR7.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR7.setBounds(162, 14, 17, 15);
+		lblR7.setBounds(161, 14, 20, 15);
 		panelRate.add(lblR7);
 		
 		JLabel lblR8 = new JLabel("");
@@ -608,40 +760,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 8 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 8);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 8;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 8 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 8);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 8;
+						
+					}
+					if(userRatePoint != 8){
+						String query = "UPDATE Rating SET rating = 8 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 8, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 8;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 8){
-					String query = "UPDATE Rating SET rating = 8 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 8, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 8;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR8.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR8.setBounds(182, 14, 17, 15);
+		lblR8.setBounds(181, 14, 20, 15);
 		panelRate.add(lblR8);
 		
 		JLabel lblR9 = new JLabel("");
@@ -656,40 +826,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 9 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 9);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 9;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 9 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 9);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 9;
+						
+					}
+					if(userRatePoint != 9){
+						String query = "UPDATE Rating SET rating = 9 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 9, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 9;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 9){
-					String query = "UPDATE Rating SET rating = 9 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 9, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 9;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR9.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR9.setBounds(202, 14, 17, 15);
+		lblR9.setBounds(201, 14, 20, 15);
 		panelRate.add(lblR9);
 		
 		JLabel lblR10 = new JLabel("");
@@ -704,40 +892,58 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(userRatePoint == 0){
-					String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
-							+ MainForm.getLoggedUserId() + ","
-							+ movieId + ","
-							+ 10 + ")";
-					SqlOperations.insert(query);
-					SqlOperations.updateMovieRating(movieId, 10);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRatingCount());
-					lblPoint.setVisible(true);
-					userRatePoint = 10;
-					
+				if(MainForm.getIsLogined()){
+					if(userRatePoint == 0){
+						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+								+ MainForm.getLoggedUserId() + ","
+								+ movieId + ","
+								+ 10 + ")";
+						SqlOperations.insert(query);
+						SqlOperations.updateMovieRating(movieId, 10);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRatingCount());
+						lblPoint.setVisible(true);
+						userRatePoint = 10;
+						
+					}
+					if(userRatePoint != 10){
+						String query = "UPDATE Rating SET rating = 10 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = " + movieId;
+						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
+								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
+						SqlOperations.updateMovieRatingAfterRated(movieId, 10, oldRate);
+						SqlOperations.update(query);
+						lblPoint.setVisible(false);
+						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
+								+ movieId).get(0).getmRating());
+						lblPoint.setVisible(true);
+						userRatePoint = 10;
+					}
+					panelHover.setVisible(false);
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+					rateIcon.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + "a.png")));
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+						}
+					});
+					panelHoverRated.setVisible(true);
 				}
-				if(userRatePoint != 10){
-					String query = "UPDATE Rating SET rating = 10 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
-					int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
-							+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
-					SqlOperations.updateMovieRatingAfterRated(movieId, 10, oldRate);
-					SqlOperations.update(query);
-					lblPoint.setVisible(false);
-					lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-							+ movieId).get(0).getmRating());
-					lblPoint.setVisible(true);
-					userRatePoint = 10;
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for rating!");
 				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblR10.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblR10.setBounds(222, 14, 16, 15);
+		lblR10.setBounds(221, 14, 18, 15);
 		panelRate.add(lblR10);
 		
 		lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_0.png"));
@@ -833,7 +1039,7 @@ public class EachMovie {
 		//lblPoint
 		lblPoint.setForeground(Color.WHITE);
 		lblPoint.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
-		lblPoint.setBounds(404, 30, 33, 19);
+		lblPoint.setBounds(404, 30, 34, 19);
 		panelTop.add(lblPoint);
 		
 		/*movie rating count*/
@@ -844,10 +1050,7 @@ public class EachMovie {
 		lblPointcount.setBounds(404, 46, 39, 14);
 		panelTop.add(lblPointcount);
 		
-		//TODO:
-		//Bi panel daha olucak oy kullanýlmýþsa o gösterilicek
-		//bu panele basýlýrsa yanda 10 yýldýzlý oy kullanma açýlýcak imdb de mevcut
-		final JPanel panelHover = new JPanel();
+		//panelHover
 		panelHover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelHover.addMouseListener(new MouseAdapter() {
 			@Override
@@ -868,6 +1071,27 @@ public class EachMovie {
 		panelHover.setBounds(447, 24, 81, 38);
 		panelTop.add(panelHover);
 		panelHover.setLayout(null);
+		
+		//panelHoverRated
+		panelHoverRated.setBounds(447, 24, 81, 38);
+		panelTop.add(panelHoverRated);
+		panelHoverRated.setLayout(null);
+		
+		//rateIcon
+		rateIcon.setBounds(0, 0, 81, 38);
+		rateIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		rateIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(panelRate.isVisible()){ panelRate.setVisible(false); }
+				else{panelRate.setVisible(true);}
+			}
+		});
+		panelHoverRated.add(rateIcon);
+		
+		//panelHoverRated
+		
+		
 		
 		JLabel lblStarRight = new JLabel("");
 		lblStarRight.setBounds(0, 0, 37, 38);
@@ -904,7 +1128,6 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: kullanýcý listesinden çýkar
 				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() 
 					+ " AND fkMovieId = " + movieId;
 				SqlOperations.delete(query);
