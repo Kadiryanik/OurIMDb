@@ -22,13 +22,15 @@ public class LabelWithoutLink {
 	LabelWithoutLink(String n, int r, int g, int b, boolean L, JPanel panelReal){
 		name = n;
 		isLast = L;
+		this.r = r;
+		this.g = g;
+		this.b = b;
 		
 		JSeparator seperator = new JSeparator(SwingConstants.VERTICAL);
 		seperator.setForeground(new Color(51, 51, 51));
 		seperator.setPreferredSize(new Dimension(2, 10));
 		
-		
-		final JLabel lblLink = new JLabel(n);
+		final JLabel lblLink = new JLabel(name);
 		lblLink.setSize(15, 15);
 		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblLink.setForeground(new Color(r, g, b));

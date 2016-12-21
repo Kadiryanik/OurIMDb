@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -10,21 +11,25 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+
 public class UserPageClass {
 	private int userId;
 	
-	
 	public UserPageClass(int uId, JPanel panelReal) {
 		userId = uId;
-		String userQuery = "SELECT userId,uDisplayName,uRegistrationDate FROM Users WHERE userId = " + userId;
+		String userQuery = "SELECT userId, uDisplayName, uRegistrationDate FROM Users WHERE userId = " + userId;
 		ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 550, 726);
 		panel.setLayout(null);
 		
-		JLabel lblIcon = new JLabel("Icon");
+		JLabel lblIcon = new JLabel("");
 		lblIcon.setBounds(35, 11, 74, 84);
+		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurImdb//DB//c//A.D. Flowers.jpg");
+		Image image = imageIcon.getImage();
+		Image imageResized = image.getScaledInstance(lblIcon.getWidth(),lblIcon.getHeight(), Image.SCALE_SMOOTH);
+		lblIcon.setIcon(new ImageIcon(imageResized));
 		panel.add(lblIcon);
 		
 		JLabel lblName = new JLabel(userInfo.get(0).getuDisplayName());
@@ -103,7 +108,7 @@ public class UserPageClass {
 		panelContentWatch.setBounds(10, 47, 480, 230);
 		panelYourWatchlist.add(panelContentWatch);
 		
-		String movieQuery = "SELECT movieId,mTitle FROM Movie WHERE movieId IN"
+		String movieQuery = "SELECT movieId, mTitle FROM Movie WHERE movieId IN"
 				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")ORDER BY mTitle";
 		ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
 		for(int i = 0; i < watchList.size(); i++){

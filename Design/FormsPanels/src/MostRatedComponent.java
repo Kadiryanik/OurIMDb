@@ -12,7 +12,7 @@ public class MostRatedComponent {
 	private String name;
 	private int movieId;
 	private int userId;
-	MostRatedComponent(String n,int uId, int mId, JPanel panelReal) {
+	MostRatedComponent(String n, int uId, int mId, JPanel panelReal) {
 		name = n;
 		movieId = mId;
 		userId = uId;
@@ -49,7 +49,11 @@ public class MostRatedComponent {
 			lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRatedStar.png"));
 		}
 		else{
-			lblRate.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = " + movieId).get(0).getmRating());
+			String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+			ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+			double movieRating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+			String s = String.format("%.1f", movieRating);
+			lblRate.setText(s);
 			lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchListUnratedStar.png"));
 		}
 		lblRate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));

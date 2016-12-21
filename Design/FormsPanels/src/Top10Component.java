@@ -1,4 +1,5 @@
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.GroupLayout;
@@ -8,6 +9,7 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.Map;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -25,6 +27,7 @@ public class Top10Component {
 		movieId = m;
 		name = n;
 		rating = r;
+		String movieRating = String.format("%.1f", rating);
 		
 		JPanel panel = new JPanel();
 		if(Id % 2 == 0){
@@ -42,7 +45,7 @@ public class Top10Component {
 		label.setForeground(new Color(30, 144, 255));
 		label.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		
-		final JLabel lblTextname = new JLabel(n);
+		final JLabel lblTextname = new JLabel(name);
 		lblTextname.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblTextname.setForeground(new Color(30, 144, 255));
 		lblTextname.addMouseListener(new MouseAdapter() {
@@ -59,24 +62,68 @@ public class Top10Component {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println(name);
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelGoBackD.setVisible(false);
+				MainForm.refLabelBack.setVisible(true);
+				
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				int isLogin = -1;
+				if(MainForm.getIsLogined()){
+					isLogin = 0;
+				}
+				new EachMovie(movieId, MainForm.refPanelEachOne, isLogin);
+				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});
 		lblTextname.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		
-		JLabel lblImdbrating = new JLabel("" + r);
+		JLabel lblImdbrating = new JLabel(movieRating);
 		lblImdbrating.setForeground(new Color(30, 144, 255));
 		lblImdbrating.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		
 		final JLabel lblAddedwatchlist = new JLabel("");
 		final JLabel lblAddwatchlist = new JLabel("");
+		
+		int isAdded = -1;
+		if(MainForm.getIsLogined()){
+			String movieQuery = "SELECT movieId FROM Movie WHERE movieId = " + movieId + " AND movieId IN"
+					+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + ")";
+			ArrayList<Movie> d = SqlOperations.getMovie(movieQuery);
+			if(d.size() > 0){
+				isAdded = 1;
+			}
+			else{
+				isAdded = 0;
+			}
+		}
+		if(isAdded == 0){
+			lblAddwatchlist.setVisible(true);
+			lblAddedwatchlist.setVisible(false);
+		}
+		if(isAdded == 1){
+			lblAddwatchlist.setVisible(false);
+			lblAddedwatchlist.setVisible(true);
+		}
 		lblAddwatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblAddwatchlist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				lblAddwatchlist.setVisible(false);
-				lblAddedwatchlist.setVisible(true);
-				//Kullanýcý izlenicek listesine ekle
+				if(MainForm.getIsLogined()){
+					String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
+					SqlOperations.insert(query);
+					lblAddwatchlist.setVisible(false);
+					lblAddedwatchlist.setVisible(true);
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for adding watchlist!");
+				}
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -88,15 +135,15 @@ public class Top10Component {
 			}
 		});
 		
-		
 		lblAddedwatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblAddedwatchlist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId;
+				SqlOperations.delete(query);
 				lblAddedwatchlist.setVisible(false);
 				lblAddwatchlist.setVisible(true);
-				//Kullanici izlenicek listesinden cikar
-			}
+			}	
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				lblAddedwatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistAddedA_20x26.png"));

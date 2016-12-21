@@ -22,12 +22,14 @@ public class WatchlistComponent {
 		movieId = mId;
 		userId = uId;
 		int isAdded = 0;
+		
 		String Query = "SELECT movieId FROM Movie WHERE movieId = " + movieId + " AND movieId IN"
 				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")";
 		ArrayList<Movie> watchList = SqlOperations.getMovie(Query);
 		if(watchList.size() > 0){
 			isAdded = 1;
 		}
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 500, 164);
@@ -77,9 +79,11 @@ public class WatchlistComponent {
 		}
 		
 		/*getting movie informations*/
-		String movieQuery = "SELECT mRating,mDescription,mImage FROM Movie WHERE movieId = " + movieId;
+		String movieQuery = "SELECT mRatingSum, mRatingCount, mDescription, mImage FROM Movie WHERE movieId = " + movieId;
 		ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
-		JLabel lblRatingPoint = new JLabel("" + movieInfo.get(0).getmRating());
+		double movieRating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+		String s = String.format("%.1f", movieRating);
+		JLabel lblRatingPoint = new JLabel(s);
 		lblRatingPoint.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 		
 		JLabel lblStary = new JLabel("");
@@ -113,8 +117,7 @@ public class WatchlistComponent {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() 
-					+ " AND fkMovieId = " + movieId;
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId;
 				SqlOperations.delete(query);
 				lblAddedWatch.setVisible(false);
 				lblAddWatch.setVisible(true);
@@ -133,6 +136,7 @@ public class WatchlistComponent {
 		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(0,0,96,142);
 		lblImage.setIcon(SqlOperations.getMovieImage(movieId, lblImage));
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

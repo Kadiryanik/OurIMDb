@@ -27,7 +27,7 @@ public class CastComponentForEachMovie {
 		/*setting image with id*/
 		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(0, 0, 32, 44);
-		lblImage.setIcon(SqlOperations.getPeopleImage(c, lblImage));
+		lblImage.setIcon(SqlOperations.getPeopleImage(celebId, lblImage));
 		
 		JPanel panelRealName = new JPanel();
 		panelRealName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 2));
@@ -39,7 +39,7 @@ public class CastComponentForEachMovie {
 			panelRealName.setBackground(new Color(251, 251, 251));
 			panelCastComponent.setBackground(new Color(251, 251, 251));
 		}
-		LabelWithLink tempL = new LabelWithLink(n, c, true, panelRealName);
+		new LabelWithLink(n, c, true, panelRealName);
 		
 		JLabel labelSep = new JLabel("...");
 		labelSep.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));

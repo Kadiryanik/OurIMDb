@@ -34,6 +34,7 @@ public class UserReviews {
 		panelMovieName.setBounds(80, 10, 460, 30);
 		panel.add(panelMovieName);
 		panelMovieName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		new LabelWithoutLink("deneme", 102, 102, 102, true, panelMovieName);
 		
 		final JLabel lblWriteReview = new JLabel("");
 		lblWriteReview.setSize(88, 21);
@@ -56,7 +57,7 @@ public class UserReviews {
 		lblShowComment.setLocation(425, 69);
 		lblShowComment.setSize(24, 24);
 		
-		JLabel lblCommentCount = new JLabel("1");
+		JLabel lblCommentCount = new JLabel("0");
 		lblCommentCount.setSize(23, 20);
 		lblCommentCount.setLocation(425, 69);
 		lblCommentCount.setHorizontalAlignment(SwingConstants.CENTER);

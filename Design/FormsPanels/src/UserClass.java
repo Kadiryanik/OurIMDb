@@ -6,10 +6,6 @@ public class UserClass {
 	private String uRegistrationDate;
 	private int userId;
 	
-	@Override
-	public String toString(){
-		return uEmail + " | " + uDisplayName + " | " + uPassword + " | ";
-	}
 	UserClass(){
 		this.setuEmail(null);
 		this.setuDisplayName(null);
@@ -29,31 +25,24 @@ public class UserClass {
 	public String getuEmail() {
 		return uEmail;
 	}
-
 	public void setuEmail(String uEmail) {
 		this.uEmail = uEmail;
 	}
-
 	public String getuDisplayName() {
 		return uDisplayName;
 	}
-
 	public void setuDisplayName(String uDisplayName) {
 		this.uDisplayName = uDisplayName;
 	}
-
 	public String getuPassword() {
 		return uPassword;
 	}
-
 	public void setuPassword(String uPassword) {
 		this.uPassword = uPassword;
 	}
-
 	public int getUserId() {
 		return userId;
 	}
-
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}

@@ -56,42 +56,39 @@ public class MovieTabComponents {
 		
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		String movieQuery = "SELECT mTitle,mImage,mTime,mDescription FROM Movie WHERE movieId = " + movieId ;
+		String movieQuery = "SELECT mTitle, mImage, mTime, mDescription FROM Movie WHERE movieId = " + movieId ;
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
-		new LabelWithLinkForMovie(movieList.get(0).getmTitle(),movieList.get(0).getMovieId(),12,panelName);
-		//DONE
+		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieId, 12, panelName);
+		
 		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
 		for(int i = 0;i < genreList.size(); i++){
 			boolean isLast = false;
 			if(i == genreList.size() - 1)
 				isLast = true;
 			
-			LabelWithoutLink temp = new LabelWithoutLink(genreList.get(i).getmType(),102,102,102,isLast,panelGenres);
+			new LabelWithoutLink(genreList.get(i).getmType(), 102, 102, 102, isLast, panelGenres);
 		}
 		
-		//DONE
-		String starsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		String starsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 1) LIMIT 0,3";
 		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
 		for(int i = 0; i < starsList.size(); i++ ){
 			boolean isLast = false;
 			if(i == starsList.size() - 1)
 				isLast = true;
-			LabelWithLink temp = new LabelWithLink(starsList.get(i).getpTitle(),starsList.get(i).getPeopleId(),
-					isLast,panelStars);
+			
+			new LabelWithLink(starsList.get(i).getpTitle(), starsList.get(i).getPeopleId(), isLast, panelStars);
 		}
-		
-		//DONE 
-		String directorQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		 
+		String directorQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 1) LIMIT 0,1";
-		
 		ArrayList<People> directorList = SqlOperations.getPeople(directorQuery);
 		for(int i = 0; i < directorList.size(); i++ ){
 			boolean isLast = false;
 			if(i == directorList.size() - 1)
 				isLast = true;
-			LabelWithLink temp = new LabelWithLink(directorList.get(i).getpTitle(),directorList.get(i).getPeopleId(),
-					isLast,panelDirector);
+			
+			new LabelWithLink(directorList.get(i).getpTitle(), directorList.get(i).getPeopleId(), isLast, panelDirector);
 		}
 		
 		JLabel lblImage = new JLabel("");
@@ -131,7 +128,24 @@ public class MovieTabComponents {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Yönlendir
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelGoBackD.setVisible(false);
+				MainForm.refLabelBack.setVisible(true);
+				
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				int isLogin = -1;
+				if(MainForm.getIsLogined()){
+					isLogin = 0;
+				}
+				new EachMovie(movieId, MainForm.refPanelEachOne, isLogin);
+				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});
 		lblWatchTrailer.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchTrailerButton.png"));
@@ -233,7 +247,5 @@ public class MovieTabComponents {
 		
 		panelReal.add(panel);
 	}
-	
-	
 
 }

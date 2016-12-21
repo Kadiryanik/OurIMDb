@@ -20,7 +20,7 @@ public class LabelWithLinkForUser {
 		name = n;
 		userId = c;
 		
-		final JLabel lblLink = new JLabel(n);
+		final JLabel lblLink = new JLabel(name);
 		lblLink.setSize(15, 15);
 		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblLink.setForeground(new Color(19, 148, 209));

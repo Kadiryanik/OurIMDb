@@ -27,7 +27,7 @@ public class LabelWithLink {
 		seperator.setPreferredSize(new Dimension(2, 10));
 		
 		
-		final JLabel lblLink = new JLabel(n);
+		final JLabel lblLink = new JLabel(name);
 		lblLink.setSize(15, 15);
 		lblLink.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblLink.setForeground(new Color(19, 148, 209));
@@ -58,7 +58,7 @@ public class LabelWithLink {
 				
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();
-				new EachCeleb(celebId,MainForm.refPanelEachOne);
+				new EachCeleb(celebId, MainForm.refPanelEachOne);
 				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});

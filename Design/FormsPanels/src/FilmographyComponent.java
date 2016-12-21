@@ -19,7 +19,7 @@ public class FilmographyComponent {
 		movieId = mId;
 		celebId = cId;
 		
-		String movieQuery = "SELECT mTitle,mYear,movieId FROM Movie WHERE movieId = " + movieId;
+		String movieQuery = "SELECT mTitle, mDate, movieId FROM Movie WHERE movieId = " + movieId;
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
 		
 		JPanel panel = new JPanel();
@@ -28,12 +28,12 @@ public class FilmographyComponent {
 		JPanel panelMovieName = new JPanel();
 		panelMovieName.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
-		new LabelWithLinkForMovie(movieList.get(0).getmTitle(),movieList.get(0).getMovieId(),11, panelMovieName);
+		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieList.get(0).getMovieId(), 11, panelMovieName);
 		
 		JPanel panelRoleInMovie = new JPanel();
 		panelRoleInMovie.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
-		String castQuery = "SELECT castName,actorFlag,directorFlag,writerFlag FROM MoviePeople WHERE "
+		String castQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE "
 				+ "fkMovieId = " + movieId + " AND fkPeopleId = " + celebId;
 		ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(castQuery);
 		
@@ -41,7 +41,9 @@ public class FilmographyComponent {
 		new LabelWithoutLink(castInfo.get(0).getCastName(), 102, 102, 102, false, panelRoleInMovie);
 		
 		/*setting the roles of people(actor,director,writer) in the movie*/
-		boolean isActor=false,isDirector=false,isWriter=false;
+		boolean isActor = false;
+		boolean isDirector = false;
+		boolean isWriter = false;
 		if(castInfo.get(0).getActorFlag() == 1)isActor = true;
 		if(castInfo.get(0).getDirectorFlag() == 1)isDirector = true;
 		if(castInfo.get(0).getWriterFlag() == 1)isWriter = true;
@@ -50,7 +52,7 @@ public class FilmographyComponent {
 		if(isWriter)new LabelWithoutLink("writer", 102, 102, 102, true, panelRoleInMovie);
 		
 		/*getting year format like 1900*/
-		JLabel lblDate = new JLabel("" + movieList.get(0).getmYear().toLocaleString().substring(7, 11));
+		JLabel lblDate = new JLabel("" + movieList.get(0).getmDate().substring(0, 4));
 		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDate.setForeground(new Color(0, 191, 255));
 		lblDate.setFont(new Font("Comic Sans MS", Font.PLAIN, 12));

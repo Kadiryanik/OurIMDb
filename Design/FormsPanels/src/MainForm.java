@@ -162,8 +162,8 @@ public class MainForm {
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
 		
-		//SqlOperations.postPeopleImage("b");
-		//SqlOperations.postMovieImage("a");
+		//SqlOperations.postPeopleImage("c");
+		SqlOperations.postMovieImage("a");
 		
 		final JButton btnWatchList = new JButton("");
 		JButton btnLogin = new JButton("");
@@ -296,17 +296,14 @@ public class MainForm {
 							panelLogined.setVisible(true);
 							btnWatchList.setEnabled(true);
 							panelTop.setVisible(true);
-							
 							lblUser.setText(textFieldId.getText());
 							textFieldId.setText("");
 							textFieldPw.setText("");
 							
 							isLogined = true;
-							//TODO: userId setle
 							loggedUserId = userInfo.get(0).getUserId();
 						}
 						else{
-							//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
 							textFieldPw.setText("");
 							JOptionPane.showMessageDialog(null, "Password wrong!");
 						}
@@ -371,11 +368,9 @@ public class MainForm {
 							textFieldPw.setText("");
 							
 							isLogined = true;
-							//TODO: userId setle
 							loggedUserId = userInfo.get(0).getUserId();
 						}
 						else{
-							//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
 							textFieldPw.setText("");
 							JOptionPane.showMessageDialog(null, "Password wrong!");
 						}
@@ -425,6 +420,7 @@ public class MainForm {
 				panelUser.removeAll();
 				new UserPageClass(loggedUserId, panelUser);
 				
+				panelRegister.setVisible(false);
 				panelWatchList.setVisible(false);
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
@@ -448,11 +444,12 @@ public class MainForm {
 		panelLogined.add(lblUser);
 		
 		final JLabel lblLogOut = new JLabel("LogOut");
+		lblLogOut.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
+		lblLogOut.setForeground(new Color(0, 0, 0));
 		lblLogOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblLogOut.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO:Logout process
 				panelTop.setVisible(false);
 				panelUnLogin.setVisible(true);
 				panelLogined.setVisible(false);
@@ -665,14 +662,10 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int a = -1;
-				if(isLogined == true){
-					a = 0;
-				}
-				new EachMovie(2, panelEachOne, a);
+
 				//new SearchResult("babaanne", panelEachOne);
 				//new UserReviews(1, panelEachOne);
-				//new ParentChildCommentPage(1, panelEachOne);
+				new ParentChildCommentPage(1, panelEachOne);
 				
 				
 				lblGoBackD.setVisible(false);
@@ -709,17 +702,11 @@ public class MainForm {
 				//new UserPageClass(1, panelEachOne);
 				//new EachCeleb(1, panelEachOne);
 				//new FullCastClass(1, panelEachOne);
-				//TODO:add 3. paramater with control ?
-				int a = -1;
-				if(isLogined == true){
-					a = 0;
-				}
-				new EachMovie(1, panelEachOne, a);
 				//new SearchResult("babaanne", panelEachOne);
 				//new UserReviews(1, panelEachOne);
 				//new ParentChildCommentPage(1, panelEachOne);
 				
-				
+				/*
 				lblGoBackD.setVisible(false);
 				lblBack.setVisible(true);
 				panelTop.setVisible(false);
@@ -731,7 +718,8 @@ public class MainForm {
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
 				panelEachOne.setVisible(true);
-				/*
+				*/
+				panelMovies.removeAll();//TODO: watchlist'e ekleme yaptýktan sonra simgeye gelince yanlýþ gözükmesi düzeltme (alttaki todo)
 				MovieTabComponents.Id = 0;
 				//Movies Init
 				JPanel panelInTheaters = new JPanel();
@@ -761,13 +749,11 @@ public class MainForm {
 				tabbedPane.addTab("Coming Soon", scrollPaneComing);
 				panelMovies.add(tabbedPane);
 				//EndOf-Movies Init
-				
-				MovieTabComponents temp = new MovieTabComponents(123, panelInTheaters);
-				temp = new MovieTabComponents(123, panelInTheaters);
-				temp = new MovieTabComponents(333, panelInTheaters);
-				
-				temp = new MovieTabComponents(123, panelComingSoon);
-				temp = new MovieTabComponents(333, panelComingSoon);
+				//TODO: scrollpane en üstte deðilken o sayfaya tekrar týklanýrsa yanlýþ yerlerde tekrar oluþturuyor.
+				panelMovies.setVisible(false);
+				MovieTabComponents temp = new MovieTabComponents(1, panelInTheaters);
+				temp = new MovieTabComponents(1, panelInTheaters);
+				temp = new MovieTabComponents(1, panelInTheaters);
 				
 				panelHome.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -776,7 +762,7 @@ public class MainForm {
 				panelRegister.setVisible(false);
 				panelMovies.setVisible(true);
 				panelEachOne.setVisible(false);
-				panelWatchList.setVisible(false);*/
+				panelWatchList.setVisible(false);
 			}
 		});
 		btnMovies.setBounds(57, 8, 54, 26);
@@ -788,6 +774,7 @@ public class MainForm {
 		btnCelebs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*Celebs Inýt*/
+				panelCelebs.removeAll();
 				JScrollPane scrollPaneC = new JScrollPane();
 				scrollPaneC.setBounds(0, 0, 550, 675);
 				panelCelebs.add(scrollPaneC);
@@ -799,6 +786,8 @@ public class MainForm {
 				scrollPaneC.add(panelCelebsScroll);
 				scrollPaneC.setViewportView(panelCelebsScroll);
 				
+				String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People";
+				ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
 				
 				JLabel lblSortBy = new JLabel("Sort by: ");
 				panelCelebsScroll.add(lblSortBy);
@@ -819,56 +808,18 @@ public class MainForm {
 				JLabel lblTotalNames = new JLabel("Total Names:");
 				panelCelebsScroll.add(lblTotalNames);
 				
-				JLabel lblNamescount = new JLabel("NamesCount");
+				JLabel lblNamescount = new JLabel("" + celebList.size());
 				panelCelebsScroll.add(lblNamescount);
-				/*EndOF Celebs Inýt*/
 				
 				CelebsComponent.Id = 0;
 				
-				CelebsComponent tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
-				tempC = new CelebsComponent("Jhonny Deep", "Johnny Depp is perhaps one of the most versatile "
-						+ "actors of his day and age in Hollywood. He was born John Christopher Depp II in Owensboro, Kentucky, "
-						+ "on June 9, 1963, to Betty Sue (Wells), who worked as a waitress, and John Christopher Depp, a civil engineer. ", 
-						panelCelebsScroll);
+				for(int i = 0; i < celebList.size(); i++){
+					new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+							celebList.get(i).getpDescription(), panelCelebsScroll);
+				}
+				
+				/*EndOF Celebs Inýt*/
+				
 				
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
@@ -890,6 +841,7 @@ public class MainForm {
 			public void actionPerformed(ActionEvent e) {
 				Top10Component.Id = 0;
 				/*Top10 Inýt*/
+				panelTop10.removeAll();
 				JScrollPane scrollPane = new JScrollPane();
 				scrollPane.setBounds(0, 0, 550, 675);
 				panelTop10.add(scrollPane);
@@ -901,23 +853,15 @@ public class MainForm {
 				
 				scrollPane.add(panelTop10Scroll);
 				scrollPane.setViewportView(panelTop10Scroll);
+				panelTop10.setVisible(false);
 				/*EndOf Top10 Inýt*/
-				
-				Top10Component temp = new Top10Component(1, "YüzüklerinEdendisi", 8.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "ASD", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "DEF", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
-				temp = new Top10Component(3, "Inception", 4.5, panelTop10Scroll);
+				String movieQuery = "SELECT movieId,mTitle,mRatingSum,mRatingCount FROM Movie ORDER BY mRatingSum/mRatingCount DESC";
+				ArrayList<Movie> movieTop10List = SqlOperations.getMovie(movieQuery);
+				//TODO:watchlist'e ekleme yaptýktan sonra simgeye gelince yanlýþ gözükmesi
+				for(int i = 0; i < movieTop10List.size(); i++){
+					new Top10Component(movieTop10List.get(i).getMovieId(), movieTop10List.get(i).getmTitle(),
+							movieTop10List.get(i).getmRatingSum()/movieTop10List.get(i).getmRatingCount(), panelTop10Scroll);
+				}
 				
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
@@ -1058,11 +1002,9 @@ public class MainForm {
 						textFieldPw.setText("");
 						
 						isLogined = true;
-						//TODO: userId setle
 						loggedUserId = userInfo.get(0).getUserId();
 					}
 					else{
-						//TODO: kullanýcý adý tabloda varsa ayrý yoksa ayrý iþlem yapýlabilir belki
 						textFieldPw.setText("");
 						JOptionPane.showMessageDialog(null, "Password wrong!");
 					}
@@ -1121,6 +1063,7 @@ public class MainForm {
 						lblYourname.setVisible(false);
 					}
 				});
+				System.out.println(lblYourname.getText());
 				textFieldYourName.setBounds(120, 126, 310, 30);
 				panelRegister.add(textFieldYourName);
 				textFieldYourName.setColumns(10);
@@ -1205,7 +1148,75 @@ public class MainForm {
 					}
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						//TODO: Veri tabanýyla veya alanlarla ilgili sorun yoksa kaydet
+						boolean nameCanBeCreated = true;
+						boolean emailCanBeCreated = true;
+						
+						String userNameQuery = "SELECT uDisplayName FROM Users WHERE "
+								+ "uDisplayName = '" + textFieldYourName.getText() + "'";
+						ArrayList<UserClass> userName = SqlOperations.getUserInfo(userNameQuery);
+						
+						String userEmailQuery = "SELECT uEmail FROM Users WHERE "
+								+ "uEmail = '" + textFieldEmail.getText() + "'";
+						ArrayList<UserClass> userEmail = SqlOperations.getUserInfo(userEmailQuery);
+						if(userName.size() > 0){
+							nameCanBeCreated = false;
+						}
+						if(userEmail.size() > 0){
+							emailCanBeCreated = false;
+						}
+						if(nameCanBeCreated && emailCanBeCreated){
+							if(textFieldYourName.getText().length() == 0){
+								JOptionPane.showMessageDialog(null, "Username can not be empty!");
+							}
+							else if(textFieldEmail.getText().length() == 0){
+								JOptionPane.showMessageDialog(null, "Email can not be empty!");
+							}
+							else if(passwordFieldPass.getText().length() == 0){
+								JOptionPane.showMessageDialog(null, "Password can not be empty!");
+							}
+							else{
+								if(passwordFieldPass.getText().equals(passwordFieldPassA.getText())){
+									String insertQuery = "INSERT INTO Users(uEmail,uDisplayName,uPassword) VALUES('" 
+											+ textFieldEmail.getText() + "','" 
+											+ textFieldYourName.getText() + "','"
+											+ passwordFieldPass.getText() + "')";
+									SqlOperations.insert(insertQuery);
+									
+									lblUser.setText(textFieldYourName.getText());
+									textFieldId.setText("");
+									textFieldPw.setText("");
+									
+									String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldYourName.getText() + "'";
+									ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
+									
+									isLogined = true;
+									loggedUserId = userInfo.get(0).getUserId();
+									panelRegister.setVisible(false);
+									panelTop.setVisible(false);
+									panelUnLogin.setVisible(false);
+									panelLogined.setVisible(true);
+									btnWatchList.setEnabled(true);
+									panelTop.setVisible(true);
+								}
+								else{
+									JOptionPane.showMessageDialog(null, "Please enter the same password");
+								}
+								
+							}
+							
+						}
+						else{
+							if(!nameCanBeCreated && !emailCanBeCreated){
+								JOptionPane.showMessageDialog(null, "Please enter a different name and email");
+							}
+							if(!nameCanBeCreated && emailCanBeCreated){
+								JOptionPane.showMessageDialog(null, "Please enter a different name!");
+							}
+							if(nameCanBeCreated && !emailCanBeCreated){
+								JOptionPane.showMessageDialog(null, "Please enter a different email!");
+							}
+						}
+						
 					}
 				});
 				lblButton.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterButton.png"));
