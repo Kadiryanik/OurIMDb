@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -12,10 +13,12 @@ public class CelebsComponent {
 	public static int Id = 0;
 	private String name;
 	private String bio;
-	
-	
-	public CelebsComponent(String n, String b, JPanel panelReal){
+	private int celebId;
+	public CelebsComponent(int cId, String n, String b, JPanel panelReal){
 		Id++;
+		name = n;
+		bio = b;
+		celebId = cId;
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 530, 100);
@@ -24,12 +27,17 @@ public class CelebsComponent {
 		label.setBounds(10, 11, 42, 14);
 		panel.add(label);
 		
-		JLabel lblImage = new JLabel();
-		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Celebs_1s.jpg"));
+		JLabel lblImage = new JLabel("image");
 		lblImage.setBounds(62, 11, 57, 78);
-		panel.add(lblImage);
+		lblImage.setIcon(SqlOperations.getPeopleImage(celebId, lblImage));
+		/*String query = "SELECT pTitle FROM people WHERE peopleId = " + celebId;
+		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurIMDb//DB//c//" + SqlOperations.getPeople(query).get(0).getpTitle() + ".jpg");
+		Image image = imageIcon.getImage();
+		Image imageResized = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
+		lblImage.setIcon(new ImageIcon(imageResized));
+		*/panel.add(lblImage);
 		
-		JLabel lblName = new JLabel(n);
+		JLabel lblName = new JLabel(name);
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
 		lblName.setBounds(145, 6, 264, 22);
 		panel.add(lblName);
@@ -37,7 +45,7 @@ public class CelebsComponent {
 		JTextArea txtBio = new JTextArea();
 		txtBio.setEditable(false);
 		txtBio.setFocusable(false);
-		txtBio.setText(b);
+		txtBio.setText(bio);
 		txtBio.setLineWrap(true);
 		txtBio.setWrapStyleWord(true);
 		txtBio.setBounds(134, 35, 386, 54);

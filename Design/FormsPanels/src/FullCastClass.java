@@ -19,21 +19,21 @@ public class FullCastClass {
 		panel.setBounds(0, 0, 550, 726);
 		
 		/*getting directors informations with movieId*/
-		String directorsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		String directorsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND directorFlag = 1) LIMIT 0,3";
 		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery); 
 		
 		/*getting writers informations with movieId*/
-		String writersQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		String writersQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND writerFlag = 1) LIMIT 0,3";
 		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
 		
 		/*getting actors informations with movieId*/
-		String starsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND actorFlag = 1) LIMIT 0,3";
+		String starsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + mId + " AND actorFlag = 1)";
 		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
 		
-		JLabel lblImage = new JLabel("image");
+		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(20, 11, 67, 98);
 		lblImage.setIcon(SqlOperations.getMovieImage(mId, lblImage));
 		
@@ -43,8 +43,7 @@ public class FullCastClass {
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		/* adding movie title with link*/ 
-		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = " + mId).get(0).getmTitle()
-				, mId,15, panelName);
+		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = " + mId).get(0).getmTitle(), mId, 15, panelName);
 		
 		JLabel lblFullcastcrew = new JLabel("Full Cast & Crew");
 		lblFullcastcrew.setBounds(97, 42, 167, 35);
@@ -116,7 +115,7 @@ public class FullCastClass {
 		panelCastScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 0, 1));
 		
 		for(int i = 0; i < starsList.size(); i++){
-			String q = "SELECT castName,fkPeopleId FROM MoviePeople where fkMovieId = " + movieId
+			String q = "SELECT castName, fkPeopleId FROM MoviePeople where fkMovieId = " + movieId
 					+ " AND fkPeopleId = " + starsList.get(i).getPeopleId();
 			ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(q);
 			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),

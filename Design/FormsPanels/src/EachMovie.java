@@ -42,13 +42,13 @@ public class EachMovie {
 		}
 		
 		/*Getting informations from database*/
-		String starsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		String starsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 1) LIMIT 0,3";
 		
-		String directorsQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		String directorsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 1) LIMIT 0,3";
 		
-		String writersQuery = "SELECT peopleId,pTitle FROM People WHERE peopleId IN"
+		String writersQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND writerFlag = 1) LIMIT 0,3";
 		
 		final ArrayList<Movie> movieList = SqlOperations.getMovie("SELECT * FROM Movie WHERE movieId = " + movieId);
@@ -59,8 +59,11 @@ public class EachMovie {
 
 		//Need Early Implementation
 		final JLabel lblAddedWatch = new JLabel("");
-		final JLabel lblPoint = new JLabel("" + movieList.get(0).getmRating());
-		final JLabel lblPointcount = new JLabel("" + movieList.get(0).getmRatingCount());		
+		final JLabel lblPointcount = new JLabel("" + (int)movieList.get(0).getmRatingCount());		
+		final JLabel lblPoint = new JLabel();
+		double rating = movieList.get(0).getmRatingSum() / movieList.get(0).getmRatingCount();
+		String s = String.format("%.1f", rating);
+		lblPoint.setText(s);
 		
 		final JPanel panelHoverRated = new JPanel();
 		panelHoverRated.setVisible(false);
@@ -84,7 +87,7 @@ public class EachMovie {
 		textInfo.setBackground(new Color(231, 231, 231));
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
-		textInfo.setText(movieList.get(0).getmDescription());//movie description
+		textInfo.setText(movieList.get(0).getmDescription());
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
 		
@@ -282,7 +285,7 @@ public class EachMovie {
 			});
 			panelHoverRated.setVisible(true);
 		}
-		if(!MainForm.getIsLogined()){
+		if(!MainForm.getIsLogined() || userRatePoint == 0){
 			panelHover.setVisible(true);
 		}
 		
@@ -301,31 +304,35 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 1 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 1);
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 1;
 					}
 					if(userRatePoint != 1){
-						System.out.println("naeberererere---------------------------");
 						String query = "UPDATE Rating SET rating = 1 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 1, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 1;
 					}
@@ -366,31 +373,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 2 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 2);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 2;
 						
 					}
 					if(userRatePoint != 2){
 						String query = "UPDATE Rating SET rating = 2 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 2, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 2;
 					}
@@ -432,31 +444,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 3 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 3);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 3;
 						
 					}
 					if(userRatePoint != 3){
 						String query = "UPDATE Rating SET rating = 3 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 3, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 3;
 					}
@@ -498,31 +515,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 4 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 4);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 4;
 						
 					}
 					if(userRatePoint != 4){
 						String query = "UPDATE Rating SET rating = 4 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 4, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 4;
 					}
@@ -564,31 +586,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 5 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 5);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 5;
 						
 					}
 					if(userRatePoint != 5){
 						String query = "UPDATE Rating SET rating = 5 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 5, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 5;
 					}
@@ -630,31 +657,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 6 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 6);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 6;
 						
 					}
 					if(userRatePoint != 6){
 						String query = "UPDATE Rating SET rating = 6 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 6, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 6;
 					}
@@ -696,31 +728,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 7 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 7);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum,mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 7;
 						
 					}
 					if(userRatePoint != 7){
 						String query = "UPDATE Rating SET rating = 7 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 7, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 7;
 					}
@@ -762,31 +799,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 8 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 8);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum,mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 8;
 						
 					}
 					if(userRatePoint != 8){
 						String query = "UPDATE Rating SET rating = 8 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 8, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 8;
 					}
@@ -828,31 +870,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 9 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 9);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 9;
 						
 					}
 					if(userRatePoint != 9){
 						String query = "UPDATE Rating SET rating = 9 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 9, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 9;
 					}
@@ -894,31 +941,36 @@ public class EachMovie {
 			public void mouseClicked(MouseEvent e) {
 				if(MainForm.getIsLogined()){
 					if(userRatePoint == 0){
-						String query = "INSERT INTO Rating(fkUserId,fkMovieId,rating) VALUES(" 
+						String query = "INSERT INTO Rating(fkUserId, fkMovieId, rating) VALUES(" 
 								+ MainForm.getLoggedUserId() + ","
 								+ movieId + ","
 								+ 10 + ")";
 						SqlOperations.insert(query);
 						SqlOperations.updateMovieRating(movieId, 10);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
-						lblPointcount.setText("" + SqlOperations.getMovie("SELECT mRatingCount FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRatingCount());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
+						lblPointcount.setText("" + (int)movieInfo.get(0).getmRatingCount());
 						lblPoint.setVisible(true);
 						userRatePoint = 10;
 						
 					}
 					if(userRatePoint != 10){
 						String query = "UPDATE Rating SET rating = 10 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-						+ " AND fkMovieId = " + movieId;
+								+ " AND fkMovieId = " + movieId;
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 10, oldRate);
 						SqlOperations.update(query);
 						lblPoint.setVisible(false);
-						lblPoint.setText("" + SqlOperations.getMovie("SELECT mRating FROM Movie WHERE movieId = "
-								+ movieId).get(0).getmRating());
+						String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+						ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
+						double rating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
+						String s = String.format("%.1f", rating);
+						lblPoint.setText(s);
 						lblPoint.setVisible(true);
 						userRatePoint = 10;
 					}
@@ -979,17 +1031,19 @@ public class EachMovie {
 			lblAddWatch.setVisible(false);
 			lblAddedWatch.setVisible(true);
 		}
-		if(isAdded == -1){
-			lblAddWatch.setVisible(false);
-			lblAddedWatch.setVisible(false);
-		}
 		lblAddWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
-				SqlOperations.insert(query);
-				lblAddWatch.setVisible(false);
-				lblAddedWatch.setVisible(true);
+				if(MainForm.getIsLogined()){
+					String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
+					SqlOperations.insert(query);
+					lblAddWatch.setVisible(false);
+					lblAddedWatch.setVisible(true);
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Please register for adding watchlist!");
+				}
+				
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -1028,7 +1082,7 @@ public class EachMovie {
 			}
 		}
 		new LabelWithoutLink(genres, 102, 102, 102, false, panelDesc);
-		new LabelWithoutLink("" + movieList.get(0).getmYear(), 102, 102, 102, true, panelDesc);
+		new LabelWithoutLink("" + movieList.get(0).getmDate(), 102, 102, 102, true, panelDesc);
 		
 		JLabel lblStar = new JLabel("");
 		lblStar.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\StarYellow.png"));
@@ -1145,6 +1199,7 @@ public class EachMovie {
 		panelAward.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 2));
 		panel.add(panelAward);
 		
+		new LabelWithoutLink("deneme",102,102,102,true,panelAward);
 		//TODO: Bu labelden önce win notification labeli oluþturup eklencek
 		final JLabel labelSeeFullAward = new JLabel("See more award >>");
 		labelSeeFullAward.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1210,7 +1265,7 @@ public class EachMovie {
 		/*creating cast component */ 
 		for(int i = 0; i < starsList.size(); i++){
 			/*getting cast name */
-			String castQuery = "SELECT castName,actorFlag,directorFlag,writerFlag FROM MoviePeople WHERE "
+			String castQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE "
 					+ "fkMovieId = " + movieId + " AND fkPeopleId = " + starsList.get(i).getPeopleId();
 			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),
 					SqlOperations.getRole(castQuery).get(0).getCastName(), panelCast);

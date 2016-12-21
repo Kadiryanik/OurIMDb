@@ -5,11 +5,13 @@ public class UserRatings {
 	private int rating;
 	
 	UserRatings(){}
+	
 	UserRatings(int fkUserId, int fkMovieId, int rating){
 		this.setFkUserId(fkUserId);
 		this.setFkMovieId(fkMovieId);
 		this.setRating(rating);
 	}
+	
 	public int getFkUserId() {
 		return fkUserId;
 	}

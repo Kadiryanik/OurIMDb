@@ -20,8 +20,9 @@ public class SearchCelebComponent {
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 722, 530, 44);
 		
-		JLabel lblImage = new JLabel("Image");
+		JLabel lblImage = new JLabel();
 		lblImage.setBounds(0, 0, 32, 44);
+		lblImage.setIcon(SqlOperations.getPeopleImage(celebId, lblImage));
 		
 		JPanel panelNameDate = new JPanel();
 		panelNameDate.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));

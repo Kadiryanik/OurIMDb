@@ -7,11 +7,8 @@ public class RoleInMovie {
 	private int fkPeopleId;
 	private int fkMovieId;
 	
-	RoleInMovie(){	}
-	@Override
-	public String toString(){
-		return castName + " " + actorFlag + " " + directorFlag + " " + writerFlag + " " + fkPeopleId + " " + fkMovieId; 
-	}
+	RoleInMovie(){}
+	
 	RoleInMovie(String castName, int actorFlag, int directorFlag, int writerFlag,int fkPeopleId, int fkMovieId ){
 		this.setCastName(castName);
 		this.setActorFlag(actorFlag);

@@ -2,33 +2,27 @@ import java.sql.Date;
 
 public class Movie {
 	private String mTitle;
-	private Date mYear;
+	private String mDate;
 	private String mCountry;
 	private String mTime;
 	private String mLanguage;
-	private double mRating;
-	private int mRatingCount;
+	private double mRatingSum;
+	private double mRatingCount;
 	private String mDescription;
 	private byte[] mImage;
 	private String mUrlLink;
 	private int movieId;
 	
-	@Override
-	public String toString(){
-		return "" + this.mTitle + " | " + this.mYear +  " | " + this.mCountry + " | " + this.mTime + " | " + 
-				this.mLanguage + " | " + this.mRating + " | " + this.mRatingCount + " | " + this.movieId + " | "  + this.mUrlLink + "\n";
-	}
-	
 	Movie(){}
 	
-	Movie(String mTitle, Date mYear, String mCountry, String mTime, String mLanguage, double mRating,
-			int mRatingCount,String mDescription, byte[] mImage, String mUrlLink, int movieId){
+	Movie(String mTitle, String mDate, String mCountry, String mTime, String mLanguage, double mRatingSum,
+			double mRatingCount,String mDescription, byte[] mImage, String mUrlLink, int movieId){
 		this.setmTitle(mTitle);
-		this.setmYear(mYear);
+		this.setmDate(mDate);
 		this.setmCountry(mCountry);
 		this.setmTime(mTime);
 		this.setmLanguage(mLanguage);
-		this.setmRating(mRating);
+		this.setmRatingSum(mRatingSum);
 		this.setmRatingCount(mRatingCount);
 		this.setmDescription(mDescription);
 		this.setmImage(mImage);
@@ -42,11 +36,11 @@ public class Movie {
 	public void setmTitle(String mTitle) {
 		this.mTitle = mTitle;
 	}
-	public Date getmYear() {
-		return mYear;
+	public String getmDate() {
+		return mDate;
 	}
-	public void setmYear(Date mYear) {
-		this.mYear = mYear;
+	public void setmDate(String mDate) {
+		this.mDate = mDate;
 	}
 	public String getmCountry() {
 		return mCountry;
@@ -66,16 +60,16 @@ public class Movie {
 	public void setmLanguage(String mLanguage) {
 		this.mLanguage = mLanguage;
 	}
-	public double getmRating() {
-		return mRating;
+	public double getmRatingSum() {
+		return mRatingSum;
 	}
-	public void setmRating(double mRating) {
-		this.mRating = mRating;
+	public void setmRatingSum(double mRatingSum) {
+		this.mRatingSum = mRatingSum;
 	}
-	public int getmRatingCount() {
+	public double getmRatingCount() {
 		return mRatingCount;
 	}
-	public void setmRatingCount(int mRatingCount) {
+	public void setmRatingCount(double mRatingCount) {
 		this.mRatingCount = mRatingCount;
 	}
 	public int getMovieId() {
@@ -84,30 +78,22 @@ public class Movie {
 	public void setMovieId(int movieId) {
 		this.movieId = movieId;
 	}
-
 	public byte[] getmImage() {
 		return mImage;
 	}
-
 	public void setmImage(byte[] mImage) {
 		this.mImage = mImage;
 	}
-
 	public String getmUrlLink() {
 		return mUrlLink;
 	}
-
 	public void setmUrlLink(String mUrlLink) {
 		this.mUrlLink = mUrlLink;
 	}
-
 	public String getmDescription() {
 		return mDescription;
 	}
-
 	public void setmDescription(String mDescription) {
 		this.mDescription = mDescription;
 	}
-
-	
 }

@@ -25,28 +25,28 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"mTitle","mYear","mCountry","mTime","mLanguage",
-					"mRating","mRatingCount","mDescription","mImage","mUrlLink","movieId"};
+			String[] attr = new String[]{"mTitle", "mDate", "mCountry", "mTime", "mLanguage","mRatingSum",
+					"mRatingCount", "mDescription", "mImage", "mUrlLink", "movieId"};
 			ArrayList<Movie> array = new ArrayList<Movie>();
 			
 			while(result.next()){
 				Movie a = new Movie();
 				if(columnCount == attr.length){
-					Movie temp = new Movie(result.getString(attr[0]),result.getDate(attr[1]),result.getString(attr[2]),
-							result.getString(attr[3]),result.getString(attr[4]),result.getDouble(attr[5]),result.getInt(attr[6]),
-							result.getString(attr[7]),result.getBytes(attr[8]),result.getString(attr[9]),result.getInt(attr[10]));
+					Movie temp = new Movie(result.getString(attr[0]), result.getString(attr[1]), result.getString(attr[2]),
+							result.getString(attr[3]), result.getString(attr[4]), result.getDouble(attr[5]), result.getDouble(attr[6]),
+							result.getString(attr[7]), result.getBytes(attr[8]), result.getString(attr[9]), result.getInt(attr[10]));
 					array.add(temp);
 				}
 				else{
 					for(int i = 1; i <= columnCount ; i++){
 						String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
 						if(g.equals(attr[0])){a.setmTitle(result.getString(attr[0]));}
-						if(g.equals(attr[1])){a.setmYear(result.getDate(attr[1]));}
+						if(g.equals(attr[1])){a.setmDate(result.getString(attr[1]));}
 						if(g.equals(attr[2])){a.setmCountry(result.getString(attr[2]));}
 						if(g.equals(attr[3])){a.setmTime(result.getString(attr[3]));}
 						if(g.equals(attr[4])){a.setmLanguage(result.getString(attr[4]));}
-						if(g.equals(attr[5])){a.setmRating(result.getDouble(attr[5]));}
-						if(g.equals(attr[6])){a.setmRatingCount(result.getInt(attr[6]));}
+						if(g.equals(attr[5])){a.setmRatingSum(result.getDouble(attr[5]));}
+						if(g.equals(attr[6])){a.setmRatingCount(result.getDouble(attr[6]));}
 						if(g.equals(attr[7])){a.setmDescription(result.getString(attr[7]));}
 						if(g.equals(attr[8])){a.setmImage(result.getBytes(attr[8]));}
 						if(g.equals(attr[9])){a.setmUrlLink(result.getString(attr[9]));}
@@ -56,7 +56,6 @@ public class SqlOperations {
 				}
 				
 			}
-			System.out.println("All records have been selected!");
 			return array;
 
 		} catch (Exception e) {
@@ -83,36 +82,33 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"pTitle","pFirstName","pLastName","pBirthday","pBirthPlace",
-					"pGender","pImage","pDescription","peopleId"};
+			String[] attr = new String[]{"pTitle", "pBirthday", "pBirthPlace", "pImage", "pDescription", "pImdbId", "pImageUrl", "peopleId"};
 			ArrayList<People> array = new ArrayList<People>();
 			
 			while(result.next()){
 				People a = new People();
 				if(columnCount == attr.length){
-					People temp = new People(result.getString(attr[0]),result.getString(attr[1]),result.getString(attr[2]),
-							result.getDate(attr[3]),result.getString(attr[4]),result.getString(attr[5]),result.getBytes(attr[6]),
-							result.getString(attr[7]),result.getInt(attr[8]));
+					People temp = new People(result.getString(attr[0]), result.getString(attr[1]), result.getString(attr[2]),
+							result.getBytes(attr[3]), result.getString(attr[4]), result.getString(attr[5]),
+							result.getString(attr[6]),result.getInt(attr[7]));
 					array.add(temp);
 				}
 				else{
 					for(int i = 1; i <= columnCount ; i++){
 						String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
 						if(g.equals(attr[0])){a.setpTitle(result.getString(attr[0]));}
-						if(g.equals(attr[1])){a.setpFirstName(result.getString(attr[1]));}
-						if(g.equals(attr[2])){a.setpLastName(result.getString(attr[2]));}
-						if(g.equals(attr[3])){a.setpBirthday(result.getDate(attr[3]));}
-						if(g.equals(attr[4])){a.setpBirthPlace(result.getString(attr[4]));}
-						if(g.equals(attr[5])){a.setpGender(result.getString(attr[5]));}
-						if(g.equals(attr[6])){a.setpImage(result.getBytes(attr[6]));}
-						if(g.equals(attr[7])){a.setpDescription(result.getString(attr[7]));}
-						if(g.equals(attr[8])){a.setPeopleId(result.getInt(attr[8]));}
+						if(g.equals(attr[1])){a.setpBirthday(result.getString(attr[1]));}
+						if(g.equals(attr[2])){a.setpBirthPlace(result.getString(attr[2]));}
+						if(g.equals(attr[3])){a.setpImage(result.getBytes(attr[3]));}
+						if(g.equals(attr[4])){a.setpDescription(result.getString(attr[4]));}
+						if(g.equals(attr[5])){a.setpImdbId(result.getString(attr[5]));}
+						if(g.equals(attr[6])){a.setpImageUrl(result.getString(attr[6]));}
+						if(g.equals(attr[7])){a.setPeopleId(result.getInt(attr[7]));}
 					}
 					array.add(a);
 				}
 				
 			}
-			System.out.println("All records have been selected!");
 			return array;
 
 		} catch (Exception e) {
@@ -139,13 +135,13 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"orgName","orgCountry","organizationId"};
+			String[] attr = new String[]{"orgName", "orgCountry", "organizationId"};
 			ArrayList<Organization> array = new ArrayList<Organization>();
 			
 			while(result.next()){
 				Organization a = new Organization();
 				if(columnCount == attr.length){
-					Organization temp = new Organization(result.getString(attr[0]),result.getString(attr[1]),result.getInt(attr[2]));
+					Organization temp = new Organization(result.getString(attr[0]), result.getString(attr[1]), result.getInt(attr[2]));
 					array.add(temp);
 				}
 				else{
@@ -159,7 +155,6 @@ public class SqlOperations {
 				}
 				
 			}
-			System.out.println("All records have been selected!");
 			return array;
 
 		} catch (Exception e) {
@@ -179,7 +174,7 @@ public class SqlOperations {
 		ResultSet result = null;
 		
 		try {
-			String query = "SELECT mType FROM Genre WHERE (movieId = " + movieId + ") LIMIT 3";
+			String query = "SELECT mType FROM Genre WHERE (movieId = " + movieId + ") LIMIT 0,3";
 			con = getConnection();
 			statement = con.prepareStatement(query);
 			result = statement.executeQuery();
@@ -191,7 +186,6 @@ public class SqlOperations {
 				a.setmType(result.getString("mType"));
 				array.add(a);
 			}
-			System.out.println("All records have been selected!");
 			return array;
 
 		} catch (Exception e) {
@@ -218,15 +212,14 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"castName","actorFlag","directorFlag","writerFlag","fkPeopleId","fkMovieId"};
+			String[] attr = new String[]{"castName", "actorFlag", "directorFlag", "writerFlag", "fkPeopleId", "fkMovieId"};
 			ArrayList<RoleInMovie> array = new ArrayList<RoleInMovie>();
 			
 			while(result.next()){
 				RoleInMovie a = new RoleInMovie();
 				if(columnCount == attr.length){
-					RoleInMovie temp = new RoleInMovie(result.getString(attr[0]),result.getInt(attr[1]),
-							result.getInt(attr[2]),result.getInt(attr[3]),result.getInt(attr[4]),
-							result.getInt(attr[5]));
+					RoleInMovie temp = new RoleInMovie(result.getString(attr[0]), result.getInt(attr[1]), result.getInt(attr[2]),
+							result.getInt(attr[3]), result.getInt(attr[4]), result.getInt(attr[5]));
 					array.add(temp);
 				}
 				else{
@@ -243,7 +236,6 @@ public class SqlOperations {
 				}
 				
 			}
-			System.out.println("All records have been selected here!");
 			return array;
 
 		} catch (Exception e) {
@@ -270,7 +262,7 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"uEmail","uDisplayName","uPassword","uRegistrationDate","userId"};
+			String[] attr = new String[]{"uEmail", "uDisplayName", "uPassword", "uRegistrationDate", "userId"};
 			ArrayList<UserClass> array = new ArrayList<UserClass>();
 			
 			while(result.next()){
@@ -286,7 +278,6 @@ public class SqlOperations {
 				array.add(a);
 				
 			}
-			System.out.println("All records have been selected userInfo!");
 			return array;
 
 		} catch (Exception e) {
@@ -313,7 +304,7 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"fkUserId","fkMovieId","rating"};
+			String[] attr = new String[]{"fkUserId", "fkMovieId", "rating"};
 			ArrayList<UserRatings> array = new ArrayList<UserRatings>();
 			
 			while(result.next()){
@@ -326,7 +317,6 @@ public class SqlOperations {
 				}
 				array.add(a);
 			}
-			System.out.println("All records have been selected userInfo!");
 			return array;
 
 		} catch (Exception e) {
@@ -349,7 +339,6 @@ public class SqlOperations {
 			Class.forName(driver);
 
 			Connection conn = DriverManager.getConnection(url, username, password);
-			System.out.println("Connected");
 			return conn;
 		} catch (Exception e) {
 			System.out.println(e);
@@ -427,7 +416,7 @@ public class SqlOperations {
 		String Query = "SELECT pImage FROM People WHERE peopleId = " + peopleId;
 		ImageIcon imageIcon = new ImageIcon(SqlOperations.getPeople(Query).get(0).getpImage());
 		Image image = imageIcon.getImage();
-		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), 0);
+		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
 		return new ImageIcon(im);
 	}
 	
@@ -489,7 +478,7 @@ public class SqlOperations {
 		try {
 			con = getConnection();
 			String query = "UPDATE Movie SET mRatingCount = mRatingCount + 1, "
-					+ "mRating = (mRating*(mRatingCount-1) + " + userRating + ")/mRatingCount WHERE movieId = " + mId;
+					+ "mRatingsum = mRatingSum + " + userRating + " WHERE movieId = " + mId;
 			statement = con.prepareStatement(query);
 			statement.executeUpdate();
 			
@@ -507,8 +496,7 @@ public class SqlOperations {
 		PreparedStatement statement = null;
 		try {
 			con = getConnection();
-			String query = "UPDATE Movie SET mRating = ((mRating*mRatingCount) + "
-					+ (userRating-oldRate) + ")/mRatingCount WHERE movieId = " + mId;
+			String query = "UPDATE Movie SET mRatingSum = mRatingSum + " + (userRating-oldRate) + " WHERE movieId = " + mId;
 			statement = con.prepareStatement(query);
 			statement.executeUpdate();
 			

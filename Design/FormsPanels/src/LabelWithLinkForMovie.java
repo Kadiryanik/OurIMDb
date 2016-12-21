@@ -53,7 +53,11 @@ public class LabelWithLinkForMovie {
 				
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();
-				new EachMovie(movieId, MainForm.refPanelEachOne, 0);
+				int isLogin = -1;
+				if(MainForm.getIsLogined()){
+					isLogin = 0;
+				}
+				new EachMovie(movieId, MainForm.refPanelEachOne, isLogin);
 				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});
