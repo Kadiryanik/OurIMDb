@@ -617,6 +617,33 @@ public class TryThree {
 		lblAddedWatch.setBounds(28, 21, 39, 49);
 		panelTop.add(lblAddedWatch);
 		
+		JLabel lblShowComment = new JLabel("");
+		lblShowComment.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblShowComment.setLocation(335, 25);
+		lblShowComment.setSize(24, 24);
+		lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
+		
+		//TODO: how many comment
+		JLabel lblCommentCount = new JLabel("1");
+		lblCommentCount.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		lblCommentCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblCommentCount.setSize(22, 20);
+		lblCommentCount.setLocation(335, 25);
+		lblCommentCount.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCommentCount.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
+		lblCommentCount.setForeground(Color.WHITE);
+		panelTop.add(lblCommentCount);
+		panelTop.add(lblShowComment);
+		
 		JPanel panelAward = new JPanel();
 		panelAward.setBackground(new Color(239, 227, 165));
 		panelAward.setBounds(0, 495, 550, 22);

@@ -33,9 +33,12 @@ import java.awt.Window.Type;
 import java.awt.Frame;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.font.TextAttribute;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Properties;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -71,6 +74,8 @@ public class MainForm {
 	private JTextField textFieldEmail;
 	private JPasswordField passwordFieldPass;
 	private JPasswordField passwordFieldPassA;
+	private int limitValueLeft;	//For celebs tab Pages
+	private int howManyComponent = 20;
 	
 	//OtherClass referances
 	public static JPanel refPanelEachOne;
@@ -108,37 +113,9 @@ public class MainForm {
 			}
 		}));
 	}
-	/*Database Connection*/
-	public Connection getConnection(){
-		Connection con;
-		try{
-			//Creating connection with variable which named "con" 
-			Properties properties = new Properties();
-			properties.setProperty("user", "root");
-			properties.setProperty("password", "81035241");
-			properties.setProperty("useSSL", "false");
-			properties.setProperty("autoReconnect", "true");
-			
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/imdb", properties);
-			return con;
-		} catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-	//Execute SQL query
-	public void executeSqlQuery(String query){
-		Connection con = getConnection();
-		Statement statement;
-		try {
-			statement = (Statement) con.createStatement();
-			statement.executeUpdate(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	public MainForm() {
+		limitValueLeft = 0;
 		loggedUserId = -1;
 		isLogined = false;
 		initialize();
@@ -162,7 +139,7 @@ public class MainForm {
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
 		
-		//SqlOperations.postPeopleImage("c");
+		//SqlOperations.postPeopleImage("MinimizedImages");
 		//SqlOperations.postMovieImage("a");
 		
 		final JButton btnWatchList = new JButton("");
@@ -675,6 +652,7 @@ public class MainForm {
 				panelCelebs.setVisible(false);
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
+				panelMovies.setVisible(false);
 				panelRegister.setVisible(false);
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
@@ -776,53 +754,184 @@ public class MainForm {
 		btnCelebs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				/*Celebs Inýt*/
+				CelebsComponent.Id = 0;
+				limitValueLeft = 0;
+				final int peopleCount = SqlOperations.getPeopleCount();
+				
 				panelCelebs.removeAll();
-				JScrollPane scrollPaneC = new JScrollPane();
-				scrollPaneC.setBounds(0, 0, 550, 675);
-				panelCelebs.add(scrollPaneC);
+				final JPanel panelCelebsTop = new JPanel();
+				panelCelebsTop.setBackground(new Color(248, 248, 248));
+				panelCelebsTop.setBounds(0, 0, 550, 53);
+				panelCelebs.add(panelCelebsTop);
+				panelCelebsTop.setLayout(null);
+
+				JScrollPane scrollPaneContent = new JScrollPane();
+				scrollPaneContent.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+				scrollPaneContent.setBounds(0, 53, 550, 622);
+				panelCelebs.add(scrollPaneContent);
 				
-				JPanel panelCelebsScroll = new JPanel();
-				panelCelebsScroll.setBackground(UIManager.getColor("Button.shadow"));
-				panelCelebsScroll.setLayout(new WrapLayout(FlowLayout.CENTER, 10, 5));
-				panelCelebsScroll.setBounds(0, 0, 10, 10);
-				scrollPaneC.add(panelCelebsScroll);
-				scrollPaneC.setViewportView(panelCelebsScroll);
+				final JPanel panelCelebsContents= new JPanel();
+				panelCelebsContents.setBackground(new Color(248, 248, 248));
+				panelCelebsContents.setLayout(new WrapLayout(FlowLayout.CENTER, 10, 5));
+				panelCelebsContents.setBounds(0, 0, 10, 10);
+				scrollPaneContent.add(panelCelebsContents);
+				scrollPaneContent.setViewportView(panelCelebsContents);
+
+				//String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People";
+				//final ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
 				
-				String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People";
-				ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
 				
 				JLabel lblSortBy = new JLabel("Sort by: ");
-				panelCelebsScroll.add(lblSortBy);
+				lblSortBy.setBounds(205, 5, 46, 14);
+				panelCelebsTop.add(lblSortBy);
 				
 				JLabel lblAz = new JLabel("A-Z,");
-				panelCelebsScroll.add(lblAz);
-				
-				JLabel lblHeight = new JLabel("Height,");
-				panelCelebsScroll.add(lblHeight);
+				lblAz.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						//TODO:
+					}
+				});
+				lblAz.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				lblAz.setBounds(261, 5, 26, 14);
+				panelCelebsTop.add(lblAz);
 				
 				JLabel lblBirthDate = new JLabel("Birth Date");
-				panelCelebsScroll.add(lblBirthDate);
+				lblBirthDate.setBounds(296, 5, 56, 14);
+				panelCelebsTop.add(lblBirthDate);
 				
 				JLabel lblLine = new JLabel("");
+				lblLine.setBounds(25, 24, 500, 2);
 				lblLine.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
-				panelCelebsScroll.add(lblLine);
+				panelCelebsTop.add(lblLine);
 				
-				JLabel lblTotalNames = new JLabel("Total Names:");
-				panelCelebsScroll.add(lblTotalNames);
+				JLabel lblTotalNames = new JLabel("Total Names: " + peopleCount);
+				lblTotalNames.setBounds(180, 32, 125, 14);
+				panelCelebsTop.add(lblTotalNames);
 				
-				JLabel lblNamescount = new JLabel("" + celebList.size());
-				panelCelebsScroll.add(lblNamescount);
+				final JLabel lblPage = new JLabel("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+				lblPage.setBounds(291, 32, 150, 14);
+				panelCelebsTop.add(lblPage);
 				
-				CelebsComponent.Id = 0;
+				final JLabel lblPrev = new JLabel("<< PreviusPage");
+				lblPrev.setBounds(10, 32, 85, 14);
+				lblPrev.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
+				lblPrev.setForeground(new Color(150,90,240));
+				lblPrev.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				lblPrev.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						Font font = lblPrev.getFont();
+						Map attributes = font.getAttributes();
+						attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+						lblPrev.setFont(font.deriveFont(attributes));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						lblPrev.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int highLimit;
+						//prev page olmadýðý koþul
+						if(limitValueLeft - howManyComponent < 0){
+							CelebsComponent.Id = 0;
+							//bi sonraki sayfaya geçmeyecek 
+							if(peopleCount < howManyComponent){
+								highLimit = peopleCount;
+							}else{
+								highLimit = howManyComponent;
+							}
+							System.out.println("prev Page yok");
+						}else{
+							//For delete before celebs
+							panelCelebsContents.removeAll();
+							
+							highLimit = limitValueLeft;
+							limitValueLeft -= howManyComponent;
+							CelebsComponent.Id = limitValueLeft;
+							
+							String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+							ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+							
+							
+							for(int i = 0; i < celebList.size(); i++){
+								new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+										celebList.get(i).getpDescription(), panelCelebsContents);
+							}
+							lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+						}
+					
+					}
+				});
+				panelCelebsTop.add(lblPrev);
 				
-				for(int i = 0; i < celebList.size(); i++){
-					new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
-							celebList.get(i).getpDescription(), panelCelebsScroll);
+				final JLabel lblNext = new JLabel("NextPage >>");
+				lblNext.setBounds(470, 32, 70, 17);
+				lblNext.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
+				lblNext.setForeground(new Color(150,90,240));
+				lblNext.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				lblNext.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseEntered(MouseEvent arg0) {
+						Font font = lblNext.getFont();
+						Map attributes = font.getAttributes();
+						attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+						lblNext.setFont(font.deriveFont(attributes));
+					}
+					@Override
+					public void mouseExited(MouseEvent e) {
+						lblNext.setFont(new Font("Comic Sans MS", Font.BOLD, 11));
+					}
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						int highLimit;
+						//next page olmadýðý koþul
+						if(limitValueLeft + howManyComponent > peopleCount){
+							//bi sonraki sayfaya geçmeyecek 
+							highLimit = limitValueLeft;
+							System.out.println("Next Page yok");
+						}else{
+							
+							//For delete before celebs
+							panelCelebsContents.removeAll(); 
+							limitValueLeft += howManyComponent;
+							highLimit = limitValueLeft + howManyComponent;
+							CelebsComponent.Id = limitValueLeft;
+							if(highLimit > peopleCount){
+								highLimit = peopleCount;
+							}
+							
+							String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+							ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+							
+							for(int i = 0; i < celebList.size(); i++){
+								new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+										celebList.get(i).getpDescription(), panelCelebsContents);
+							}
+							lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+						}
+					}
+				});
+				panelCelebsTop.add(lblNext);
+				
+				String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People LIMIT " + howManyComponent + " OFFSET " + 0;
+				ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+				
+				if(celebList.size() > howManyComponent-1){
+					for(int i = 0; i < howManyComponent; i++){
+						new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+								celebList.get(i).getpDescription(), panelCelebsContents);
+					}
+				}
+				else{
+					for(int i = 0; i < peopleCount; i++){
+						new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+								celebList.get(i).getpDescription(), panelCelebsContents);
+					}
 				}
 				
 				/*EndOF Celebs Inýt*/
-				
-				
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
 				panelCelebs.setVisible(true);

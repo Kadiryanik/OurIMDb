@@ -1104,6 +1104,35 @@ public class EachMovie {
 		lblPointcount.setBounds(404, 46, 39, 14);
 		panelTop.add(lblPointcount);
 		
+		JLabel lblShowComment = new JLabel("");
+		lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblShowComment.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//TODO:comment page open
+			}
+		});
+		lblShowComment.setLocation(335, 25);
+		lblShowComment.setSize(24, 24);
+		lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
+		
+		//TODO: how many comment
+		JLabel lblCommentCount = new JLabel("1");
+		lblCommentCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblCommentCount.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//TODO:comment page open
+			}
+		});
+		lblCommentCount.setSize(22, 20);
+		lblCommentCount.setLocation(335, 25);
+		lblCommentCount.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCommentCount.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
+		lblCommentCount.setForeground(Color.WHITE);
+		panelTop.add(lblCommentCount);
+		panelTop.add(lblShowComment);
+		
 		//panelHover
 		panelHover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panelHover.addMouseListener(new MouseAdapter() {
@@ -1125,6 +1154,7 @@ public class EachMovie {
 		panelHover.setBounds(447, 24, 81, 38);
 		panelTop.add(panelHover);
 		panelHover.setLayout(null);
+		
 		
 		//panelHoverRated
 		panelHoverRated.setBounds(447, 24, 81, 38);

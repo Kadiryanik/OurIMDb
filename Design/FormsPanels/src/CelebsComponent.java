@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 
@@ -7,6 +8,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class CelebsComponent {
@@ -21,21 +23,21 @@ public class CelebsComponent {
 		celebId = cId;
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 530, 100);
+		panel.setBounds(0, 0, 530, 113);
+
+		JPanel panelName = new JPanel();
+		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		new LabelWithLink(name, cId, true, panelName);
+		panel.add(panelName);
 		
 		JLabel label = new JLabel(Id + ".");
 		label.setBounds(10, 11, 42, 14);
 		panel.add(label);
 		
 		JLabel lblImage = new JLabel("image");
-		lblImage.setBounds(62, 11, 57, 78);
+		lblImage.setBounds(51, 5, 73, 103);
 		lblImage.setIcon(SqlOperations.getPeopleImage(celebId, lblImage));
-		/*String query = "SELECT pTitle FROM people WHERE peopleId = " + celebId;
-		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurIMDb//DB//c//" + SqlOperations.getPeople(query).get(0).getpTitle() + ".jpg");
-		Image image = imageIcon.getImage();
-		Image imageResized = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
-		lblImage.setIcon(new ImageIcon(imageResized));
-		*/panel.add(lblImage);
+		panel.add(lblImage);
 		
 		JLabel lblName = new JLabel(name);
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 12));
@@ -43,6 +45,7 @@ public class CelebsComponent {
 		panel.add(lblName);
 		
 		JTextArea txtBio = new JTextArea();
+		txtBio.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 		txtBio.setEditable(false);
 		txtBio.setFocusable(false);
 		txtBio.setText(bio);
@@ -50,16 +53,21 @@ public class CelebsComponent {
 		txtBio.setWrapStyleWord(true);
 		txtBio.setBounds(134, 35, 386, 54);
 		
+		JScrollPane scroll = new JScrollPane(txtBio);
+	    scroll.setViewportView(txtBio);
+		
 		if(Id % 2 == 0){
-			panel.setBackground(new Color(230, 230, 245));
-			txtBio.setBackground(new Color(230, 230, 245));
+			panelName.setBackground(new Color(241, 241, 241));
+			panel.setBackground(new Color(241, 241, 241));
+			txtBio.setBackground(new Color(241, 241, 241));
 		}
 		else{
+			panelName.setBackground(Color.WHITE);
 			panel.setBackground(Color.WHITE);
 			txtBio.setBackground(Color.WHITE);
 		}
 		
-		panel.add(txtBio);
+		panel.add(scroll);
 		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -67,29 +75,37 @@ public class CelebsComponent {
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(10)
-					.addComponent(label, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
-					.addGap(10)
-					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 57, GroupLayout.PREFERRED_SIZE)
-					.addGap(15)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(label, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(41)
+							.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(11)
-							.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 264, GroupLayout.PREFERRED_SIZE))
-						.addComponent(txtBio, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)))
+							.addGap(21)
+							.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 375, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(10)
+							.addComponent(scroll, GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+							.addContainerGap())))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(11)
-					.addComponent(label))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(11)
-					.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(6)
-					.addComponent(lblName, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-					.addGap(7)
-					.addComponent(txtBio, GroupLayout.PREFERRED_SIZE, 54, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(5)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup()
+									.addGap(6)
+									.addComponent(label))
+								.addComponent(lblImage, GroupLayout.PREFERRED_SIZE, 103, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(6)
+							.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+							.addGap(7)
+							.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
+					.addGap(5))
 		);
 		panel.setLayout(gl_panel);
 		panelReal.add(panel);

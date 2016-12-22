@@ -331,7 +331,7 @@ public class SqlOperations {
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3307/imdb?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "h3b9er1po";
 			Class.forName(driver);
@@ -378,9 +378,7 @@ public class SqlOperations {
 		PreparedStatement statement = null;
 		
 		try {
-			System.out.println("here");
 			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle FROM People");
-			System.out.println("here2");
 			String imageQuery = "UPDATE People SET pImage = ? WHERE pTitle = ?";
 			con = getConnection();
 			statement = con.prepareStatement(imageQuery);
@@ -506,4 +504,28 @@ public class SqlOperations {
 			try { if (con != null) con.close(); } catch (Exception e) {};
 		}
 	}
+	
+	public static int getPeopleCount(){
+		Connection con = null;
+		PreparedStatement statement = null;
+		
+		try {
+			String countQuery = "SELECT count(peopleId) as peopleCount FROM people";
+			con = getConnection();
+			statement = con.prepareStatement(countQuery);
+			ResultSet result = statement.executeQuery();
+			int x = 0;
+			while(result.next()){
+				x = result.getInt("peopleCount");
+			}
+			return x;
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return 0;
+	}
+	
 }
