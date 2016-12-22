@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 public class SearchCelebComponent {
 	public static int Id = 0;
 	String name;
-	int celebId;
+	String celebId;
 	
-	public SearchCelebComponent(String n, int cId, JPanel panelReal) {
+	public SearchCelebComponent(String n, String cId, JPanel panelReal) {
 		Id++;
 		name = n;
 		celebId = cId;

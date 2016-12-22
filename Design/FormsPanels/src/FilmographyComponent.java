@@ -11,15 +11,15 @@ import javax.swing.SwingConstants;
 
 public class FilmographyComponent {
 	public static int Id  = 0;
-	private int movieId;
-	private int celebId;
+	private String movieId;
+	private String celebId;
 	
-	public FilmographyComponent(int mId, int cId, JPanel panelReal) {
+	public FilmographyComponent(String mId, String cId, JPanel panelReal) {
 		Id++;
 		movieId = mId;
 		celebId = cId;
 		
-		String movieQuery = "SELECT mTitle, mDate, movieId FROM Movie WHERE movieId = " + movieId;
+		String movieQuery = "SELECT mTitle, mDate, movieId FROM Movie WHERE movieId = '" + movieId + "'";
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
 		
 		JPanel panel = new JPanel();
@@ -34,7 +34,7 @@ public class FilmographyComponent {
 		panelRoleInMovie.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
 		String castQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE "
-				+ "fkMovieId = " + movieId + " AND fkPeopleId = " + celebId;
+				+ "fkMovieId = '" + movieId + "' AND fkPeopleId = '" + celebId + "'";
 		ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(castQuery);
 		
 		/*castname in movie*/

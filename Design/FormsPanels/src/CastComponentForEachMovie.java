@@ -10,11 +10,11 @@ import javax.swing.JPanel;
 
 public class CastComponentForEachMovie {
 	public static int Id = 0;
-	private int celebId;
+	private String celebId;
 	private String name;
 	private String nameInMovie;
 	
-	CastComponentForEachMovie(int c, String n, String nM, JPanel panelReal){
+	CastComponentForEachMovie(String c, String n, String nM, JPanel panelReal){
 		Id++;
 		celebId = c;
 		name = n;

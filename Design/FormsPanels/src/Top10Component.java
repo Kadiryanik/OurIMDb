@@ -18,13 +18,13 @@ import java.awt.Dimension;
 
 public class Top10Component {
 	public static int Id = 0;
-	private int movieId;
+	private String movieId;
 	private String name;
 	private double rating;
 	
-	public Top10Component(int m, String n, double r, JPanel panelReal){
+	public Top10Component(String mId, String n, double r, JPanel panelReal){
 		Id++;
-		movieId = m;
+		movieId = mId;
 		name = n;
 		rating = r;
 		String movieRating = String.format("%.1f", rating);
@@ -93,7 +93,7 @@ public class Top10Component {
 		
 		int isAdded = -1;
 		if(MainForm.getIsLogined()){
-			String movieQuery = "SELECT movieId FROM Movie WHERE movieId = " + movieId + " AND movieId IN"
+			String movieQuery = "SELECT movieId FROM Movie WHERE movieId = '" + movieId + "' AND movieId IN"
 					+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + ")";
 			ArrayList<Movie> d = SqlOperations.getMovie(movieQuery);
 			if(d.size() > 0){
@@ -116,7 +116,7 @@ public class Top10Component {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(MainForm.getIsLogined()){
-					String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
+					String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + ",'" + movieId + "')";
 					SqlOperations.insert(query);
 					lblAddwatchlist.setVisible(false);
 					lblAddedwatchlist.setVisible(true);
@@ -139,7 +139,7 @@ public class Top10Component {
 		lblAddedwatchlist.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId;
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 				SqlOperations.delete(query);
 				lblAddedwatchlist.setVisible(false);
 				lblAddwatchlist.setVisible(true);

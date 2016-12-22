@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 
 public class MostRatedComponent {
 	private String name;
-	private int movieId;
+	private String movieId;
 	private int userId;
-	MostRatedComponent(String n, int uId, int mId, JPanel panelReal) {
+	MostRatedComponent(String n, int uId, String mId, JPanel panelReal) {
 		name = n;
 		movieId = mId;
 		userId = uId;
@@ -42,14 +42,14 @@ public class MostRatedComponent {
 		
 		/*getting movie rating which user rated*/
 		JLabel lblRate = new JLabel("");
-		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " AND fkMovieId = " + movieId;
+		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " AND fkMovieId = '" + movieId + "'";
 		ArrayList<UserRatings> rating = SqlOperations.getUserRating(ratingQuery);
 		if(rating.size() != 0){
 			lblRate.setText("" + rating.get(0).getRating());
 			lblRate.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\MostRatedStar.png"));
 		}
 		else{
-			String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = " + movieId;
+			String movieQuery = "SELECT mRatingSum, mRatingCount FROM Movie WHERE movieId = '" + movieId + "'";
 			ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
 			double movieRating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
 			String s = String.format("%.1f", movieRating);

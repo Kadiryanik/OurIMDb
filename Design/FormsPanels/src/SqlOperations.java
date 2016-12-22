@@ -34,7 +34,7 @@ public class SqlOperations {
 				if(columnCount == attr.length){
 					Movie temp = new Movie(result.getString(attr[0]), result.getString(attr[1]), result.getString(attr[2]),
 							result.getString(attr[3]), result.getString(attr[4]), result.getDouble(attr[5]), result.getDouble(attr[6]),
-							result.getString(attr[7]), result.getBytes(attr[8]), result.getString(attr[9]), result.getInt(attr[10]));
+							result.getString(attr[7]), result.getBytes(attr[8]), result.getString(attr[9]), result.getString(attr[10]));
 					array.add(temp);
 				}
 				else{
@@ -50,7 +50,7 @@ public class SqlOperations {
 						if(g.equals(attr[7])){a.setmDescription(result.getString(attr[7]));}
 						if(g.equals(attr[8])){a.setmImage(result.getBytes(attr[8]));}
 						if(g.equals(attr[9])){a.setmUrlLink(result.getString(attr[9]));}
-						if(g.equals(attr[10])){a.setMovieId(result.getInt(attr[10]));}
+						if(g.equals(attr[10])){a.setMovieId(result.getString(attr[10]));}
 					}
 					array.add(a);
 				}
@@ -82,15 +82,14 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"pTitle", "pBirthday", "pBirthPlace", "pImage", "pDescription", "pImdbId", "pImageUrl", "peopleId"};
+			String[] attr = new String[]{"pTitle", "pBirthday", "pBirthPlace", "pImage", "pDescription", "pImageUrl", "peopleId"};
 			ArrayList<People> array = new ArrayList<People>();
 			
 			while(result.next()){
 				People a = new People();
 				if(columnCount == attr.length){
 					People temp = new People(result.getString(attr[0]), result.getString(attr[1]), result.getString(attr[2]),
-							result.getBytes(attr[3]), result.getString(attr[4]), result.getString(attr[5]),
-							result.getString(attr[6]),result.getInt(attr[7]));
+							result.getBytes(attr[3]), result.getString(attr[4]),result.getString(attr[5]),result.getString(attr[6]));
 					array.add(temp);
 				}
 				else{
@@ -101,9 +100,8 @@ public class SqlOperations {
 						if(g.equals(attr[2])){a.setpBirthPlace(result.getString(attr[2]));}
 						if(g.equals(attr[3])){a.setpImage(result.getBytes(attr[3]));}
 						if(g.equals(attr[4])){a.setpDescription(result.getString(attr[4]));}
-						if(g.equals(attr[5])){a.setpImdbId(result.getString(attr[5]));}
-						if(g.equals(attr[6])){a.setpImageUrl(result.getString(attr[6]));}
-						if(g.equals(attr[7])){a.setPeopleId(result.getInt(attr[7]));}
+						if(g.equals(attr[5])){a.setpImageUrl(result.getString(attr[5]));}
+						if(g.equals(attr[6])){a.setPeopleId(result.getString(attr[6]));}
 					}
 					array.add(a);
 				}
@@ -167,14 +165,14 @@ public class SqlOperations {
 		return null;
 	}//END OF getOrganization
 	
-	public static ArrayList<Genre> getGenre(int movieId){
+	public static ArrayList<Genre> getGenre(String movieId){
 		
 		Connection con = null;
 		PreparedStatement statement = null;
 		ResultSet result = null;
 		
 		try {
-			String query = "SELECT mType FROM Genre WHERE (movieId = " + movieId + ") LIMIT 0,3";
+			String query = "SELECT mType FROM Genre WHERE (movieId = '" + movieId + "') LIMIT 0,3";
 			con = getConnection();
 			statement = con.prepareStatement(query);
 			result = statement.executeQuery();
@@ -219,7 +217,7 @@ public class SqlOperations {
 				RoleInMovie a = new RoleInMovie();
 				if(columnCount == attr.length){
 					RoleInMovie temp = new RoleInMovie(result.getString(attr[0]), result.getInt(attr[1]), result.getInt(attr[2]),
-							result.getInt(attr[3]), result.getInt(attr[4]), result.getInt(attr[5]));
+							result.getInt(attr[3]), result.getString(attr[4]), result.getString(attr[5]));
 					array.add(temp);
 				}
 				else{
@@ -229,8 +227,8 @@ public class SqlOperations {
 						if(g.equals(attr[1])){a.setActorFlag(result.getInt(attr[1]));}
 						if(g.equals(attr[2])){a.setDirectorFlag(result.getInt(attr[2]));}
 						if(g.equals(attr[3])){a.setWriterFlag(result.getInt(attr[3]));}
-						if(g.equals(attr[4])){a.setFkPeopleId(result.getInt(attr[4]));}
-						if(g.equals(attr[5])){a.setFkMovieId(result.getInt(attr[5]));}
+						if(g.equals(attr[4])){a.setFkPeopleId(result.getString(attr[4]));}
+						if(g.equals(attr[5])){a.setFkMovieId(result.getString(attr[5]));}
 					}
 					array.add(a);
 				}
@@ -311,8 +309,8 @@ public class SqlOperations {
 				UserRatings a = new UserRatings();
 				for(int i = 1; i <= columnCount ; i++){
 					String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
-					if(g.equals(attr[0])){a.setFkUserId(result.getInt(attr[0]));}
-					if(g.equals(attr[1])){a.setFkMovieId(result.getInt(attr[1]));}
+					if(g.equals(attr[0])){a.setFkUserId(result.getString(attr[0]));}
+					if(g.equals(attr[1])){a.setFkMovieId(result.getString(attr[1]));}
 					if(g.equals(attr[2])){a.setRating(result.getInt(attr[2]));}
 				}
 				array.add(a);
@@ -380,8 +378,9 @@ public class SqlOperations {
 		PreparedStatement statement = null;
 		
 		try {
+			System.out.println("here");
 			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle FROM People");
-			
+			System.out.println("here2");
 			String imageQuery = "UPDATE People SET pImage = ? WHERE pTitle = ?";
 			con = getConnection();
 			statement = con.prepareStatement(imageQuery);
@@ -402,18 +401,18 @@ public class SqlOperations {
 		}
 	}
 	
-	public static ImageIcon getMovieImage(int movieId,JLabel lblImage){
+	public static ImageIcon getMovieImage(String movieId,JLabel lblImage){
 		
-		String Query = "SELECT mImage FROM Movie WHERE movieId = " + movieId;
+		String Query = "SELECT mImage FROM Movie WHERE movieId = '" + movieId + "'";
 		ImageIcon imageIcon = new ImageIcon(SqlOperations.getMovie(Query).get(0).getmImage());
 		Image image = imageIcon.getImage();
-		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), 0);
+		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
 		return new ImageIcon(im);
 	}
 	
-	public static ImageIcon getPeopleImage(int peopleId,JLabel lblImage){
+	public static ImageIcon getPeopleImage(String peopleId,JLabel lblImage){
 		
-		String Query = "SELECT pImage FROM People WHERE peopleId = " + peopleId;
+		String Query = "SELECT pImage FROM People WHERE peopleId = '" + peopleId + "'";
 		ImageIcon imageIcon = new ImageIcon(SqlOperations.getPeople(Query).get(0).getpImage());
 		Image image = imageIcon.getImage();
 		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
@@ -471,14 +470,14 @@ public class SqlOperations {
 		}
 	}
 	
-	public static void updateMovieRating(int mId, int userRating){
+	public static void updateMovieRating(String mId, int userRating){
 		
 		Connection con = null;
 		PreparedStatement statement = null;
 		try {
 			con = getConnection();
 			String query = "UPDATE Movie SET mRatingCount = mRatingCount + 1, "
-					+ "mRatingsum = mRatingSum + " + userRating + " WHERE movieId = " + mId;
+					+ "mRatingsum = mRatingSum + " + userRating + " WHERE movieId = '" + mId + "'";
 			statement = con.prepareStatement(query);
 			statement.executeUpdate();
 			
@@ -490,13 +489,13 @@ public class SqlOperations {
 		}
 	}
 	
-	public static void updateMovieRatingAfterRated(int mId, int userRating, int oldRate){
+	public static void updateMovieRatingAfterRated(String mId, int userRating, int oldRate){
 		
 		Connection con = null;
 		PreparedStatement statement = null;
 		try {
 			con = getConnection();
-			String query = "UPDATE Movie SET mRatingSum = mRatingSum + " + (userRating-oldRate) + " WHERE movieId = " + mId;
+			String query = "UPDATE Movie SET mRatingSum = mRatingSum + " + (userRating-oldRate) + " WHERE movieId = '" + mId + "'";
 			statement = con.prepareStatement(query);
 			statement.executeUpdate();
 			

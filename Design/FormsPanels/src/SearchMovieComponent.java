@@ -11,12 +11,13 @@ import javax.swing.JPanel;
 public class SearchMovieComponent {
 	public static int Id = 0;
 	private String name;
-	private int movieId;
+	private String movieId;
 	
-	public SearchMovieComponent(String n, int mId, JPanel panelReal) {
+	public SearchMovieComponent(String n, String mId, JPanel panelReal) {
 		Id++;
 		name = n;
 		movieId = mId;
+		
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 722, 530, 44);
 		
@@ -29,7 +30,7 @@ public class SearchMovieComponent {
 		
 		new LabelWithLinkForMovie(name, movieId, 11, panelNameDate);
 		
-		String date = SqlOperations.getMovie("SELECT mDate FROM Movie WHERE movieId = " + movieId).get(0).getmDate().substring(0, 4);
+		String date = SqlOperations.getMovie("SELECT mDate FROM Movie WHERE movieId = '" + movieId + "'").get(0).getmDate().substring(0, 4);
 		JLabel lblDate = new JLabel("(" + date + ")");
 		lblDate.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		lblDate.setForeground(new Color(51, 51, 51));

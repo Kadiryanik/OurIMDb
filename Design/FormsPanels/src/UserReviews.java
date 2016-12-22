@@ -15,9 +15,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class UserReviews {
-	private int movieId;
+	private String movieId;
 	
-	UserReviews(int mId, JPanel panelReal){
+	UserReviews(String mId, JPanel panelReal){
 		movieId = mId;
 		
 		JPanel panel = new JPanel();

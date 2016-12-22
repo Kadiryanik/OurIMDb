@@ -18,9 +18,9 @@ import javax.swing.UIManager;
 
 public class MovieTabComponents {
 	public static int Id = 0;
-	private int movieId;
+	private String movieId;
 	
-	MovieTabComponents(int mId, JPanel panelReal){
+	MovieTabComponents(String mId, JPanel panelReal){
 		Id++;
 		movieId = mId;
 		
@@ -56,7 +56,7 @@ public class MovieTabComponents {
 		
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		String movieQuery = "SELECT mTitle, mImage, mTime, mDescription FROM Movie WHERE movieId = " + movieId ;
+		String movieQuery = "SELECT mTitle, mImage, mTime, mDescription FROM Movie WHERE movieId = '" + movieId + "'";
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
 		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieId, 12, panelName);
 		
@@ -70,7 +70,7 @@ public class MovieTabComponents {
 		}
 		
 		String starsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND actorFlag = 1) LIMIT 0,3";
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = '" + movieId + "' AND actorFlag = 1) LIMIT 0,3";
 		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
 		for(int i = 0; i < starsList.size(); i++ ){
 			boolean isLast = false;
@@ -81,7 +81,7 @@ public class MovieTabComponents {
 		}
 		 
 		String directorQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
-				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = " + movieId + " AND directorFlag = 1) LIMIT 0,1";
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = '" + movieId + "' AND directorFlag = 1) LIMIT 0,1";
 		ArrayList<People> directorList = SqlOperations.getPeople(directorQuery);
 		for(int i = 0; i < directorList.size(); i++ ){
 			boolean isLast = false;

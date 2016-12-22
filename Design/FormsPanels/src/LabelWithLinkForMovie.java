@@ -15,9 +15,9 @@ import javax.swing.SwingConstants;
 
 public class LabelWithLinkForMovie {
 	private String name;
-	private int movieId;
+	private String movieId;
 	private int fontSize;
-	LabelWithLinkForMovie(String n, int mId, int f, JPanel panelReal){
+	LabelWithLinkForMovie(String n, String mId, int f, JPanel panelReal){
 		movieId = mId;
 		name = n;
 		fontSize = f;

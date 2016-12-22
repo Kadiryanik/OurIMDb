@@ -1,10 +1,10 @@
 public class Genre {
 	private String mType;
-	private int movieId;
+	private String movieId;
 	
 	Genre(){}
 	
-	Genre(String mType, int movieId){
+	Genre(String mType, String movieId){
 		this.setmType(mType);
 		this.setmovieId(movieId);
 	}
@@ -15,10 +15,10 @@ public class Genre {
 	public void setmType(String mType) {
 		this.mType = mType;
 	}
-	public int getmovieId() {
+	public String getmovieId() {
 		return movieId;
 	}
-	public void setmovieId(int movieId) {
+	public void setmovieId(String movieId) {
 		this.movieId = movieId;
 	}
 }

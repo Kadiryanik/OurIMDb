@@ -163,7 +163,7 @@ public class MainForm {
 		frmOurmdb.getContentPane().setLayout(null);
 		
 		//SqlOperations.postPeopleImage("c");
-		SqlOperations.postMovieImage("a");
+		//SqlOperations.postMovieImage("a");
 		
 		final JButton btnWatchList = new JButton("");
 		JButton btnLogin = new JButton("");
@@ -751,9 +751,11 @@ public class MainForm {
 				//EndOf-Movies Init
 				//TODO: scrollpane en üstte deðilken o sayfaya tekrar týklanýrsa yanlýþ yerlerde tekrar oluþturuyor.
 				panelMovies.setVisible(false);
-				MovieTabComponents temp = new MovieTabComponents(1, panelInTheaters);
-				temp = new MovieTabComponents(1, panelInTheaters);
-				temp = new MovieTabComponents(1, panelInTheaters);
+				String movieQuery = "SELECT movieId FROM Movie ORDER BY mDate";
+				ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+				for(int i = 0; i < movieList.size(); i++){
+					new MovieTabComponents(movieList.get(i).getMovieId(), panelInTheaters);
+				}
 				
 				panelHome.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -1063,7 +1065,6 @@ public class MainForm {
 						lblYourname.setVisible(false);
 					}
 				});
-				System.out.println(lblYourname.getText());
 				textFieldYourName.setBounds(120, 126, 310, 30);
 				panelRegister.add(textFieldYourName);
 				textFieldYourName.setColumns(10);
