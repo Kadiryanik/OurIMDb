@@ -13,8 +13,8 @@ public class CelebsComponent {
 	public static int Id = 0;
 	private String name;
 	private String bio;
-	private int celebId;
-	public CelebsComponent(int cId, String n, String b, JPanel panelReal){
+	private String celebId;
+	public CelebsComponent(String cId, String n, String b, JPanel panelReal){
 		Id++;
 		name = n;
 		bio = b;

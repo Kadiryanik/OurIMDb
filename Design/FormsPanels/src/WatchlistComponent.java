@@ -16,14 +16,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class WatchlistComponent {
-	private int movieId;
+	private String movieId;
 	private int userId;
-	WatchlistComponent(int uId, int mId, JPanel panelReal){
+	WatchlistComponent(int uId, String mId, JPanel panelReal){
 		movieId = mId;
 		userId = uId;
 		int isAdded = 0;
 		
-		String Query = "SELECT movieId FROM Movie WHERE movieId = " + movieId + " AND movieId IN"
+		String Query = "SELECT movieId FROM Movie WHERE movieId = '" + movieId + "' AND movieId IN"
 				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")";
 		ArrayList<Movie> watchList = SqlOperations.getMovie(Query);
 		if(watchList.size() > 0){
@@ -48,7 +48,7 @@ public class WatchlistComponent {
 		lblAddWatch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + "," + movieId + ")";
+				String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + ",'" + movieId + "')";
 				SqlOperations.insert(query);
 				lblAddWatch.setVisible(false);
 				lblAddedWatch.setVisible(true);
@@ -70,7 +70,7 @@ public class WatchlistComponent {
 		JLabel lblStarb = new JLabel("");
 		
 		/*getting movie rating which user rated*/
-		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " AND fkMovieId = " + movieId;
+		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " AND fkMovieId = '" + movieId + "'";
 		ArrayList<UserRatings> rating = SqlOperations.getUserRating(ratingQuery);
 		if(rating.size() != 0){//if there is no rating don't need this field
 			lblYourratingpoint.setText("" + rating.get(0).getRating());
@@ -79,7 +79,7 @@ public class WatchlistComponent {
 		}
 		
 		/*getting movie informations*/
-		String movieQuery = "SELECT mRatingSum, mRatingCount, mDescription, mImage FROM Movie WHERE movieId = " + movieId;
+		String movieQuery = "SELECT mRatingSum, mRatingCount, mDescription, mImage FROM Movie WHERE movieId = '" + movieId + "'";
 		ArrayList<Movie> movieInfo = SqlOperations.getMovie(movieQuery);
 		double movieRating = movieInfo.get(0).getmRatingSum() / movieInfo.get(0).getmRatingCount();
 		String s = String.format("%.1f", movieRating);
@@ -117,7 +117,7 @@ public class WatchlistComponent {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = " + movieId;
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 				SqlOperations.delete(query);
 				lblAddedWatch.setVisible(false);
 				lblAddWatch.setVisible(true);

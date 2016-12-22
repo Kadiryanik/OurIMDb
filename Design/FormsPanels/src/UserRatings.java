@@ -1,27 +1,27 @@
 
 public class UserRatings {
-	private int fkUserId;
-	private int fkMovieId;
+	private String fkUserId;
+	private String fkMovieId;
 	private int rating;
 	
 	UserRatings(){}
 	
-	UserRatings(int fkUserId, int fkMovieId, int rating){
+	UserRatings(String fkUserId, String fkMovieId, int rating){
 		this.setFkUserId(fkUserId);
 		this.setFkMovieId(fkMovieId);
 		this.setRating(rating);
 	}
 	
-	public int getFkUserId() {
+	public String getFkUserId() {
 		return fkUserId;
 	}
-	public void setFkUserId(int fkUserId) {
+	public void setFkUserId(String fkUserId) {
 		this.fkUserId = fkUserId;
 	}
-	public int getFkMovieId() {
+	public String getFkMovieId() {
 		return fkMovieId;
 	}
-	public void setFkMovieId(int fkMovieId) {
+	public void setFkMovieId(String fkMovieId) {
 		this.fkMovieId = fkMovieId;
 	}
 	public int getRating() {

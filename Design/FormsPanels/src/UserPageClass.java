@@ -26,7 +26,7 @@ public class UserPageClass {
 		
 		JLabel lblIcon = new JLabel("");
 		lblIcon.setBounds(35, 11, 74, 84);
-		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurImdb//DB//c//A.D. Flowers.jpg");
+		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurImdb//DB//Felicity Jones.jpg");
 		Image image = imageIcon.getImage();
 		Image imageResized = image.getScaledInstance(lblIcon.getWidth(),lblIcon.getHeight(), Image.SCALE_SMOOTH);
 		lblIcon.setIcon(new ImageIcon(imageResized));
@@ -76,7 +76,7 @@ public class UserPageClass {
 		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " ORDER BY rating DESC";
 		ArrayList<UserRatings> ratingList = SqlOperations.getUserRating(ratingQuery);
 		for(int i = 0; i < ratingList.size(); i++){
-			String movieName = SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = " + ratingList.get(i).getFkMovieId()).get(0).getmTitle();
+			String movieName = SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + ratingList.get(i).getFkMovieId() + "'").get(0).getmTitle();
 			new MostRatedComponent(movieName, userId, ratingList.get(i).getFkMovieId(), panelContentMost);
 		}
 		

@@ -4,12 +4,12 @@ public class RoleInMovie {
 	private int actorFlag;
 	private int directorFlag;
 	private int writerFlag;
-	private int fkPeopleId;
-	private int fkMovieId;
+	private String fkPeopleId;
+	private String fkMovieId;
 	
 	RoleInMovie(){}
 	
-	RoleInMovie(String castName, int actorFlag, int directorFlag, int writerFlag,int fkPeopleId, int fkMovieId ){
+	RoleInMovie(String castName, int actorFlag, int directorFlag, int writerFlag, String fkPeopleId, String fkMovieId ){
 		this.setCastName(castName);
 		this.setActorFlag(actorFlag);
 		this.setDirectorFlag(directorFlag);
@@ -42,16 +42,16 @@ public class RoleInMovie {
 	public void setWriterFlag(int writerFlag) {
 		this.writerFlag = writerFlag;
 	}
-	public int getFkPeopleId() {
+	public String getFkPeopleId() {
 		return fkPeopleId;
 	}
-	public void setFkPeopleId(int fkPeopleId) {
+	public void setFkPeopleId(String fkPeopleId) {
 		this.fkPeopleId = fkPeopleId;
 	}
-	public int getFkMovieId() {
+	public String getFkMovieId() {
 		return fkMovieId;
 	}
-	public void setFkMovieId(int fkMovieId) {
+	public void setFkMovieId(String fkMovieId) {
 		this.fkMovieId = fkMovieId;
 	}
 }

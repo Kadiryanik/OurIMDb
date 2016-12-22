@@ -10,16 +10,16 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 public class EachCeleb {
-	private int celebId;
+	private String celebId;
 	
-	public EachCeleb(int cId, JPanel panelReal) {
+	public EachCeleb(String cId, JPanel panelReal) {
 		celebId = cId;
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));
 		panel.setBounds(0, 0, 550, 726);
 		panel.setLayout(null);
 		
-		String peopleQuery = "SELECT peopleId, pTitle, pDescription, pBirthday, pBirthPlace FROM People WHERE peopleId = " + celebId;
+		String peopleQuery = "SELECT peopleId, pTitle, pDescription, pBirthday, pBirthPlace FROM People WHERE peopleId = '" + celebId + "'";
 		ArrayList<People> peopleList = SqlOperations.getPeople(peopleQuery);
 		
 		JLabel lblImage = new JLabel("image");
@@ -40,7 +40,7 @@ public class EachCeleb {
 		panelInfo.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
 		/*setting the roles of people(actor,director,writer) in the movie*/
-		String castQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE fkPeopleId = " + celebId;
+		String castQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE fkPeopleId = '" + celebId + "'";
 		ArrayList<RoleInMovie> castInfo = SqlOperations.getRole(castQuery);
 		boolean isActor = false;
 		boolean isDirector = false;
@@ -108,7 +108,7 @@ public class EachCeleb {
 		panel.add(lblFilmography);
 		
 		String movieQuery = "SELECT movieId FROM Movie WHERE movieId IN"
-				+ "(SELECT fkMovieId FROM MoviePeople WHERE fkPeopleId = " + celebId + ") ORDER BY mDate DESC";
+				+ "(SELECT fkMovieId FROM MoviePeople WHERE fkPeopleId = '" + celebId + "') ORDER BY mDate DESC";
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
 		
 		for(int i = 0; i < movieList.size(); i++){

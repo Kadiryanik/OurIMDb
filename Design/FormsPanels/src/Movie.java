@@ -11,12 +11,12 @@ public class Movie {
 	private String mDescription;
 	private byte[] mImage;
 	private String mUrlLink;
-	private int movieId;
+	private String movieId;
 	
 	Movie(){}
 	
 	Movie(String mTitle, String mDate, String mCountry, String mTime, String mLanguage, double mRatingSum,
-			double mRatingCount,String mDescription, byte[] mImage, String mUrlLink, int movieId){
+			double mRatingCount,String mDescription, byte[] mImage, String mUrlLink, String movieId){
 		this.setmTitle(mTitle);
 		this.setmDate(mDate);
 		this.setmCountry(mCountry);
@@ -72,10 +72,10 @@ public class Movie {
 	public void setmRatingCount(double mRatingCount) {
 		this.mRatingCount = mRatingCount;
 	}
-	public int getMovieId() {
+	public String getMovieId() {
 		return movieId;
 	}
-	public void setMovieId(int movieId) {
+	public void setMovieId(String movieId) {
 		this.movieId = movieId;
 	}
 	public byte[] getmImage() {

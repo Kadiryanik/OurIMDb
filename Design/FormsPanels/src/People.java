@@ -6,19 +6,17 @@ public class People {
 	private String pBirthPlace;
 	private byte[] pImage;
 	private String pDescription;
-	private String pImdbId;
 	private String pImageUrl;
-	private int peopleId;
+	private String peopleId;
 	
 	People(){}
 	
-	People(String pTitle, String pBirthday, String pBirthPlace,byte[] pImage,String pDescription, String pImdbId, String pImageUrl, int peopleId){
+	People(String pTitle, String pBirthday, String pBirthPlace,byte[] pImage,String pDescription, String pImageUrl, String peopleId){
 		this.setpTitle(pTitle);
 		this.setpBirthday(pBirthday);
 		this.setpBirthPlace(pBirthPlace);
 		this.setpImage(pImage);
 		this.setpDescription(pDescription);
-		this.setpImdbId(pImdbId);
 		this.setpImageUrl(pImageUrl);
 		this.setPeopleId(peopleId);
 	}
@@ -41,10 +39,10 @@ public class People {
 	public void setpBirthPlace(String pBirthPlace) {
 		this.pBirthPlace = pBirthPlace;
 	}
-	public int getPeopleId() {
+	public String getPeopleId() {
 		return peopleId;
 	}
-	public void setPeopleId(int peopleId) {
+	public void setPeopleId(String peopleId) {
 		this.peopleId = peopleId;
 	}
 	public byte[] getpImage() {
@@ -58,12 +56,6 @@ public class People {
 	}
 	public void setpDescription(String pDescription) {
 		this.pDescription = pDescription;
-	}
-	public String getpImdbId() {
-		return pImdbId;
-	}
-	public void setpImdbId(String pImdbId) {
-		this.pImdbId = pImdbId;
 	}
 	public String getpImageUrl() {
 		return pImageUrl;

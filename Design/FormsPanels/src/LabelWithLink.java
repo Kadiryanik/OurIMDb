@@ -14,10 +14,10 @@ import javax.swing.SwingConstants;
 
 public class LabelWithLink {
 	private String name;
-	private int celebId;
+	private String celebId;
 	private boolean isLast = false;
 	
-	LabelWithLink(String n, int c, boolean L, JPanel panelReal){
+	LabelWithLink(String n, String c, boolean L, JPanel panelReal){
 		name = n;
 		celebId = c;
 		isLast = L;
