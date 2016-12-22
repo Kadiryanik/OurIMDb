@@ -2,6 +2,7 @@
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.color.CMMException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,13 +20,17 @@ public class MinimizeImages {
 	public static void main(String[] args){
 		
 		try{
-			String query = "SELECT pTitle FROM People";
+			String query = "SELECT pTitle FROM People WHERE peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='tt0071562')";
 			ArrayList<People> list = SqlOperations.getPeople(query);
 			for(int i = 0; i < list.size(); i++){
-				BufferedImage originalImage = ImageIO.read(new File("C:\\Workplace\\OurIMDb\\DB\\OriginalImages\\"+ list.get(i).getpTitle() +".jpg"));
+				BufferedImage originalImage;
+				
+				originalImage = ImageIO.read(new File("C://Workplace//OurIMDb//DB//PeopleOriginalImages//"+ list.get(i).getpTitle() +".jpg"));
+				
 				int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
 				IMG_HEIGHT = originalImage.getHeight();
-				IMG_WIDTH = originalImage.getWidth();
+				IMG_WIDTH = originalImage.getWidth();				
+				
 				if(IMG_HEIGHT == 200 && IMG_WIDTH == 148){
 					dontTouch = true;
 				}
@@ -43,11 +48,12 @@ public class MinimizeImages {
 				}
 				if(!dontTouch){
 					BufferedImage resizeImageJpg = resizeImage(originalImage, type);
-					ImageIO.write(resizeImageJpg, "jpg", new File("C://Workplace//OurIMDb//DB//MinimizedImages//"+ list.get(i).getpTitle() +".jpg"));
+					ImageIO.write(resizeImageJpg, "jpg", new File("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//"+ list.get(i).getpTitle() +".jpg"));
 				}
 				else{
-					ImageIO.write(originalImage, "png", new File("C://Workplace//OurIMDb//DB//MinimizedImages//"+ list.get(i).getpTitle() +".jpg"));
+					ImageIO.write(originalImage, "png", new File("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//"+ list.get(i).getpTitle() +".jpg"));
 				}
+				System.out.println("" + i + " " + list.get(i).getpTitle());
 			}
 			
 			System.out.println("done");

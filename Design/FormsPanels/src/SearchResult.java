@@ -13,12 +13,50 @@ public class SearchResult {
 	
 	public SearchResult(String t, JPanel panelReal) {
 		text = t;
+		String celebQuery;
+		String movieQuery;
+		ArrayList<People> celebList = null;
+		ArrayList<Movie> movieList = null;
 		
-		String celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text + "%'";
-		ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+		if(text.length() == 0){
+			
+		}
+		else if(text.length() == 1){
+			System.out.println("char search");
+			celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text + "%'";
+			celebList = SqlOperations.getPeople(celebQuery);
+			
+			movieQuery = "SELECT movieId, mTitle FROM Movie WHERE mTitle LIKE '%" + text + "%'";
+			movieList = SqlOperations.getMovie(movieQuery);
+		}
+		else if(text.charAt(1) == ':'){
+			if(text.charAt(0) == 'g'){
+				System.out.println("genre search");
+				celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text.substring(2,text.length()) + "%'";
+				celebList = SqlOperations.getPeople(celebQuery);
+				
+				movieQuery = "SELECT movieId, mTitle FROM Movie WHERE movieId IN (SELECT movieId FROM Genre WHERE mType LIKE '%" + text.substring(2,text.length()) + "%')";
+				movieList = SqlOperations.getMovie(movieQuery);
+			}
+			else if(text.charAt(0) == 'y'){
+				System.out.println("year search");
+				celebQuery = "SELECT peopleId, pTitle FROM People WHERE pBirthday LIKE '%" + text.substring(2,text.length()) + "%'";
+				celebList = SqlOperations.getPeople(celebQuery);
+				
+				movieQuery = "SELECT movieId, mTitle FROM Movie WHERE mDate LIKE '%" + text.substring(2,text.length()) + "%'";
+				movieList = SqlOperations.getMovie(movieQuery);
+			}
+		}
+		else{
+			System.out.println("else search");
+			celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text + "%'";
+			celebList = SqlOperations.getPeople(celebQuery);
+			
+			movieQuery = "SELECT movieId, mTitle FROM Movie WHERE mTitle LIKE '%" + text + "%'";
+			movieList = SqlOperations.getMovie(movieQuery);
+		}
 		
-		String movieQuery = "SELECT movieId, mTitle FROM Movie WHERE mTitle LIKE '%" + text + "%'";
-		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+		
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));

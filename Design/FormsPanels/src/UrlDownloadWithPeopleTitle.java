@@ -27,11 +27,12 @@ public class UrlDownloadWithPeopleTitle {
 	public static void deneme() throws NoSuchAlgorithmException, KeyManagementException, IOException, MalformedURLException{
 		
 		int i = 0;
-		String query = "SELECT pTitle,pImageUrl FROM People";
+		String query = "SELECT pTitle,pImageUrl FROM people WHERE peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='tt0071562')";
 		ArrayList<People> list = SqlOperations.getPeople(query);
-		
+       
 		for(i = 0; i < list.size(); i++){
-		// Create a trust manager that does not validate certificate chains
+			
+			// Create a trust manager that does not validate certificate chains
 	       TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
 	               public java.security.cert.X509Certificate[] getAcceptedIssuers() {
 	                   return null;
@@ -42,19 +43,19 @@ public class UrlDownloadWithPeopleTitle {
 	               }
 	           }
 	       };
-	
+
 	       // Install the all-trusting trust manager
 	       SSLContext sc = SSLContext.getInstance("SSL");
 	       sc.init(null, trustAllCerts, new java.security.SecureRandom());
 	       HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-	
+
 	       // Create all-trusting host name verifier
 	       HostnameVerifier allHostsValid = new HostnameVerifier() {
 	           public boolean verify(String hostname, SSLSession session) {
 	               return true;
 	           }
 	       };
-	
+
 	       // Install the all-trusting host verifier
 	       HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
 	
@@ -77,9 +78,10 @@ public class UrlDownloadWithPeopleTitle {
 			
 			byte[] response = out.toByteArray();
 			
-			FileOutputStream fos = new FileOutputStream("C://Workplace//OurIMDb//DB//c//"+ list.get(i).getpTitle() +".jpg");
+			FileOutputStream fos = new FileOutputStream("C://Workplace//OurIMDb//DB//PeopleOriginalImages//"+ list.get(i).getpTitle() +".jpg");
 			fos.write(response);
 			fos.close();
+			System.out.println("" + i + " of " + list.size());
 		}
 		System.out.println("bitti");
 	}

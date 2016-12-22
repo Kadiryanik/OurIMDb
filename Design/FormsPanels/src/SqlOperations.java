@@ -378,7 +378,7 @@ public class SqlOperations {
 		PreparedStatement statement = null;
 		
 		try {
-			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle FROM People");
+			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle FROM People WHERE peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='tt0071562')");
 			String imageQuery = "UPDATE People SET pImage = ? WHERE pTitle = ?";
 			con = getConnection();
 			statement = con.prepareStatement(imageQuery);
@@ -389,8 +389,8 @@ public class SqlOperations {
 				statement.setBinaryStream(1, input);
 				statement.setString(2, fileName);
 				statement.executeUpdate();
+				System.out.println("" + i + " of " + list.size());
 			}
-			
 		} catch (Exception e) {
 			System.out.println(e);
 		} finally{

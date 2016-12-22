@@ -139,8 +139,8 @@ public class MainForm {
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
 		
-		//SqlOperations.postPeopleImage("MinimizedImages");
-		//SqlOperations.postMovieImage("a");
+		//SqlOperations.postPeopleImage("C:\\Workplace\\OurIMDb\\DB\\PeopleMinimizedImages");
+		//SqlOperations.postMovieImage("C:\\Workplace\\OurIMDb\\DB\\MovieOriginalImages");
 		
 		final JButton btnWatchList = new JButton("");
 		JButton btnLogin = new JButton("");

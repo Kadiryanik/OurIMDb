@@ -17,3 +17,22 @@ INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle 
 
 INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('cagatayavsr@gmail.com','cagatay','......');
 INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('eleqiac2@gmail.com','kadir','......');
+
+
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('The Lord of the Rings: The Return of the King', '2003-12-19', 'United States', '201', 'English', 89, 10,
+		'Gandalf and Aragorn lead the World of Men against Sauron\'s army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.',
+			'https://www.youtube.com/embed/r5X-hFf6Bwo','tt0167260');
+
+INSERT INTO Genre(mType,movieId) SELECT 'Adventure',movieId FROM Movie WHERE mTitle = 'The Lord of the Rings: The Return of the King';
+INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle = 'The Lord of the Rings: The Return of the King';
+INSERT INTO Genre(mType,movieId) SELECT 'Fantasy',movieId FROM Movie WHERE mTitle = 'The Lord of the Rings: The Return of the King';
+
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('The Godfather Part II', '1974-12-20', 'United States', '202', 'English,Italian,Latin', 90, 11,
+		'The early life and career of Vito Corleone in 1920s New York is portrayed while his son, Michael, expands and tightens his grip on the family crime syndicate.',
+			'https://www.youtube.com/embed/qJr92K_hKl0','tt0071562');  
+            
+            
+INSERT INTO Genre(mType,movieId) SELECT 'Crime',movieId FROM Movie WHERE mTitle = 'The Godfather Part II';
+INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle = 'The Godfather Part II';

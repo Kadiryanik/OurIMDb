@@ -45,6 +45,9 @@ public class EachMovie {
 		String starsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = '" + movieId + "' AND actorFlag = 1) LIMIT 0,3";
 		
+		String castQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
+				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = '" + movieId + "' AND actorFlag = 1) LIMIT 10 OFFSET 3";
+		
 		String directorsQuery = "SELECT peopleId, pTitle FROM People WHERE peopleId IN"
 				+ "(SELECT fkPeopleId FROM MoviePeople WHERE fkMovieId = '" + movieId + "' AND directorFlag = 1) LIMIT 0,3";
 		
@@ -53,6 +56,7 @@ public class EachMovie {
 		
 		final ArrayList<Movie> movieList = SqlOperations.getMovie("SELECT * FROM Movie WHERE movieId = '" + movieId + "'");
 		ArrayList<People> starsList = SqlOperations.getPeople(starsQuery);
+		ArrayList<People> castList = SqlOperations.getPeople(castQuery);
 		ArrayList<People> directorsList = SqlOperations.getPeople(directorsQuery);
 		ArrayList<People> writersList = SqlOperations.getPeople(writersQuery);
 		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
@@ -1293,12 +1297,12 @@ public class EachMovie {
 		panelCastTop.setLayout(gl_panelCastTop);
 		
 		/*creating cast component */ 
-		for(int i = 0; i < starsList.size(); i++){
+		for(int i = 0; i < castList.size(); i++){
 			/*getting cast name */
-			String castQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE "
-					+ "fkMovieId = '" + movieId + "' AND fkPeopleId = '" + starsList.get(i).getPeopleId() + "'";
-			new CastComponentForEachMovie(starsList.get(i).getPeopleId(), starsList.get(i).getpTitle(),
-					SqlOperations.getRole(castQuery).get(0).getCastName(), panelCast);
+			String castGetRoleQuery = "SELECT castName, actorFlag, directorFlag, writerFlag FROM MoviePeople WHERE "
+					+ "fkMovieId = '" + movieId + "' AND fkPeopleId = '" + castList.get(i).getPeopleId() + "'";
+			new CastComponentForEachMovie(castList.get(i).getPeopleId(), castList.get(i).getpTitle(),
+					SqlOperations.getRole(castGetRoleQuery).get(0).getCastName(), panelCast);
 		}
 	
 		/*lblSeeFullCast button for panelCast*/
