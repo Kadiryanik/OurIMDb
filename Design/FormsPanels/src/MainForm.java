@@ -68,6 +68,8 @@ public class MainForm {
 	private static int loggedUserId;
 	private static boolean isLogined;
 	
+	public static String staticMovieId;
+	
 	public int xMouse;
 	public int yMouse;
 	private JTextField textFieldYourName;
@@ -75,7 +77,7 @@ public class MainForm {
 	private JPasswordField passwordFieldPass;
 	private JPasswordField passwordFieldPassA;
 	private int limitValueLeft;	//For celebs tab Pages
-	private int howManyComponent = 20;
+	private int howManyComponent;
 	
 	//OtherClass referances
 	public static JPanel refPanelEachOne;
@@ -115,6 +117,8 @@ public class MainForm {
 	}
 	
 	public MainForm() {
+		staticMovieId = "tt2191701";
+		howManyComponent = 20;
 		limitValueLeft = 0;
 		loggedUserId = -1;
 		isLogined = false;
@@ -163,7 +167,6 @@ public class MainForm {
 		});
 
 		//------------------------------------------
-		
 		final JPanel panelEachOne = new JPanel();
 		refPanelEachOne = panelEachOne;
 		panelEachOne.setVisible(false);

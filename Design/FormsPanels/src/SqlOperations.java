@@ -378,18 +378,22 @@ public class SqlOperations {
 		PreparedStatement statement = null;
 		
 		try {
-			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle FROM People WHERE peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='tt0071562')");
+			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle,pImage FROM People WHERE "
+					+ "peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='" + MainForm.staticMovieId + "')");
 			String imageQuery = "UPDATE People SET pImage = ? WHERE pTitle = ?";
 			con = getConnection();
 			statement = con.prepareStatement(imageQuery);
 			for(int i = 0; i < list.size(); i++){
-				String fileName = list.get(i).getpTitle();
-				File theFile = new File(directory + "\\" + fileName + ".jpg");
-				FileInputStream input = new FileInputStream(theFile);
-				statement.setBinaryStream(1, input);
-				statement.setString(2, fileName);
-				statement.executeUpdate();
-				System.out.println("" + i + " of " + list.size());
+				if(list.get(i).getpImage() == null){
+					String fileName = list.get(i).getpTitle();
+					File theFile = new File(directory + "\\" + fileName + ".jpg");
+					FileInputStream input = new FileInputStream(theFile);
+					statement.setBinaryStream(1, input);
+					statement.setString(2, fileName);
+					statement.executeUpdate();
+					System.out.println("" + i + " of " + list.size() + "added");
+				}
+				//System.out.println("" + i + " of " + list.size() + "passed");
 			}
 		} catch (Exception e) {
 			System.out.println(e);
