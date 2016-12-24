@@ -58,7 +58,7 @@ public class MovieTabComponents {
 		
 		String movieQuery = "SELECT mTitle, mImage, mTime, mDescription FROM Movie WHERE movieId = '" + movieId + "'";
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
-		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieId, 12, panelName);
+		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieId, 12, 50, panelName);
 		
 		ArrayList<Genre> genreList = SqlOperations.getGenre(movieId);
 		for(int i = 0;i < genreList.size(); i++){

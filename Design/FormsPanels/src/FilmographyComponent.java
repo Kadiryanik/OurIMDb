@@ -28,7 +28,7 @@ public class FilmographyComponent {
 		JPanel panelMovieName = new JPanel();
 		panelMovieName.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 		
-		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieList.get(0).getMovieId(), 11, panelMovieName);
+		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieList.get(0).getMovieId(), 11, 50, panelMovieName);
 		
 		JPanel panelRoleInMovie = new JPanel();
 		panelRoleInMovie.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));

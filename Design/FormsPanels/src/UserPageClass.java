@@ -38,6 +38,7 @@ public class UserPageClass {
 		panel.add(lblName);
 		
 		JLabel lblInfo = new JLabel("IMDb member since " + userInfo.get(0).getuRegistrationDate().substring(0, 10));
+		//TODO:kaldýrýlcak print
 		System.out.println(userInfo.get(0).getuRegistrationDate().substring(0, 10));
 		lblInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
 		lblInfo.setBounds(119, 35, 200, 14);

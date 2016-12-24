@@ -43,7 +43,7 @@ public class FullCastClass {
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		/* adding movie title with link*/ 
-		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + movieId + "'").get(0).getmTitle(), mId, 15, panelName);
+		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + movieId + "'").get(0).getmTitle(), mId, 15, 50, panelName);
 		
 		JLabel lblFullcastcrew = new JLabel("Full Cast & Crew");
 		lblFullcastcrew.setBounds(97, 42, 167, 35);

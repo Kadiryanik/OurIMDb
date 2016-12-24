@@ -17,10 +17,16 @@ public class LabelWithLinkForMovie {
 	private String name;
 	private String movieId;
 	private int fontSize;
-	LabelWithLinkForMovie(String n, String mId, int f, JPanel panelReal){
+	private int crop;
+	LabelWithLinkForMovie(String n, String mId, int f, int c, JPanel panelReal){
 		movieId = mId;
 		name = n;
 		fontSize = f;
+		crop = c;
+		if(name.length() > c){
+			name = name.substring(0, c);
+			name = name + "...";
+		}
 		final JLabel lblLink = new JLabel(name);
 		
 		lblLink.setSize(15, 15);

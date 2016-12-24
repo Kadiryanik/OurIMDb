@@ -9,6 +9,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -58,6 +59,18 @@ public class CommentComponent {
 				@Override
 				public void mouseExited(MouseEvent arg0) {
 					lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
+				}
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					String commentText = JOptionPane.showInputDialog(
+					        null, 
+					        "",
+					        "Please, enter your comment", 
+					        JOptionPane.INFORMATION_MESSAGE
+					    );
+					if(commentText != null && !commentText.equals("")){
+						//TODO: yorumu veritabanýna kaydet
+					}
 				}
 			});
 			lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
@@ -157,6 +170,18 @@ public class CommentComponent {
 				@Override
 				public void mouseExited(MouseEvent arg0) {
 					lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
+				}
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					String commentText = JOptionPane.showInputDialog(
+					        null, 
+					        "",
+					        "Please, enter your comment", 
+					        JOptionPane.INFORMATION_MESSAGE
+					    );
+					if(commentText != null && !commentText.equals("")){
+						//TODO: yorumu veritabanýna kaydet
+					}
 				}
 			});
 			lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
@@ -288,6 +313,18 @@ public class CommentComponent {
 				@Override
 				public void mouseExited(MouseEvent arg0) {
 					lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
+				}
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					String commentText = JOptionPane.showInputDialog(
+					        null, 
+					        "",
+					        "Please, enter your comment", 
+					        JOptionPane.INFORMATION_MESSAGE
+					    );
+					if(commentText != null && !commentText.equals("")){
+						//TODO: yorumu veritabanýna kaydet
+					}
 				}
 			});
 			lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));

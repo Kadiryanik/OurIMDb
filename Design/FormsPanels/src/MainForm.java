@@ -79,7 +79,7 @@ public class MainForm {
 	private int limitValueLeft;	//For celebs tab Pages
 	private int howManyComponent;
 	
-	//OtherClass referances
+	//OtherClass references
 	public static JPanel refPanelEachOne;
 	public static JPanel refPanelTop;	
 	public static JPanel refPanelHome;
@@ -173,9 +173,9 @@ public class MainForm {
 		panelEachOne.setBackground(Color.BLACK);
 		panelEachOne.setBounds(0, 24, 550, 726);
 		panelEachOne.setLayout(null);
-		
 		frmOurmdb.getContentPane().add(panelEachOne);
 		
+		//labelExit
 		labelExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_siyah.png"));
 		labelExit.setBounds(510, 0, 24, 24);
@@ -187,7 +187,6 @@ public class MainForm {
 		frmOurmdb.getContentPane().add(labelIcon);
 		
 		/*Panels Inýt*/
-		
 		final JPanel panelTop = new JPanel();
 		refPanelTop = panelTop;
 		panelTop.setBackground(new Color(255, 255, 255, 0));
@@ -217,7 +216,6 @@ public class MainForm {
 		panelRegister.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelRegister);
 		panelRegister.setLayout(null);
-		
 	
 		final JPanel panelCelebs = new JPanel();
 		refPanelCelebs = panelCelebs;
@@ -434,7 +432,9 @@ public class MainForm {
 				panelUnLogin.setVisible(true);
 				panelLogined.setVisible(false);
 				btnWatchList.setEnabled(false);
+				panelUser.setVisible(false);
 				panelTop.setVisible(true);
+				panelHome.setVisible(true);
 				
 				textFieldId.setText("ID");
 				textFieldPw.setText("......");
@@ -642,25 +642,25 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				//new SearchResult("babaanne", panelEachOne);
-				//new UserReviews(1, panelEachOne);
-				new ParentChildCommentPage(1, panelEachOne);
+				//new UserReviews("tt2191701", panelEachOne);
+				//new ParentChildCommentPage(1, panelEachOne);
+				panelHome.removeAll();
+				new HomePageClass(panelHome);
 				
-				
-				lblGoBackD.setVisible(false);
-				lblBack.setVisible(true);
-				panelTop.setVisible(false);
-				panelHome.setVisible(false);
-				panelCelebs.setVisible(false);
-				panelTop10.setVisible(false);
-				panelUser.setVisible(false);
-				panelMovies.setVisible(false);
-				panelRegister.setVisible(false);
-				panelEachOne.setVisible(false);
-				panelWatchList.setVisible(false);
-				panelEachOne.setVisible(true);
-				/*
+//				lblGoBackD.setVisible(false);
+//				lblBack.setVisible(true);
+//				panelTop.setVisible(false);
+//				panelHome.setVisible(false);
+//				panelCelebs.setVisible(false);
+//				panelTop10.setVisible(false);
+//				panelUser.setVisible(false);
+//				panelMovies.setVisible(false);
+//				panelRegister.setVisible(false);
+//				panelEachOne.setVisible(false);
+//				panelWatchList.setVisible(false);
+//				panelEachOne.setVisible(true);
+//				
 				panelHome.setVisible(true);
 				panelMovies.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -669,7 +669,6 @@ public class MainForm {
 				panelRegister.setVisible(false);
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
-				*/
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
@@ -1367,5 +1366,9 @@ public class MainForm {
 		panelBackground.setBounds(0, 0, 550, 750);
 		frmOurmdb.getContentPane().add(panelBackground);
 		/*EndOf-BackgroundPanel*/
+		
+		//TODO: bunu daha uygun bi yere al
+		panelHome.removeAll();
+		new HomePageClass(panelHome);
 	}
 }

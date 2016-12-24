@@ -28,7 +28,7 @@ public class SearchMovieComponent {
 		JPanel panelNameDate = new JPanel();
 		panelNameDate.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
-		new LabelWithLinkForMovie(name, movieId, 11, panelNameDate);
+		new LabelWithLinkForMovie(name, movieId, 11, 50, panelNameDate);
 		
 		String date = SqlOperations.getMovie("SELECT mDate FROM Movie WHERE movieId = '" + movieId + "'").get(0).getmDate().substring(0, 4);
 		JLabel lblDate = new JLabel("(" + date + ")");
