@@ -1,4 +1,3 @@
-import java.sql.Date;
 
 public class People {
 	private String pTitle;

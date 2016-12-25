@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -14,8 +15,11 @@ import javax.swing.ScrollPaneConstants;
 
 public class UserPageClass {
 	private int userId;
-	
 	public UserPageClass(int uId, JPanel panelReal) {
+
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        System.out.println(timestamp);
+        
 		userId = uId;
 		String userQuery = "SELECT userId, uDisplayName, uRegistrationDate FROM Users WHERE userId = " + userId;
 		ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
@@ -38,8 +42,6 @@ public class UserPageClass {
 		panel.add(lblName);
 		
 		JLabel lblInfo = new JLabel("IMDb member since " + userInfo.get(0).getuRegistrationDate().substring(0, 10));
-		//TODO:kaldýrýlcak print
-		System.out.println(userInfo.get(0).getuRegistrationDate().substring(0, 10));
 		lblInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
 		lblInfo.setBounds(119, 35, 200, 14);
 		panel.add(lblInfo);
@@ -74,11 +76,13 @@ public class UserPageClass {
 		panelContentMost.setLayout(new WrapLayout(FlowLayout.LEFT, 8, 5));
 		
 		/*getting rating with descending order*/
-		String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " ORDER BY rating DESC";
-		ArrayList<UserRatings> ratingList = SqlOperations.getUserRating(ratingQuery);
+		//String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " ORDER BY rating DESC LIMIT 4";
+		String ratingQuery = "SELECT movieId,mTitle FROM Movie,Rating WHERE fkMovieId = movieId AND "
+				+ "fkUserId = " + userId + " ORDER BY ratedTime DESC LIMIT 4";
+		ArrayList<Movie> ratingList = SqlOperations.getMovie(ratingQuery);
 		for(int i = 0; i < ratingList.size(); i++){
-			String movieName = SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + ratingList.get(i).getFkMovieId() + "'").get(0).getmTitle();
-			new MostRatedComponent(movieName, userId, ratingList.get(i).getFkMovieId(), panelContentMost);
+			//String movieName = SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + ratingList.get(i).getFkMovieId() + "'").get(0).getmTitle();
+			new MostRatedComponent(ratingList.get(i).getmTitle(), userId, ratingList.get(i).getMovieId(), panelContentMost);
 		}
 		
 		JLabel lblBackground = new JLabel("");
@@ -109,8 +113,7 @@ public class UserPageClass {
 		panelContentWatch.setBounds(10, 47, 480, 230);
 		panelYourWatchlist.add(panelContentWatch);
 		
-		String movieQuery = "SELECT movieId, mTitle FROM Movie WHERE movieId IN"
-				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")ORDER BY mTitle";
+		String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId ORDER BY addedTime DESC LIMIT 4";
 		ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
 		for(int i = 0; i < watchList.size(); i++){
 			new MostRatedComponent(watchList.get(i).getmTitle(), userId, watchList.get(i).getMovieId(), panelContentWatch);
