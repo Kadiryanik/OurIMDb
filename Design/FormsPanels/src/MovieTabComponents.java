@@ -163,7 +163,7 @@ public class MovieTabComponents {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Yönlendir
+				//TODO: Yönlendir added button eklenecek týklandýðýnda gözükmesi için
 			}
 		});
 		lblAddWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistButton.png"));

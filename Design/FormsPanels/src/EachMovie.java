@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -28,6 +30,7 @@ import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 public class EachMovie {
 	private String movieId;
 	private int userRatePoint;
+	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	EachMovie(String mId, final JPanel panelReal, int isAdded){
 		movieId = mId;
 		userRatePoint = 0;
@@ -325,8 +328,10 @@ public class EachMovie {
 						userRatePoint = 1;
 					}
 					if(userRatePoint != 1){
-						String query = "UPDATE Rating SET rating = 1 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 1,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'" ).get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 1, oldRate);
@@ -395,8 +400,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 2){
-						String query = "UPDATE Rating SET rating = 2 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 2,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 2, oldRate);
@@ -466,8 +473,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 3){
-						String query = "UPDATE Rating SET rating = 3 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 3,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 3, oldRate);
@@ -537,8 +546,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 4){
-						String query = "UPDATE Rating SET rating = 4 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 4,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 4, oldRate);
@@ -608,8 +619,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 5){
-						String query = "UPDATE Rating SET rating = 5 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 5,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 5, oldRate);
@@ -679,8 +692,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 6){
-						String query = "UPDATE Rating SET rating = 6 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 6,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 6, oldRate);
@@ -750,8 +765,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 7){
-						String query = "UPDATE Rating SET rating = 7 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 7,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 7, oldRate);
@@ -821,8 +838,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 8){
-						String query = "UPDATE Rating SET rating = 8 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 8,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 8, oldRate);
@@ -892,8 +911,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 9){
-						String query = "UPDATE Rating SET rating = 9 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 9,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 9, oldRate);
@@ -963,8 +984,10 @@ public class EachMovie {
 						
 					}
 					if(userRatePoint != 10){
-						String query = "UPDATE Rating SET rating = 10 WHERE fkUserId = " + MainForm.getLoggedUserId() 
-								+ " AND fkMovieId = '" + movieId + "'";
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						timestamp.setHours(timestamp.getHours() + 1);
+						String query = "UPDATE Rating SET rating = 10,ratedTime = '" + timestamp
+								+ "' WHERE fkUserId = " + MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'";
 						int oldRate = SqlOperations.getUserRating("SELECT rating FROM Rating WHERE fkUserId = " 
 								+ MainForm.getLoggedUserId() + " AND fkMovieId = '" + movieId + "'").get(0).getRating();
 						SqlOperations.updateMovieRatingAfterRated(movieId, 10, oldRate);

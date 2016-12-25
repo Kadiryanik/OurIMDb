@@ -302,7 +302,7 @@ public class SqlOperations {
 			ResultSetMetaData rsMetaData = result.getMetaData();
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
-			String[] attr = new String[]{"fkUserId", "fkMovieId", "rating"};
+			String[] attr = new String[]{"fkUserId", "fkMovieId", "rating", "ratedTime"};
 			ArrayList<UserRatings> array = new ArrayList<UserRatings>();
 			
 			while(result.next()){
@@ -312,6 +312,7 @@ public class SqlOperations {
 					if(g.equals(attr[0])){a.setFkUserId(result.getString(attr[0]));}
 					if(g.equals(attr[1])){a.setFkMovieId(result.getString(attr[1]));}
 					if(g.equals(attr[2])){a.setRating(result.getInt(attr[2]));}
+					if(g.equals(attr[3])){a.setRatedTime(result.getTimestamp(attr[3]));}
 				}
 				array.add(a);
 			}
@@ -331,7 +332,7 @@ public class SqlOperations {
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3307/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "h3b9er1po";
 			Class.forName(driver);
@@ -413,12 +414,17 @@ public class SqlOperations {
 	}
 	
 	public static ImageIcon getPeopleImage(String peopleId,JLabel lblImage){
-		
-		String Query = "SELECT pImage FROM People WHERE peopleId = '" + peopleId + "'";
-		ImageIcon imageIcon = new ImageIcon(SqlOperations.getPeople(Query).get(0).getpImage());
-		Image image = imageIcon.getImage();
-		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
-		return new ImageIcon(im);
+		try{
+			String Query = "SELECT pImage FROM People WHERE peopleId = '" + peopleId + "'";
+			ImageIcon imageIcon = new ImageIcon(SqlOperations.getPeople(Query).get(0).getpImage());
+			Image image = imageIcon.getImage();
+			Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
+			return new ImageIcon(im);
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		return null;
 	}
 	
 	public static void insert(String query){

@@ -34,7 +34,7 @@ public class MostRatedComponent {
 		panelName.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panel.add(panelName);
 		
-		new LabelWithLinkForMovie(name, movieId, 11, 50, panelName);
+		new LabelWithLinkForMovie(name, movieId, 11, 16, panelName);
 		
 		JPanel panelRate = new JPanel();
 		panelRate.setLayout(new FlowLayout(FlowLayout.CENTER, 35, 0));
