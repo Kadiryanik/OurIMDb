@@ -6,6 +6,8 @@ import javax.swing.JScrollPane;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
+
 import javax.swing.ScrollPaneConstants;
 
 public class ParentChildCommentPage {
@@ -34,18 +36,15 @@ public class ParentChildCommentPage {
 		
 		scrollPaneChilderen.setViewportView(panelChilderen);
 		panel.add(scrollPaneChilderen);
+		String childQuery = "SELECT * FROM MovieReply WHERE fkCommendId IN("
+					+ "SELECT commendId FROM MovieCommend WHERE commendId = " + commentId + " )";
+		ArrayList<MovieCommentReplyClass> childList = SqlOperations.getMovieCommentReply(childQuery);
 		
-		new CommentComponent(1, 3, panelParent);
-		new CommentComponent(1, 0, panelChilderen);
-		new CommentComponent(1, 1, panelChilderen);
-		new CommentComponent(1, 2, panelChilderen);
-		new CommentComponent(1, 1, panelChilderen);
-		new CommentComponent(1, 1, panelChilderen);
-		new CommentComponent(1, 2, panelChilderen);
-		new CommentComponent(1, 2, panelChilderen);
-		new CommentComponent(1, 0, panelChilderen);
-		new CommentComponent(1, 0, panelChilderen);
-		new CommentComponent(1, 2, panelChilderen);
+		new CommentComponent(commentId, 3, panelParent);
+		
+		for(int i = 0; i < childList.size();i++){
+			new CommentComponent(childList.get(i).getCommentId(), 2, panelChilderen);
+		}
 		
 		panelReal.add(panel);
 	}

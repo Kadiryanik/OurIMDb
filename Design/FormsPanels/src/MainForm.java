@@ -78,7 +78,7 @@ public class MainForm {
 	private JPasswordField passwordFieldPassA;
 	private int limitValueLeft;	//For celebs tab Pages
 	private int howManyComponent;
-	private ArrayList<People> celebList;
+	private int celebSorting; /* -1 default , 0 A-Z , 1 Birthday */
 	
 	//OtherClass references
 	public static JPanel refPanelEachOne;
@@ -121,6 +121,7 @@ public class MainForm {
 		howManyComponent = 20;
 		limitValueLeft = 0;
 		loggedUserId = -1;
+		celebSorting = -1;
 		isLogined = false;
 		initialize();
 	}
@@ -660,31 +661,31 @@ public class MainForm {
 			public void actionPerformed(ActionEvent e) {
 				//new SearchResult("babaanne", panelEachOne);
 				//new UserReviews("tt2191701", panelEachOne);
-				//new ParentChildCommentPage(1, panelEachOne);
+				new ParentChildCommentPage(1, panelEachOne);
 				panelHome.removeAll();
-				new HomePageClass(panelHome);
+				//new HomePageClass(panelHome);
 				
-//				lblGoBackD.setVisible(false);
-//				lblBack.setVisible(true);
-//				panelTop.setVisible(false);
-//				panelHome.setVisible(false);
-//				panelCelebs.setVisible(false);
-//				panelTop10.setVisible(false);
-//				panelUser.setVisible(false);
-//				panelMovies.setVisible(false);
-//				panelRegister.setVisible(false);
-//				panelEachOne.setVisible(false);
-//				panelWatchList.setVisible(false);
-//				panelEachOne.setVisible(true);
-//				
-				panelHome.setVisible(true);
-				panelMovies.setVisible(false);
+				lblGoBackD.setVisible(false);
+				lblBack.setVisible(true);
+				panelTop.setVisible(false);
+				panelHome.setVisible(false);
 				panelCelebs.setVisible(false);
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
+				panelMovies.setVisible(false);
 				panelRegister.setVisible(false);
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
+				panelEachOne.setVisible(true);
+//				
+//				panelHome.setVisible(true);
+//				panelMovies.setVisible(false);
+//				panelCelebs.setVisible(false);
+//				panelTop10.setVisible(false);
+//				panelUser.setVisible(false);
+//				panelRegister.setVisible(false);
+//				panelEachOne.setVisible(false);
+//				panelWatchList.setVisible(false);
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
@@ -773,6 +774,7 @@ public class MainForm {
 				/*Celebs Inýt*/
 				CelebsComponent.Id = 0;
 				limitValueLeft = 0;
+				celebSorting = -1;
 				final int peopleCount = SqlOperations.getPeopleCount();
 				
 				panelCelebs.removeAll();
@@ -794,9 +796,8 @@ public class MainForm {
 				scrollPaneContent.add(panelCelebsContents);
 				scrollPaneContent.setViewportView(panelCelebsContents);
 
-				String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People";
-				celebList = SqlOperations.getPeople(celebQuery);
-				
+				//String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People";
+				//final ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
 				final JLabel lblPage = new JLabel("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
 				lblPage.setBounds(291, 32, 150, 14);
 				panelCelebsTop.add(lblPage);
@@ -805,16 +806,18 @@ public class MainForm {
 				lblSortBy.setBounds(205, 5, 46, 14);
 				panelCelebsTop.add(lblSortBy);
 				
-				final JLabel lblAz = new JLabel("A-Z,");
+				JLabel lblAz = new JLabel("A-Z,");
 				lblAz.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pTitle";
-						celebList = SqlOperations.getPeople(celebQuery);
 						panelCelebs.setVisible(false);
 						panelCelebsContents.removeAll();
 						limitValueLeft = 0;
+						celebSorting = 0;
 						CelebsComponent.Id = 0;
+						String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pTitle "
+								+ "LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+						ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
 						if(celebList.size() > howManyComponent-1){
 							for(int i = 0; i < howManyComponent; i++){
 								new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
@@ -839,12 +842,15 @@ public class MainForm {
 				lblBirthDate.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
-						String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pBirthday";
-						celebList = SqlOperations.getPeople(celebQuery);
 						panelCelebs.setVisible(false);
 						panelCelebsContents.removeAll();
 						limitValueLeft = 0;
 						CelebsComponent.Id = 0;
+						celebSorting = 1;
+						String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pBirthday "
+								+ "LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+						ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+						
 						if(celebList.size() > howManyComponent-1){
 							for(int i = 0; i < howManyComponent; i++){
 								new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
@@ -873,7 +879,6 @@ public class MainForm {
 				JLabel lblTotalNames = new JLabel("Total Names: " + peopleCount);
 				lblTotalNames.setBounds(180, 32, 125, 14);
 				panelCelebsTop.add(lblTotalNames);
-				
 				
 				final JLabel lblPrev = new JLabel("<< PreviusPage");
 				lblPrev.setBounds(10, 32, 85, 14);
@@ -904,7 +909,7 @@ public class MainForm {
 							}else{
 								highLimit = howManyComponent;
 							}
-							JOptionPane.showMessageDialog(null, "No previous page!");
+							System.out.println("prev Page yok");
 						}else{
 							//For delete before celebs
 							panelCelebsContents.removeAll();
@@ -912,12 +917,38 @@ public class MainForm {
 							highLimit = limitValueLeft;
 							limitValueLeft -= howManyComponent;
 							CelebsComponent.Id = limitValueLeft;
-							
-							for(int i = limitValueLeft; i < highLimit; i++){
-								new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
-										celebList.get(i).getpDescription(), panelCelebsContents);
+							if(celebSorting == 0){
+								String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pTitle "
+										+ "LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+								ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+								
+								for(int i = 0; i < celebList.size(); i++){
+									new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+											celebList.get(i).getpDescription(), panelCelebsContents);
+								}
+								lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
 							}
-							lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+							else if(celebSorting == 1){
+								String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pBirthday "
+										+ "LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+								ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+								
+								for(int i = 0; i < celebList.size(); i++){
+									new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+											celebList.get(i).getpDescription(), panelCelebsContents);
+								}
+								lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+							}
+							else{
+								String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+								ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+								
+								for(int i = 0; i < celebList.size(); i++){
+									new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+											celebList.get(i).getpDescription(), panelCelebsContents);
+								}
+								lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+							}
 						}
 					
 					}
@@ -948,7 +979,7 @@ public class MainForm {
 						if(limitValueLeft + howManyComponent > peopleCount){
 							//bi sonraki sayfaya geçmeyecek 
 							highLimit = limitValueLeft;
-							JOptionPane.showMessageDialog(null, "No next page!");
+							System.out.println("Next Page yok");
 						}else{
 							
 							//For delete before celebs
@@ -956,20 +987,50 @@ public class MainForm {
 							limitValueLeft += howManyComponent;
 							highLimit = limitValueLeft + howManyComponent;
 							CelebsComponent.Id = limitValueLeft;
-							
 							if(highLimit > peopleCount){
 								highLimit = peopleCount;
 							}
 							
-							for(int i = limitValueLeft; i < highLimit; i++){
-								new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
-										celebList.get(i).getpDescription(), panelCelebsContents);
+							if(celebSorting == 0){
+								String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pTitle "
+										+ "LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+								ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+	
+								for(int i = 0; i < celebList.size(); i++){
+									new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+											celebList.get(i).getpDescription(), panelCelebsContents);
+								}
+								lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
 							}
-							lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+							else if(celebSorting == 1){
+								String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People ORDER BY pBirthday "
+										+ "LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+								ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+	
+								for(int i = 0; i < celebList.size(); i++){
+									new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+											celebList.get(i).getpDescription(), panelCelebsContents);
+								}
+								lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+							}
+							else{
+								String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People LIMIT " + howManyComponent + " OFFSET " + limitValueLeft;
+								ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
+								
+								for(int i = 0; i < celebList.size(); i++){
+									new CelebsComponent(celebList.get(i).getPeopleId(), celebList.get(i).getpTitle(), 
+											celebList.get(i).getpDescription(), panelCelebsContents);
+								}
+								lblPage.setText("Page: " + (limitValueLeft/howManyComponent+1) + " of " + ((peopleCount-1)/howManyComponent+1));
+							}
+							
 						}
 					}
 				});
 				panelCelebsTop.add(lblNext);
+				
+				String celebQuery = "SELECT peopleId,pTitle,pDescription FROM People LIMIT " + howManyComponent + " OFFSET " + 0;
+				ArrayList<People> celebList = SqlOperations.getPeople(celebQuery);
 				
 				if(celebList.size() > howManyComponent-1){
 					for(int i = 0; i < howManyComponent; i++){

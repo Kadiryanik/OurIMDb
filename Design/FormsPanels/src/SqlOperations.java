@@ -328,11 +328,93 @@ public class SqlOperations {
 		return null;
 	}//END OF userRating
 
+	public static ArrayList<MovieCommentClass> getMovieComment(String Query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(Query);
+			result = statement.executeQuery();
+			
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
+			
+			String[] attr = new String[]{"fkMovieId", "fkUserId", "commend", "commendTime", "commendId"};
+			ArrayList<MovieCommentClass> array = new ArrayList<MovieCommentClass>();
+			
+			while(result.next()){
+				MovieCommentClass a = new MovieCommentClass();
+				for(int i = 1; i <= columnCount ; i++){
+					String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
+					if(g.equals(attr[0])){a.setFkMovieId(result.getString(attr[0]));}
+					if(g.equals(attr[1])){a.setFkUserId(result.getInt(attr[1]));}
+					if(g.equals(attr[2])){a.setComment(result.getString(attr[2]));}
+					if(g.equals(attr[3])){a.setCommentTime(result.getTimestamp(attr[3]));}
+					if(g.equals(attr[4])){a.setCommentId(result.getInt(attr[4]));}
+				}
+				array.add(a);		
+			}
+			return array;
+
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (result != null) result.close(); } catch (Exception e) {};
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return null;
+	}//END OF getMovieComment
+	
+	public static ArrayList<MovieCommentReplyClass> getMovieCommentReply(String Query){
+		
+		Connection con = null;
+		PreparedStatement statement = null;
+		ResultSet result = null;
+		
+		try {
+			con = getConnection();
+			statement = con.prepareStatement(Query);
+			result = statement.executeQuery();
+			
+			ResultSetMetaData rsMetaData = result.getMetaData();
+			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
+			
+			String[] attr = new String[]{"fkCommendId", "fkUserId", "commend", "commendTime", "commendId"};
+			ArrayList<MovieCommentReplyClass> array = new ArrayList<MovieCommentReplyClass>();
+			
+			while(result.next()){
+				MovieCommentReplyClass a = new MovieCommentReplyClass();
+				for(int i = 1; i <= columnCount ; i++){
+					String g = rsMetaData.getColumnName(i); //return column name in ResultSet with index (first index is 1) 
+					if(g.equals(attr[0])){a.setFkCommentId(result.getInt(attr[0]));}
+					if(g.equals(attr[1])){a.setFkUserId(result.getInt(attr[1]));}
+					if(g.equals(attr[2])){a.setComment(result.getString(attr[2]));}
+					if(g.equals(attr[3])){a.setCommentTime(result.getTimestamp(attr[3]));}
+					if(g.equals(attr[4])){a.setCommentId(result.getInt(attr[4]));}
+				}
+				array.add(a);		
+			}
+			return array;
+
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally{
+			try { if (result != null) result.close(); } catch (Exception e) {};
+			try { if (statement != null) statement.close(); } catch (Exception e) {};
+			try { if (con != null) con.close(); } catch (Exception e) {};
+		}
+		return null;
+	}//END OF getMovieCommentReply
+	
 	public static Connection getConnection(){
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3307/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "h3b9er1po";
 			Class.forName(driver);

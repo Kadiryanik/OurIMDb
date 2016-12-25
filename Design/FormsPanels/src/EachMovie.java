@@ -30,7 +30,6 @@ import chrriis.dj.nativeswing.swtimpl.components.JWebBrowser;
 public class EachMovie {
 	private String movieId;
 	private int userRatePoint;
-	private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	EachMovie(String mId, final JPanel panelReal, int isAdded){
 		movieId = mId;
 		userRatePoint = 0;
@@ -1132,24 +1131,52 @@ public class EachMovie {
 		panelTop.add(lblPointcount);
 		
 		JLabel lblShowComment = new JLabel("");
-		lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));//TODO: hand_cursor oluþmuyor 
 		lblShowComment.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//TODO:comment page open
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelGoBackD.setVisible(false);
+				MainForm.refLabelBack.setVisible(true);
+				
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				new UserReviews(movieId, MainForm.refPanelEachOne);
+				MainForm.refPanelEachOne.setVisible(true);
+				
 			}
 		});
 		lblShowComment.setLocation(335, 25);
 		lblShowComment.setSize(24, 24);
 		lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
 		
-		//TODO: how many comment
-		JLabel lblCommentCount = new JLabel("1");
+		String commentQuery = "SELECT * FROM MovieCommend WHERE fkMovieId = '" + movieId + "'";
+		ArrayList<MovieCommentClass> commentList = SqlOperations.getMovieComment(commentQuery);
+		JLabel lblCommentCount = new JLabel("" + commentList.size());
 		lblCommentCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblCommentCount.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				//TODO:comment page open
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelGoBackD.setVisible(false);
+				MainForm.refLabelBack.setVisible(true);
+				
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				new UserReviews(movieId, MainForm.refPanelEachOne);
+				MainForm.refPanelEachOne.setVisible(true);
 			}
 		});
 		lblCommentCount.setSize(22, 20);

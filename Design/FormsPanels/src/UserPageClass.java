@@ -16,9 +16,6 @@ import javax.swing.ScrollPaneConstants;
 public class UserPageClass {
 	private int userId;
 	public UserPageClass(int uId, JPanel panelReal) {
-
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        System.out.println(timestamp);
         
 		userId = uId;
 		String userQuery = "SELECT userId, uDisplayName, uRegistrationDate FROM Users WHERE userId = " + userId;
@@ -113,7 +110,8 @@ public class UserPageClass {
 		panelContentWatch.setBounds(10, 47, 480, 230);
 		panelYourWatchlist.add(panelContentWatch);
 		
-		String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId ORDER BY addedTime DESC LIMIT 4";
+		String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
+				+ " fkUserId = " + userId + " ORDER BY addedTime DESC LIMIT 4";
 		ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
 		for(int i = 0; i < watchList.size(); i++){
 			new MostRatedComponent(watchList.get(i).getmTitle(), userId, watchList.get(i).getMovieId(), panelContentWatch);

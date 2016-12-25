@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -30,6 +31,16 @@ public class CommentComponent {
 		commentFlag = cFlag;
 		
 		if(commentFlag == 0){
+			String query = "SELECT * FROM MovieReply WHERE fkCommendId IN("
+					+ "SELECT commendId FROM MovieCommend WHERE commendId = " + commentId + " )";
+			ArrayList<MovieCommentReplyClass> replyList = SqlOperations.getMovieCommentReply(query);
+			if(replyList.size() == 0){
+				commentFlag = 1;
+			}
+		}
+		if(commentFlag == 0){
+			String commentQuery = "SELECT * FROM MovieCommend WHERE commendId = " + commentId;
+			ArrayList<MovieCommentClass> commentList = SqlOperations.getMovieComment(commentQuery);
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(248, 248, 248));
 			panel.setBounds(0, 0, 510, 120);
@@ -39,10 +50,7 @@ public class CommentComponent {
 			textComment.setBackground(new Color(248, 248, 248));
 			textComment.setEditable(false);
 			textComment.setFocusable(false);
-			textComment.setText("bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama");
+			textComment.setText(commentList.get(0).getComment());
 			textComment.setLineWrap(true);
 			textComment.setWrapStyleWord(true);
 			
@@ -62,26 +70,41 @@ public class CommentComponent {
 				}
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					String commentText = JOptionPane.showInputDialog(
-					        null, 
-					        "",
-					        "Please, enter your comment", 
-					        JOptionPane.INFORMATION_MESSAGE
-					    );
-					if(commentText != null && !commentText.equals("")){
-						//TODO: yorumu veritabanýna kaydet
+					if(MainForm.getIsLogined()){
+						String commentText = JOptionPane.showInputDialog(
+						        null, 
+						        "",
+						        "Please, enter your comment", 
+						        JOptionPane.INFORMATION_MESSAGE
+						    );
+						if(commentText != null && !commentText.equals("")){
+							String insertComment = "INSERT INTO MovieReply(fkCommendId, fkUserId, commend) VALUES(" 
+									+ commentId + "," 
+									+ MainForm.getLoggedUserId() + ",'" 
+									+ commentText + "')";
+							SqlOperations.insert(insertComment);
+							MainForm.refPanelEachOne.setVisible(false);
+							MainForm.refPanelEachOne.removeAll();
+							new ParentChildCommentPage(commentId, MainForm.refPanelEachOne);
+							MainForm.refPanelEachOne.setVisible(true);
+						}
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Please register to comment!");
 					}
 				}
 			});
 			lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
 			
+			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
+			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			JLabel lblNewLabel = new JLabel("UserImage");
 			
 			JPanel panelUserName = new JPanel();
 			panelUserName.setBackground(new Color(248, 248, 248));
 			panelUserName.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 5));
-
-			new LabelWithLinkForUser("cagatay-0", 1, panelUserName);
+			
+			new LabelWithLinkForUser(userInfo.get(0).getuDisplayName(), userInfo.get(0).getUserId(), panelUserName);
 			
 			JLabel lblShowComment = new JLabel("");
 			lblShowComment.addMouseListener(new MouseAdapter() {
@@ -92,10 +115,28 @@ public class CommentComponent {
 			lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
 			
-			JLabel lblCommentCount = new JLabel("1");
+			String query = "SELECT * FROM MovieReply WHERE fkCommendId IN("
+					+ "SELECT commendId FROM MovieCommend WHERE commendId = " + commentId + " )";
+			ArrayList<MovieCommentReplyClass> replyList = SqlOperations.getMovieCommentReply(query);
+			
+			JLabel lblCommentCount = new JLabel("" + replyList.size());
 			lblCommentCount.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					MainForm.refPanelTop.setVisible(false);
+					MainForm.refPanelHome.setVisible(false);
+					MainForm.refPanelMovies.setVisible(false);
+					MainForm.refPanelCelebs.setVisible(false);
+					MainForm.refPanelTop10.setVisible(false);
+					MainForm.refPanelUser.setVisible(false);
+					MainForm.refPanelWatchlist.setVisible(false);
+					MainForm.refLabelGoBackD.setVisible(false);
+					MainForm.refLabelBack.setVisible(true);
+					
+					MainForm.refPanelEachOne.setVisible(false);
+					MainForm.refPanelEachOne.removeAll();
+					new ParentChildCommentPage(commentId, MainForm.refPanelEachOne);
+					MainForm.refPanelEachOne.setVisible(true);
 				}
 			});
 			lblCommentCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -141,6 +182,9 @@ public class CommentComponent {
 			panelReal.add(panel);
 		}
 		else if(commentFlag == 1){
+			String commentQuery = "SELECT * FROM MovieCommend WHERE commendId = " + commentId;
+			ArrayList<MovieCommentClass> commentList = SqlOperations.getMovieComment(commentQuery);
+			
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(248, 248, 248));
 			panel.setBounds(0, 0, 510, 120);
@@ -150,10 +194,7 @@ public class CommentComponent {
 			textComment.setBackground(new Color(248, 248, 248));
 			textComment.setEditable(false);
 			textComment.setFocusable(false);
-			textComment.setText("bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama");
+			textComment.setText(commentList.get(0).getComment());
 			textComment.setLineWrap(true);
 			textComment.setWrapStyleWord(true);
 			
@@ -173,18 +214,34 @@ public class CommentComponent {
 				}
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					String commentText = JOptionPane.showInputDialog(
-					        null, 
-					        "",
-					        "Please, enter your comment", 
-					        JOptionPane.INFORMATION_MESSAGE
-					    );
-					if(commentText != null && !commentText.equals("")){
-						//TODO: yorumu veritabanýna kaydet
+					if(MainForm.getIsLogined()){
+						String commentText = JOptionPane.showInputDialog(
+						        null, 
+						        "",
+						        "Please, enter your comment", 
+						        JOptionPane.INFORMATION_MESSAGE
+						    );
+						if(commentText != null && !commentText.equals("")){
+							String insertComment = "INSERT INTO MovieReply(fkCommendId, fkUserId, commend) VALUES(" 
+									+ commentId + "," 
+									+ MainForm.getLoggedUserId() + ",'" 
+									+ commentText + "')";
+							SqlOperations.insert(insertComment);
+							MainForm.refPanelEachOne.setVisible(false);
+							MainForm.refPanelEachOne.removeAll();
+							new ParentChildCommentPage(commentId, MainForm.refPanelEachOne);
+							MainForm.refPanelEachOne.setVisible(true);
+						}
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Please register to comment!");
 					}
 				}
 			});
 			lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
+			
+			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
+			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			
 			JLabel lblNewLabel = new JLabel("UserImage");
 			
@@ -192,7 +249,7 @@ public class CommentComponent {
 			panelUserName.setBackground(new Color(248, 248, 248));
 			panelUserName.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 5));
 
-			new LabelWithLinkForUser("kadir-1", 1, panelUserName);
+			new LabelWithLinkForUser(userInfo.get(0).getuDisplayName(), userInfo.get(0).getUserId(), panelUserName);
 			
 			GroupLayout gl_panel = new GroupLayout(panel);
 			gl_panel.setHorizontalGroup(
@@ -227,6 +284,9 @@ public class CommentComponent {
 			panelReal.add(panel);
 		}
 		else if(commentFlag == 2){
+			String commentQuery = "SELECT * FROM MovieReply WHERE commendId = " + commentId;
+			ArrayList<MovieCommentReplyClass> commentList = SqlOperations.getMovieCommentReply(commentQuery);
+			
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(248, 248, 248));
 			panel.setBounds(0, 0, 510, 120);
@@ -236,15 +296,15 @@ public class CommentComponent {
 			textComment.setBackground(new Color(248, 248, 248));
 			textComment.setEditable(false);
 			textComment.setFocusable(false);
-			textComment.setText("bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama");
+			textComment.setText(commentList.get(0).getComment());
 			textComment.setLineWrap(true);
 			textComment.setWrapStyleWord(true);
 			
 			JScrollPane scrollComment = new JScrollPane(textComment);
 			scrollComment.setViewportView(textComment);
+			
+			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
+			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			
 			JLabel lblNewLabel = new JLabel("UserImage");
 			
@@ -252,7 +312,7 @@ public class CommentComponent {
 			panelUserName.setBackground(new Color(248, 248, 248));
 			panelUserName.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 5));
 		
-			new LabelWithLinkForUser("Cagatay-2", 1, panelUserName);
+			new LabelWithLinkForUser(userInfo.get(0).getuDisplayName(), userInfo.get(0).getUserId(), panelUserName);
 			
 			GroupLayout gl_panel = new GroupLayout(panel);
 			gl_panel.setHorizontalGroup(
@@ -284,6 +344,9 @@ public class CommentComponent {
 			panelReal.add(panel);
 		}
 		else if(commentFlag == 3){
+			String commentQuery = "SELECT * FROM MovieCommend WHERE commendId = " + commentId;
+			ArrayList<MovieCommentClass> commentList = SqlOperations.getMovieComment(commentQuery);
+			
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(248, 248, 248));
 			panel.setBounds(0, 0, 510, 120);
@@ -293,10 +356,7 @@ public class CommentComponent {
 			textComment.setBackground(new Color(248, 248, 248));
 			textComment.setEditable(false);
 			textComment.setFocusable(false);
-			textComment.setText("bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama"
-					+ "bu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklamabu bir aciklama");
+			textComment.setText(commentList.get(0).getComment());
 			textComment.setLineWrap(true);
 			textComment.setWrapStyleWord(true);
 			
@@ -316,18 +376,34 @@ public class CommentComponent {
 				}
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					String commentText = JOptionPane.showInputDialog(
-					        null, 
-					        "",
-					        "Please, enter your comment", 
-					        JOptionPane.INFORMATION_MESSAGE
-					    );
-					if(commentText != null && !commentText.equals("")){
-						//TODO: yorumu veritabanýna kaydet
+					if(MainForm.getIsLogined()){
+						String commentText = JOptionPane.showInputDialog(
+						        null, 
+						        "",
+						        "Please, enter your comment", 
+						        JOptionPane.INFORMATION_MESSAGE
+						    );
+						if(commentText != null && !commentText.equals("")){
+							String insertComment = "INSERT INTO MovieReply(fkCommendId, fkUserId, commend) VALUES(" 
+									+ commentId + "," 
+									+ MainForm.getLoggedUserId() + ",'" 
+									+ commentText + "')";
+							SqlOperations.insert(insertComment);
+							MainForm.refPanelEachOne.setVisible(false);
+							MainForm.refPanelEachOne.removeAll();
+							new ParentChildCommentPage(commentId, MainForm.refPanelEachOne);
+							MainForm.refPanelEachOne.setVisible(true);
+						}
+					}
+					else{
+						JOptionPane.showMessageDialog(null, "Please register to comment!");
 					}
 				}
 			});
 			lblWriteReview.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WriteReview.png"));
+			
+			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
+			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			
 			JLabel lblNewLabel = new JLabel("UserImage");
 			
@@ -335,12 +411,16 @@ public class CommentComponent {
 			panelUserName.setBackground(new Color(248, 248, 248));
 			panelUserName.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 5));
 			
-			new LabelWithLinkForUser("kadir-3", 1, panelUserName);
+			new LabelWithLinkForUser(userInfo.get(0).getuDisplayName(), userInfo.get(0).getUserId(), panelUserName);
 			
 			JLabel lblShowComment = new JLabel("");
 			lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
 			
-			JLabel lblCommentCount = new JLabel("1");
+			String query = "SELECT * FROM MovieReply WHERE fkCommendId IN("
+					+ "SELECT commendId FROM MovieCommend WHERE commendId = " + commentId + " )";
+			ArrayList<MovieCommentReplyClass> replyList = SqlOperations.getMovieCommentReply(query);
+			
+			JLabel lblCommentCount = new JLabel("" + replyList.size());
 			lblCommentCount.setHorizontalAlignment(SwingConstants.CENTER);
 			lblCommentCount.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
 			lblCommentCount.setForeground(Color.WHITE);
