@@ -22,7 +22,7 @@ public class SearchResult {
 			
 		}
 		else if(text.length() == 1){
-			System.out.println("char search");
+			//System.out.println("char search");
 			celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text + "%'";
 			celebList = SqlOperations.getPeople(celebQuery);
 			
@@ -31,15 +31,15 @@ public class SearchResult {
 		}
 		else if(text.charAt(1) == ':'){
 			if(text.charAt(0) == 'g'){
-				System.out.println("genre search");
-				celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text.substring(2,text.length()) + "%'";
+				//System.out.println("genre search");
+				celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '" + "..." + "'";
 				celebList = SqlOperations.getPeople(celebQuery);
 				
 				movieQuery = "SELECT movieId, mTitle FROM Movie WHERE movieId IN (SELECT movieId FROM Genre WHERE mType LIKE '%" + text.substring(2,text.length()) + "%')";
 				movieList = SqlOperations.getMovie(movieQuery);
 			}
 			else if(text.charAt(0) == 'y'){
-				System.out.println("year search");
+				//System.out.println("year search");
 				celebQuery = "SELECT peopleId, pTitle FROM People WHERE pBirthday LIKE '%" + text.substring(2,text.length()) + "%'";
 				celebList = SqlOperations.getPeople(celebQuery);
 				
@@ -48,7 +48,7 @@ public class SearchResult {
 			}
 		}
 		else{
-			System.out.println("else search");
+			//System.out.println("else search");
 			celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text + "%'";
 			celebList = SqlOperations.getPeople(celebQuery);
 			

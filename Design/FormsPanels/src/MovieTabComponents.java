@@ -25,7 +25,7 @@ public class MovieTabComponents {
 		movieId = mId;
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 540, 400);
+		panel.setBounds(0, 0, 524, 233);
 		
 		JPanel panelName = new JPanel();
 		JTextArea textInfo = new JTextArea();
@@ -52,7 +52,7 @@ public class MovieTabComponents {
 		
 		
 		//panel.setBackground(new Color(192, 192, 192));
-		panel.setBounds(0, 0, 524, 233);
+		
 		
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
@@ -135,8 +135,8 @@ public class MovieTabComponents {
 				MainForm.refPanelTop10.setVisible(false);
 				MainForm.refPanelUser.setVisible(false);
 				MainForm.refPanelWatchlist.setVisible(false);
-				MainForm.refLabelGoBackD.setVisible(false);
-				MainForm.refLabelBack.setVisible(true);
+				MainForm.refLabelturnHomeD.setVisible(false);
+				MainForm.refLabelTurnHome.setVisible(true);
 				
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();

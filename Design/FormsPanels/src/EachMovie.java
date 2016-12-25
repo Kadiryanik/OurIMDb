@@ -89,7 +89,7 @@ public class EachMovie {
 		panel.add(panelInfo);
 		
 		JTextArea textInfo = new JTextArea();
-		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 9));
+		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 		textInfo.setBackground(new Color(231, 231, 231));
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
@@ -1085,11 +1085,69 @@ public class EachMovie {
 		lblAddWatch.setBounds(27, 22, 39, 49);
 		panelTop.add(lblAddWatch);
 		
+		JLabel lblShowComment = new JLabel("");
+		lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblShowComment.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelturnHomeD.setVisible(false);
+				MainForm.refLabelTurnHome.setVisible(true);
+				
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				new UserReviews(movieId, MainForm.refPanelEachOne);
+				MainForm.refPanelEachOne.setVisible(true);
+				
+			}
+		});
+		lblShowComment.setLocation(345, 10);
+		lblShowComment.setSize(24, 24);
+		lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
+		
+		String commentQuery = "SELECT * FROM MovieCommend WHERE fkMovieId = '" + movieId + "'";
+		ArrayList<MovieCommentClass> commentList = SqlOperations.getMovieComment(commentQuery);
+		JLabel lblCommentCount = new JLabel("" + commentList.size());
+		lblCommentCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblCommentCount.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				MainForm.refPanelTop.setVisible(false);
+				MainForm.refPanelHome.setVisible(false);
+				MainForm.refPanelMovies.setVisible(false);
+				MainForm.refPanelCelebs.setVisible(false);
+				MainForm.refPanelTop10.setVisible(false);
+				MainForm.refPanelUser.setVisible(false);
+				MainForm.refPanelWatchlist.setVisible(false);
+				MainForm.refLabelturnHomeD.setVisible(false);
+				MainForm.refLabelTurnHome.setVisible(true);
+				
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				new UserReviews(movieId, MainForm.refPanelEachOne);
+				MainForm.refPanelEachOne.setVisible(true);
+			}
+		});
+		lblCommentCount.setSize(22, 20);
+		lblCommentCount.setLocation(345, 10);
+		lblCommentCount.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCommentCount.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
+		lblCommentCount.setForeground(Color.WHITE);
+		panelTop.add(lblCommentCount);
+		panelTop.add(lblShowComment);
+		
 		/*movie title*/
 		JLabel lblName = new JLabel(movieList.get(0).getmTitle());
+		lblName.setToolTipText(movieList.get(0).getmTitle());
 		lblName.setForeground(Color.WHITE);
 		lblName.setFont(new Font("Comic Sans MS", Font.BOLD, 20));
-		lblName.setBounds(76, 22, 306, 28);
+		lblName.setBounds(76, 22, 290, 28);
 		panelTop.add(lblName);
 		
 		JPanel panelDesc = new JPanel();
@@ -1130,62 +1188,6 @@ public class EachMovie {
 		lblPointcount.setBounds(404, 46, 39, 14);
 		panelTop.add(lblPointcount);
 		
-		JLabel lblShowComment = new JLabel("");
-		lblShowComment.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));//TODO: hand_cursor oluþmuyor 
-		lblShowComment.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				MainForm.refPanelTop.setVisible(false);
-				MainForm.refPanelHome.setVisible(false);
-				MainForm.refPanelMovies.setVisible(false);
-				MainForm.refPanelCelebs.setVisible(false);
-				MainForm.refPanelTop10.setVisible(false);
-				MainForm.refPanelUser.setVisible(false);
-				MainForm.refPanelWatchlist.setVisible(false);
-				MainForm.refLabelGoBackD.setVisible(false);
-				MainForm.refLabelBack.setVisible(true);
-				
-				MainForm.refPanelEachOne.setVisible(false);
-				MainForm.refPanelEachOne.removeAll();
-				new UserReviews(movieId, MainForm.refPanelEachOne);
-				MainForm.refPanelEachOne.setVisible(true);
-				
-			}
-		});
-		lblShowComment.setLocation(335, 25);
-		lblShowComment.setSize(24, 24);
-		lblShowComment.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\ShowComments.png"));
-		
-		String commentQuery = "SELECT * FROM MovieCommend WHERE fkMovieId = '" + movieId + "'";
-		ArrayList<MovieCommentClass> commentList = SqlOperations.getMovieComment(commentQuery);
-		JLabel lblCommentCount = new JLabel("" + commentList.size());
-		lblCommentCount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblCommentCount.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				MainForm.refPanelTop.setVisible(false);
-				MainForm.refPanelHome.setVisible(false);
-				MainForm.refPanelMovies.setVisible(false);
-				MainForm.refPanelCelebs.setVisible(false);
-				MainForm.refPanelTop10.setVisible(false);
-				MainForm.refPanelUser.setVisible(false);
-				MainForm.refPanelWatchlist.setVisible(false);
-				MainForm.refLabelGoBackD.setVisible(false);
-				MainForm.refLabelBack.setVisible(true);
-				
-				MainForm.refPanelEachOne.setVisible(false);
-				MainForm.refPanelEachOne.removeAll();
-				new UserReviews(movieId, MainForm.refPanelEachOne);
-				MainForm.refPanelEachOne.setVisible(true);
-			}
-		});
-		lblCommentCount.setSize(22, 20);
-		lblCommentCount.setLocation(335, 25);
-		lblCommentCount.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCommentCount.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
-		lblCommentCount.setForeground(Color.WHITE);
-		panelTop.add(lblCommentCount);
-		panelTop.add(lblShowComment);
 		
 		//panelHover
 		panelHover.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

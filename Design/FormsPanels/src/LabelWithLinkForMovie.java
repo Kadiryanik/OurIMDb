@@ -54,8 +54,8 @@ public class LabelWithLinkForMovie {
 				MainForm.refPanelTop10.setVisible(false);
 				MainForm.refPanelUser.setVisible(false);
 				MainForm.refPanelWatchlist.setVisible(false);
-				MainForm.refLabelGoBackD.setVisible(false);
-				MainForm.refLabelBack.setVisible(true);
+				MainForm.refLabelturnHomeD.setVisible(false);
+				MainForm.refLabelTurnHome.setVisible(true);
 				
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();

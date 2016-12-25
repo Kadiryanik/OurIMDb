@@ -39,6 +39,7 @@ public class Top10Component {
 		panel.setPreferredSize(new Dimension(440, 60));
 		
 		JLabel lblImage = new JLabel("");
+		//TODO:get image from database
 		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon32.png"));
 		
 		JLabel label = new JLabel(Id + ".");
@@ -69,8 +70,8 @@ public class Top10Component {
 				MainForm.refPanelTop10.setVisible(false);
 				MainForm.refPanelUser.setVisible(false);
 				MainForm.refPanelWatchlist.setVisible(false);
-				MainForm.refLabelGoBackD.setVisible(false);
-				MainForm.refLabelBack.setVisible(true);
+				MainForm.refLabelturnHomeD.setVisible(false);
+				MainForm.refLabelTurnHome.setVisible(true);
 				
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();

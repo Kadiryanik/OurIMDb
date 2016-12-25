@@ -12,9 +12,11 @@ import javax.swing.SwingConstants;
 
 public class HomePageClass {
 	private int cropLimit;
+	//TODO: show most visited 6 movie
+	//if logged then show most visited which match user profile 
 	public HomePageClass( JPanel panelReal) {
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.WHITE);
+		panel.setBackground(new Color(245, 245, 245));
 		panel.setBounds(0, 0, 550, 675);
 		panel.setLayout(null);
 
@@ -23,7 +25,7 @@ public class HomePageClass {
 		String movieQuery = "SELECT movieId, mTitle FROM Movie ORDER BY mDate DESC";
 		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
 		
-		JLabel lblPopular = new JLabel("Popular");
+		JLabel lblPopular = new JLabel("Popular Movies");
 		lblPopular.setForeground(new Color(0, 0, 0));
 		lblPopular.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPopular.setFont(new Font("Comic Sans MS", Font.BOLD, 13));
@@ -31,7 +33,7 @@ public class HomePageClass {
 		panel.add(lblPopular);
 		
 		JPanel panelOne = new JPanel();
-		panelOne.setBackground(Color.WHITE);
+		panelOne.setBackground(new Color(245, 245, 245));
 		panelOne.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelOne.setBounds(25, 278, 150, 30);
 		new LabelWithLinkForMovie(movieList.get(0).getmTitle(), movieList.get(0).getMovieId(), 11, cropLimit, panelOne);
@@ -43,7 +45,7 @@ public class HomePageClass {
 		panel.add(lblMovieOne);
 		
 		JPanel panelTwo = new JPanel();
-		panelTwo.setBackground(Color.WHITE);
+		panelTwo.setBackground(new Color(245, 245, 245));
 		panelTwo.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelTwo.setBounds(200, 278, 150, 30);
 		new LabelWithLinkForMovie(movieList.get(1).getmTitle(), movieList.get(1).getMovieId(), 11, cropLimit, panelTwo);
@@ -55,7 +57,7 @@ public class HomePageClass {
 		panel.add(lblMovieTwo);
 		
 		JPanel panelThree = new JPanel();
-		panelThree.setBackground(Color.WHITE);
+		panelThree.setBackground(new Color(245, 245, 245));
 		panelThree.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelThree.setBounds(375, 278, 150, 30);
 		new LabelWithLinkForMovie(movieList.get(2).getmTitle(), movieList.get(2).getMovieId(), 11, cropLimit, panelThree);
@@ -67,7 +69,7 @@ public class HomePageClass {
 		panel.add(lblMovieThree);
 		
 		JPanel panelFour = new JPanel();
-		panelFour.setBackground(Color.WHITE);
+		panelFour.setBackground(new Color(245, 245, 245));
 		panelFour.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelFour.setBounds(25, 564, 150, 30);
 		new LabelWithLinkForMovie(movieList.get(3).getmTitle(), movieList.get(3).getMovieId(), 11, cropLimit, panelFour);
@@ -79,7 +81,7 @@ public class HomePageClass {
 		panel.add(lblMovieFour);
 		
 		JPanel panelFive = new JPanel();
-		panelFive.setBackground(Color.WHITE);
+		panelFive.setBackground(new Color(245, 245, 245));
 		panelFive.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelFive.setBounds(200, 564, 150, 30);
 		new LabelWithLinkForMovie(movieList.get(4).getmTitle(), movieList.get(4).getMovieId(), 11, cropLimit, panelFive);
@@ -91,7 +93,7 @@ public class HomePageClass {
 		panel.add(lblMovieFive);
 		
 		JPanel panelSix = new JPanel();
-		panelSix.setBackground(Color.WHITE);
+		panelSix.setBackground(new Color(245, 245, 245));
 		panelSix.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		panelSix.setBounds(375, 564, 150, 30);
 		new LabelWithLinkForMovie(movieList.get(5).getmTitle(), movieList.get(5).getMovieId(), 11, cropLimit, panelSix);

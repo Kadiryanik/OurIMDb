@@ -28,7 +28,7 @@ public class UrlDownloadWithPeopleTitle {
 		
 		int i = 0;
 		String query = "SELECT pTitle,pImageUrl,pImage FROM people WHERE peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='" + MainForm.staticMovieId + "')";
-		ArrayList<People> list = SqlOperations.getPeople(query);															//TODO: id
+		ArrayList<People> list = SqlOperations.getPeople(query);
        
 		for(i = 0; i < list.size(); i++){
 			if(list.get(i).getpImage() == null){

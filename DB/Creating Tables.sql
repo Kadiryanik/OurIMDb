@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS MovieCommend(
     FOREIGN KEY (fkUserId) REFERENCES Users(userId) ON UPDATE CASCADE ON DELETE SET NULL,
     PRIMARY KEY (commendId)
 );
- 
+
 CREATE TABLE IF NOT EXISTS MovieReply(
 	fkCommendId INT,
     fkUserId INT,

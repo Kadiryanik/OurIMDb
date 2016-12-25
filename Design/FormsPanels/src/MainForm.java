@@ -34,6 +34,9 @@ import java.awt.Frame;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.font.TextAttribute;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLClientInfoException;
@@ -90,8 +93,8 @@ public class MainForm {
 	public static JPanel refPanelUser;
 	public static JPanel refPanelWatchlist;
 	public static JPanel refPanelRegister;
-	public static JLabel refLabelBack;
-	public static JLabel refLabelGoBackD;
+	public static JLabel refLabelTurnHome;
+	public static JLabel refLabelturnHomeD;
 	
 	private JTextField textFieldSearch;
 	
@@ -131,6 +134,13 @@ public class MainForm {
 	public static boolean getIsLogined(){
 		return isLogined;
 	}
+	
+	//Hash md5 method
+	public String getHash(String passStr){
+		System.out.println(passStr.hashCode());
+		//1360838976 (...... için veritabanýna kaydedilen deðer)
+		return ("" + passStr.hashCode());
+	}
 
 	private void initialize() {
 		frmOurmdb = new JFrame();
@@ -164,7 +174,9 @@ public class MainForm {
 		}
 		
 		final JButton btnWatchList = new JButton("");
+		btnWatchList.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		JButton btnLogin = new JButton("");
+		btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		final JLabel labelExit = new JLabel("");
 		labelExit.addMouseListener(new MouseAdapter() {
@@ -175,11 +187,11 @@ public class MainForm {
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_kýrmýzý.png"));
+				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\exitA.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_siyah.png"));
+				labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\exit.png"));
 			}
 		});
 
@@ -194,13 +206,25 @@ public class MainForm {
 		
 		//labelExit
 		labelExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\rsz_x_siyah.png"));
+		labelExit.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\exit.png"));
 		labelExit.setBounds(510, 0, 24, 24);
 		frmOurmdb.getContentPane().add(labelExit);
 		
 		JLabel labelIcon = new JLabel("");
 		labelIcon.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Logo.png"));
 		labelIcon.setBounds(0, 0, 50, 24);
+		labelIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		labelIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				JOptionPane.showMessageDialog(
+				        null, 
+				        "This program developed by\n   Çaðatay Avþar and Kadir Yanýk",
+				        "About", 
+				        JOptionPane.INFORMATION_MESSAGE
+				    );
+			}
+		});
 		frmOurmdb.getContentPane().add(labelIcon);
 		
 		/*Panels Inýt*/
@@ -245,7 +269,7 @@ public class MainForm {
 		final JPanel panelTop10 = new JPanel();
 		refPanelTop10 = panelTop10;
 		panelTop10.setVisible(false);
-		panelTop10.setBackground(UIManager.getColor("windowBorder"));
+		panelTop10.setBackground(Color.CYAN);
 		panelTop10.setBounds(0, 75, 550, 675);
 		frmOurmdb.getContentPane().add(panelTop10);
 		panelTop10.setLayout(null);
@@ -270,13 +294,12 @@ public class MainForm {
 		final JPanel panelLogined = new JPanel();
 		final JLabel lblUser = new JLabel("User");
 		
-		textFieldId = new JTextField("cagatay");
+		textFieldId = new JTextField("ID");
 		textFieldId.setFocusTraversalKeysEnabled(false);
 		textFieldId.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyChar() == e.VK_TAB){
-					//TODO: fill
 					textFieldPw.requestFocusInWindow();
 					textFieldPw.setText("");
 				}
@@ -284,7 +307,7 @@ public class MainForm {
 					String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldId.getText() + "'";
 					ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 					if(userInfo.size() != 0){
-						if(textFieldPw.getText().equals(userInfo.get(0).getuPassword())){
+						if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
 							//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
 							panelTop.setVisible(false);
 							panelUnLogin.setVisible(false);
@@ -297,6 +320,9 @@ public class MainForm {
 							
 							isLogined = true;
 							loggedUserId = userInfo.get(0).getUserId();
+							
+							new HomePageClass(panelHome);
+							panelHome.setVisible(true);
 						}
 						else{
 							textFieldPw.setText("");
@@ -340,7 +366,6 @@ public class MainForm {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyChar() == e.VK_TAB){
-					//TODO: fill
 					textFieldId.requestFocusInWindow();
 					if(textFieldId.getText().equals("ID")){
 							textFieldId.setText("");
@@ -350,7 +375,7 @@ public class MainForm {
 					String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldId.getText() + "'";
 					ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 					if(userInfo.size() != 0){
-						if(textFieldPw.getText().equals(userInfo.get(0).getuPassword())){
+						if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
 							//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
 							panelTop.setVisible(false);
 							panelUnLogin.setVisible(false);
@@ -364,6 +389,9 @@ public class MainForm {
 							
 							isLogined = true;
 							loggedUserId = userInfo.get(0).getUserId();
+							
+							new HomePageClass(panelHome);
+							panelHome.setVisible(true);
 						}
 						else{
 							textFieldPw.setText("");
@@ -472,40 +500,42 @@ public class MainForm {
 		
 		
 		//Back Button 
-		final JLabel lblGoBackD = new JLabel("");
-		refLabelGoBackD = lblGoBackD;
-		final JLabel lblBack = new JLabel("");
-		refLabelBack = lblBack;
+		final JLabel lblturnHomeD = new JLabel("");
+		refLabelturnHomeD = lblturnHomeD;
+		final JLabel lblTurnHome = new JLabel("");
+		refLabelTurnHome = lblTurnHome;
 		
-		lblBack.setVisible(false);
-		lblBack.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblBack.addMouseListener(new MouseAdapter() {
+		lblTurnHome.setVisible(false);
+		lblTurnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblTurnHome.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				panelEachOne.removeAll();
-
-				lblBack.setVisible(false);
-				lblGoBackD.setVisible(true);
+				new HomePageClass(panelHome);
+				
+				lblTurnHome.setVisible(false);
+				lblturnHomeD.setVisible(true);
 				panelTop.setVisible(true);
 				panelEachOne.setVisible(false);
+				panelHome.setVisible(true);
 			}
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBackA.png"));
+				lblTurnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\turnHomeA.png"));
 			}
 			@Override
 			public void mouseExited(MouseEvent arg0) {
-				lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBack.png"));
+				lblTurnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\turnHome.png"));
 			}
 		});
 		
 		
-		lblGoBackD.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBackDA.png"));
-		lblGoBackD.setBounds(480, 0, 24, 24);
-		frmOurmdb.getContentPane().add(lblGoBackD);
-		lblBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\GoBack.png"));
-		lblBack.setBounds(480, 0, 24, 24);
-		frmOurmdb.getContentPane().add(lblBack);
+		lblturnHomeD.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\turnHomeDA.png"));
+		lblturnHomeD.setBounds(480, 0, 24, 24);
+		frmOurmdb.getContentPane().add(lblturnHomeD);
+		lblTurnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\turnHome.png"));
+		lblTurnHome.setBounds(480, 0, 24, 24);
+		frmOurmdb.getContentPane().add(lblTurnHome);
 		//End Back Button 
 		
 		//SearchField 
@@ -523,7 +553,7 @@ public class MainForm {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(!textFieldSearch.getText().equals("")){
-					lblGoBackD.setVisible(false);
+					lblturnHomeD.setVisible(false);
 					panelTop.setVisible(false);
 					panelHome.setVisible(false);
 					panelCelebs.setVisible(false);
@@ -538,7 +568,7 @@ public class MainForm {
 					new SearchResult(textFieldSearch.getText(), panelEachOne);
 					textFieldSearch.setText("");
 					panelEachOne.setVisible(true);
-					lblBack.setVisible(true);
+					lblTurnHome.setVisible(true);
 				}
 			}
 		});
@@ -598,7 +628,7 @@ public class MainForm {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyChar() == arg0.VK_ENTER){
-					lblGoBackD.setVisible(false);
+					lblturnHomeD.setVisible(false);
 					panelTop.setVisible(false);
 					panelHome.setVisible(false);
 					panelCelebs.setVisible(false);
@@ -613,7 +643,7 @@ public class MainForm {
 					new SearchResult(textFieldSearch.getText(), panelEachOne);
 					textFieldSearch.setText("");
 					panelEachOne.setVisible(true);
-					lblBack.setVisible(true);
+					lblTurnHome.setVisible(true);
 				}
 			}
 		});
@@ -655,67 +685,52 @@ public class MainForm {
 		/*-------------------------------Buttons-------------------------------*/
 		
 		JButton btnHome = new JButton("");
+		btnHome.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnHome.setBackground(UIManager.getColor("CheckBox.light"));
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//new SearchResult("babaanne", panelEachOne);
-				//new UserReviews("tt2191701", panelEachOne);
-				new ParentChildCommentPage(1, panelEachOne);
+
 				panelHome.removeAll();
-				//new HomePageClass(panelHome);
+				new HomePageClass(panelHome);
 				
-				lblGoBackD.setVisible(false);
-				lblBack.setVisible(true);
-				panelTop.setVisible(false);
-				panelHome.setVisible(false);
+				panelHome.setVisible(true);
+				panelMovies.setVisible(false);
 				panelCelebs.setVisible(false);
 				panelTop10.setVisible(false);
 				panelUser.setVisible(false);
-				panelMovies.setVisible(false);
 				panelRegister.setVisible(false);
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
-				panelEachOne.setVisible(true);
-//				
-//				panelHome.setVisible(true);
-//				panelMovies.setVisible(false);
+				
+				//new SearchResult("babaanne", panelEachOne);
+				//new UserReviews("tt2191701", panelEachOne);
+				//new ParentChildCommentPage(1, panelEachOne);
+				
+//				lblturnHomeD.setVisible(false);
+//				lblTurnHome.setVisible(true);
+//				panelTop.setVisible(false);
+//				panelHome.setVisible(false);
 //				panelCelebs.setVisible(false);
 //				panelTop10.setVisible(false);
 //				panelUser.setVisible(false);
+//				panelMovies.setVisible(false);
 //				panelRegister.setVisible(false);
 //				panelEachOne.setVisible(false);
 //				panelWatchList.setVisible(false);
+//				panelEachOne.setVisible(true);
+				
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
 		panelTop.add(btnHome);
 		
 		JButton btnMovies = new JButton("");
+		btnMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMovies.setBackground(UIManager.getColor("CheckBox.light"));
 		btnMovies.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\movies.png"));
 		btnMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//new UserPageClass(1, panelEachOne);
-				//new EachCeleb(1, panelEachOne);
-				//new FullCastClass(1, panelEachOne);
-				//new SearchResult("babaanne", panelEachOne);
-				//new UserReviews(1, panelEachOne);
-				//new ParentChildCommentPage(1, panelEachOne);
-				
-				/*
-				lblGoBackD.setVisible(false);
-				lblBack.setVisible(true);
-				panelTop.setVisible(false);
-				panelHome.setVisible(false);
-				panelCelebs.setVisible(false);
-				panelTop10.setVisible(false);
-				panelUser.setVisible(false);
-				panelRegister.setVisible(false);
-				panelEachOne.setVisible(false);
-				panelWatchList.setVisible(false);
-				panelEachOne.setVisible(true);
-				*/
 				panelMovies.removeAll();
 				MovieTabComponents.Id = 0;
 				//Movies Init
@@ -740,7 +755,7 @@ public class MainForm {
 				scrollPaneComing.setViewportView(panelComingSoon);
 				
 				JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-				tabbedPane.setBackground(UIManager.getColor("windowBorder"));
+				tabbedPane.setBackground(new Color(245, 245, 245));
 				tabbedPane.setBounds(0, 0, 550, 675);
 				tabbedPane.addTab("In Theaters", scrollPaneInThe);
 				tabbedPane.addTab("Coming Soon", scrollPaneComing);
@@ -752,6 +767,8 @@ public class MainForm {
 				for(int i = 0; i < movieList.size(); i++){
 					new MovieTabComponents(movieList.get(i).getMovieId(), panelInTheaters);
 				}
+				
+				//TODO: get system date and add coming soon movies
 				
 				panelHome.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -767,6 +784,7 @@ public class MainForm {
 		panelTop.add(btnMovies);
 		
 		JButton btnCelebs = new JButton("");
+		btnCelebs.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCelebs.setBackground(UIManager.getColor("CheckBox.light"));
 		btnCelebs.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\celebs.png"));
 		btnCelebs.addActionListener(new ActionListener() {
@@ -1059,10 +1077,11 @@ public class MainForm {
 		btnCelebs.setBounds(112, 8, 52, 26);
 		panelTop.add(btnCelebs);
 		
-		JButton btnTop50 = new JButton("");
-		btnTop50.setBackground(UIManager.getColor("CheckBox.light"));
-		btnTop50.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Top50.png"));
-		btnTop50.addActionListener(new ActionListener() {
+		JButton btnTop10 = new JButton("");
+		btnTop10.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnTop10.setBackground(UIManager.getColor("CheckBox.light"));
+		btnTop10.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Top50.png"));//TODO: change image
+		btnTop10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Top10Component.Id = 0;
 				/*Top10 Inýt*/
@@ -1072,7 +1091,7 @@ public class MainForm {
 				panelTop10.add(scrollPane);
 				
 				JPanel panelTop10Scroll = new JPanel();
-				panelTop10Scroll.setBackground(UIManager.getColor("Button.shadow"));
+				panelTop10Scroll.setBackground(new Color(245, 245, 245));
 				panelTop10Scroll.setLayout(new WrapLayout(FlowLayout.CENTER, 10, 10));
 				panelTop10Scroll.setBounds(0, 0, 10, 10);
 				
@@ -1098,8 +1117,8 @@ public class MainForm {
 				panelWatchList.setVisible(false);
 			}
 		});
-		btnTop50.setBounds(165, 8, 50, 26);
-		panelTop.add(btnTop50);
+		btnTop10.setBounds(165, 8, 50, 26);
+		panelTop.add(btnTop10);
 		
 		//btnWatchList
 		btnWatchList.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\watchlist.png"));
@@ -1107,7 +1126,7 @@ public class MainForm {
 		btnWatchList.setVisible(true);
 		btnWatchList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				panelWatchList.removeAll();
 				final JPanel WatchScroll = new JPanel();
 
 				JScrollPane scrollPaneWatch = new JScrollPane();
@@ -1130,6 +1149,7 @@ public class MainForm {
 				lblYourwatchlist.setForeground(new Color(66, 66, 66));
 				lblYourwatchlist.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 				
+				//TODO: Link these ones with db
 				JLabel lblWithname = new JLabel("Name");
 				lblWithname.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 				
@@ -1188,7 +1208,7 @@ public class MainForm {
 					new WatchlistComponent(loggedUserId, watchList.get(i).getMovieId(), WatchScrollContent);
 				}
 				
-				//TODO::diðer butonlarda bu paneli invis yap
+				
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
 				panelCelebs.setVisible(false);
@@ -1213,10 +1233,11 @@ public class MainForm {
 				String userQuery = "SELECT * FROM Users WHERE uDisplayName = '" + textFieldId.getText() + "'";
 				ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 				if(userInfo.size() != 0){
-					if(true/*textFieldPw.getText().equals(userInfo.get(0).getuPassword())*/){
+					if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
 						//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
 						panelTop.setVisible(false);
 						panelUnLogin.setVisible(false);
+						panelRegister.setVisible(false);
 						panelLogined.setVisible(true);
 						btnWatchList.setEnabled(true);
 						panelTop.setVisible(true);
@@ -1227,6 +1248,9 @@ public class MainForm {
 						
 						isLogined = true;
 						loggedUserId = userInfo.get(0).getUserId();
+						
+						new HomePageClass(panelHome);
+						panelHome.setVisible(true);
 					}
 					else{
 						textFieldPw.setText("");
@@ -1244,10 +1268,12 @@ public class MainForm {
 		});
 		
 		JButton btnRegister = new JButton("");
+		btnRegister.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRegister.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*Initilize Panel*/
+				panelRegister.removeAll();
 				
 				JLabel lblCreateAccount = new JLabel("Create Account");
 				lblCreateAccount.setFont(new Font("Comic Sans MS", Font.BOLD, 19));
@@ -1402,7 +1428,7 @@ public class MainForm {
 									String insertQuery = "INSERT INTO Users(uEmail,uDisplayName,uPassword) VALUES('" 
 											+ textFieldEmail.getText() + "','" 
 											+ textFieldYourName.getText() + "','"
-											+ passwordFieldPass.getText() + "')";
+											+ getHash(passwordFieldPass.getText()) + "')";
 									SqlOperations.insert(insertQuery);
 									
 									lblUser.setText(textFieldYourName.getText());
@@ -1420,13 +1446,14 @@ public class MainForm {
 									panelLogined.setVisible(true);
 									btnWatchList.setEnabled(true);
 									panelTop.setVisible(true);
+									
+									new HomePageClass(panelHome);
+									panelHome.setVisible(true);
 								}
 								else{
 									JOptionPane.showMessageDialog(null, "Please enter the same password");
 								}
-								
 							}
-							
 						}
 						else{
 							if(!nameCanBeCreated && !emailCanBeCreated){
@@ -1439,7 +1466,6 @@ public class MainForm {
 								JOptionPane.showMessageDialog(null, "Please enter a different email!");
 							}
 						}
-						
 					}
 				});
 				lblButton.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\RegisterButton.png"));
@@ -1464,7 +1490,7 @@ public class MainForm {
 		
 		/*BackgroundPanel*/
 		JPanel panelBackground = new JPanel();
-		panelBackground.setBackground(UIManager.getColor("windowBorder"));
+		panelBackground.setBackground(new Color(0, 191, 255));
 		/*Background image*/
 		/*JPanel panelBackground = new JPanel(){
 			public void paintComponent(Graphics g){
