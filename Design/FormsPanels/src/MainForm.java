@@ -118,7 +118,6 @@ public class MainForm {
 	}
 	
 	public MainForm() {
-		staticMovieId = "tt2191701";
 		howManyComponent = 20;
 		limitValueLeft = 0;
 		loggedUserId = -1;
@@ -144,8 +143,24 @@ public class MainForm {
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
 		
-		//SqlOperations.postPeopleImage("C:\\Workplace\\OurIMDb\\DB\\PeopleMinimizedImages");
-		//SqlOperations.postMovieImage("C:\\Workplace\\OurIMDb\\DB\\MovieOriginalImages");
+		boolean NewMovieIn = false;
+		if(NewMovieIn){	
+			String movieQuery = "SELECT movieId FROM Movie";
+			ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+			
+			String[] movieIds = new String[movieList.size()];
+			for(int i = 0; i < movieIds.length; i++){
+				movieIds[i] = movieList.get(i).getMovieId();
+			}
+			
+			SqlOperations.postMovieImage("C:\\Workplace\\OurIMDb\\DB\\MovieOriginalImages");
+			
+			for(int i = 0; i < movieIds.length; i++){
+				staticMovieId = movieIds[i];
+				System.out.println(staticMovieId);
+				SqlOperations.postPeopleImage("C:\\Workplace\\OurIMDb\\DB\\PeopleMinimizedImages");	
+			}
+		}
 		
 		final JButton btnWatchList = new JButton("");
 		JButton btnLogin = new JButton("");
@@ -1104,7 +1119,6 @@ public class MainForm {
 				final JPanel WatchScrollContent = new JPanel();
 				WatchScroll.add(WatchScrollContent);
 				WatchScrollContent.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 2));
-				WatchScrollContent.setMinimumSize(new Dimension(530,0));
 				
 				String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
 						+ "fkUserId = " + loggedUserId + " ORDER BY addedTime DESC";
