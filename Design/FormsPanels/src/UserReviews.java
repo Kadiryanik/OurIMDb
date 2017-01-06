@@ -58,7 +58,7 @@ public class UserReviews {
 			public void mouseClicked(MouseEvent arg0) {
 				if(MainForm.getIsLogined()){
 					String commentText = JOptionPane.showInputDialog(
-					        null, 
+							MainForm.refFrmOurmdb, 
 					        "",
 					        "Please, enter your comment", 
 					        JOptionPane.INFORMATION_MESSAGE
@@ -77,7 +77,7 @@ public class UserReviews {
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register to comment!");
+					JOptionPane.showMessageDialog(MainForm.refFrmOurmdb, "Please register to comment!");
 				}
 				
 			}

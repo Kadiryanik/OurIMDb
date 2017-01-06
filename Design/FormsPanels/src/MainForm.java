@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JTextField;
 
 import java.awt.Color;
@@ -62,7 +63,12 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-//Finalde sformdaki bi butnu mesela tutup baþka yere taþýmak için hangi eventlerle ilgilenilmeli nasýl yapýlýr
+
+//final JOptionPane pane = new JOptionPane("Hello");
+//final JDialog d = pane.createDialog(null, "Title");
+//d.setLocationRelativeTo(frmOurmdb);
+//d.setVisible(true);
+
 public class MainForm {
 	
 	private JFrame frmOurmdb;
@@ -80,11 +86,12 @@ public class MainForm {
 	private JTextField textFieldEmail;
 	private JPasswordField passwordFieldPass;
 	private JPasswordField passwordFieldPassA;
-	private int limitValueLeft;	//For celebs tab Pages
-	private int howManyComponent;
+	private int limitValueLeft;	  //For celebs Pages
+	private int howManyComponent; //For celebs Pages
 	private int celebSorting; /* -1 default , 0 A-Z , 1 Birthday */
 	
 	//OtherClass references
+	public static JFrame refFrmOurmdb;
 	public static JPanel refPanelEachOne;
 	public static JPanel refPanelTop;	
 	public static JPanel refPanelHome;
@@ -152,6 +159,11 @@ public class MainForm {
 		frmOurmdb.setBounds(100, 100, 550, 750);
 		frmOurmdb.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmOurmdb.getContentPane().setLayout(null);
+		//center JFrame depend screen size
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		frmOurmdb.setLocation(dim.width/2-frmOurmdb.getSize().width/2, dim.height/2-frmOurmdb.getSize().height/2);
+		//reference
+		refFrmOurmdb = frmOurmdb;
 		
 		boolean NewMovieIn = false;
 		if(NewMovieIn){	
@@ -216,12 +228,13 @@ public class MainForm {
 		labelIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JOptionPane.showMessageDialog(
+				final JOptionPane pane = new JOptionPane("This program developed by\n   Çaðatay Avþar and Kadir Yanýk",
+						JOptionPane.INFORMATION_MESSAGE);
+				final JDialog jDialog = pane.createDialog(
 				        null, 
-				        "This program developed by\n   Çaðatay Avþar and Kadir Yanýk",
-				        "About", 
-				        JOptionPane.INFORMATION_MESSAGE
-				    );
+				        "About");
+				jDialog.setLocationRelativeTo(frmOurmdb);
+				jDialog.setVisible(true);
 			}
 		});
 		frmOurmdb.getContentPane().add(labelIcon);
@@ -307,7 +320,6 @@ public class MainForm {
 					ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 					if(userInfo.size() != 0){
 						if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
-							//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
 							panelTop.setVisible(false);
 							panelUnLogin.setVisible(false);
 							panelLogined.setVisible(true);
@@ -325,13 +337,25 @@ public class MainForm {
 						}
 						else{
 							textFieldPw.setText("");
-							JOptionPane.showMessageDialog(null, "Password wrong!");
+							final JOptionPane pane = new JOptionPane("Password wrong!",
+									JOptionPane.ERROR_MESSAGE);
+							final JDialog jDialog = pane.createDialog(
+							        null, 
+							        "Upss!");
+							jDialog.setLocationRelativeTo(frmOurmdb);
+							jDialog.setVisible(true);
 						}
 					}
 					else{
 						textFieldPw.setText("......");
 						textFieldId.setText("ID");
-						JOptionPane.showMessageDialog(null, "Username or Password wrong!");
+						final JOptionPane pane = new JOptionPane("User Name or Password wrong!",
+								JOptionPane.ERROR_MESSAGE);
+						final JDialog jDialog = pane.createDialog(
+						        null, 
+						        "Upss!");
+						jDialog.setLocationRelativeTo(frmOurmdb);
+						jDialog.setVisible(true);
 					}
 					
 				}
@@ -339,7 +363,6 @@ public class MainForm {
 		});
 		textFieldId.setFont(new Font("Tahoma", Font.ITALIC, 11));
 		textFieldId.addFocusListener(new FocusAdapter() {
-			
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				if(textFieldId.getText().equals("")){
@@ -375,7 +398,6 @@ public class MainForm {
 					ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 					if(userInfo.size() != 0){
 						if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
-							//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
 							panelTop.setVisible(false);
 							panelUnLogin.setVisible(false);
 							panelLogined.setVisible(true);
@@ -394,13 +416,25 @@ public class MainForm {
 						}
 						else{
 							textFieldPw.setText("");
-							JOptionPane.showMessageDialog(null, "Password wrong!");
+							final JOptionPane pane = new JOptionPane("Password wrong!",
+									JOptionPane.ERROR_MESSAGE);
+							final JDialog jDialog = pane.createDialog(
+							        null, 
+							        "Upss!");
+							jDialog.setLocationRelativeTo(frmOurmdb);
+							jDialog.setVisible(true);
 						}
 					}
 					else{
 						textFieldPw.setText("......");
 						textFieldId.setText("ID");
-						JOptionPane.showMessageDialog(null, "Username or Password wrong!");
+						final JOptionPane pane = new JOptionPane("User Name or Password wrong!",
+								JOptionPane.ERROR_MESSAGE);
+						final JDialog jDialog = pane.createDialog(
+						        null, 
+						        "Upss!");
+						jDialog.setLocationRelativeTo(frmOurmdb);
+						jDialog.setVisible(true);
 					}
 				}
 			}
@@ -689,7 +723,6 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				panelHome.removeAll();
 				new HomePageClass(panelHome);
 				
@@ -701,24 +734,6 @@ public class MainForm {
 				panelRegister.setVisible(false);
 				panelEachOne.setVisible(false);
 				panelWatchList.setVisible(false);
-				
-				//new SearchResult("babaanne", panelEachOne);
-				//new UserReviews("tt2191701", panelEachOne);
-				//new ParentChildCommentPage(1, panelEachOne);
-				
-//				lblturnHomeD.setVisible(false);
-//				lblTurnHome.setVisible(true);
-//				panelTop.setVisible(false);
-//				panelHome.setVisible(false);
-//				panelCelebs.setVisible(false);
-//				panelTop10.setVisible(false);
-//				panelUser.setVisible(false);
-//				panelMovies.setVisible(false);
-//				panelRegister.setVisible(false);
-//				panelEachOne.setVisible(false);
-//				panelWatchList.setVisible(false);
-//				panelEachOne.setVisible(true);
-				
 			}
 		});
 		btnHome.setBounds(10, 8, 46, 26);
@@ -1246,7 +1261,6 @@ public class MainForm {
 				ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 				if(userInfo.size() != 0){
 					if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
-						//JOptionPane.showMessageDialog(null, "Welcome " + textFieldId.getText() + "!");
 						panelTop.setVisible(false);
 						panelUnLogin.setVisible(false);
 						panelRegister.setVisible(false);
@@ -1266,14 +1280,26 @@ public class MainForm {
 					}
 					else{
 						textFieldPw.setText("");
-						JOptionPane.showMessageDialog(null, "Password wrong!");
+						final JOptionPane pane = new JOptionPane("Password wrong!",
+								JOptionPane.ERROR_MESSAGE);
+						final JDialog jDialog = pane.createDialog(
+						        null, 
+						        "Upss!");
+						jDialog.setLocationRelativeTo(frmOurmdb);
+						jDialog.setVisible(true);
 					}
 					
 				}
 				else{
 					textFieldPw.setText("......");
 					textFieldId.setText("ID");
-					JOptionPane.showMessageDialog(null, "Username or Password wrong!");
+					final JOptionPane pane = new JOptionPane("User Name or Password wrong!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(frmOurmdb);
+					jDialog.setVisible(true);
 				}
 				
 			}
@@ -1427,13 +1453,31 @@ public class MainForm {
 						}
 						if(nameCanBeCreated && emailCanBeCreated){
 							if(textFieldYourName.getText().length() == 0){
-								JOptionPane.showMessageDialog(null, "Username can not be empty!");
+								final JOptionPane pane = new JOptionPane("User Name can not be empty!",
+										JOptionPane.ERROR_MESSAGE);
+								final JDialog jDialog = pane.createDialog(
+								        null, 
+								        "Upss!");
+								jDialog.setLocationRelativeTo(frmOurmdb);
+								jDialog.setVisible(true);
 							}
 							else if(textFieldEmail.getText().length() == 0){
-								JOptionPane.showMessageDialog(null, "Email can not be empty!");
+								final JOptionPane pane = new JOptionPane("Email can not be empty!",
+										JOptionPane.ERROR_MESSAGE);
+								final JDialog jDialog = pane.createDialog(
+								        null, 
+								        "Upss!");
+								jDialog.setLocationRelativeTo(frmOurmdb);
+								jDialog.setVisible(true);
 							}
 							else if(passwordFieldPass.getText().length() == 0){
-								JOptionPane.showMessageDialog(null, "Password can not be empty!");
+								final JOptionPane pane = new JOptionPane("Password can not be empty!",
+										JOptionPane.ERROR_MESSAGE);
+								final JDialog jDialog = pane.createDialog(
+								        null, 
+								        "Upss!");
+								jDialog.setLocationRelativeTo(frmOurmdb);
+								jDialog.setVisible(true);
 							}
 							else{
 								if(passwordFieldPass.getText().equals(passwordFieldPassA.getText())){
@@ -1463,19 +1507,43 @@ public class MainForm {
 									panelHome.setVisible(true);
 								}
 								else{
-									JOptionPane.showMessageDialog(null, "Please enter the same password");
+									final JOptionPane pane = new JOptionPane("Please enter the same password!",
+											JOptionPane.ERROR_MESSAGE);
+									final JDialog jDialog = pane.createDialog(
+									        null, 
+									        "Upss!");
+									jDialog.setLocationRelativeTo(frmOurmdb);
+									jDialog.setVisible(true);
 								}
 							}
 						}
 						else{
 							if(!nameCanBeCreated && !emailCanBeCreated){
-								JOptionPane.showMessageDialog(null, "Please enter a different name and email");
+								final JOptionPane pane = new JOptionPane("Please enter a different name and email!",
+										JOptionPane.ERROR_MESSAGE);
+								final JDialog jDialog = pane.createDialog(
+								        null, 
+								        "Upss!");
+								jDialog.setLocationRelativeTo(frmOurmdb);
+								jDialog.setVisible(true);
 							}
 							if(!nameCanBeCreated && emailCanBeCreated){
-								JOptionPane.showMessageDialog(null, "Please enter a different name!");
+								final JOptionPane pane = new JOptionPane("Please enter a different name!",
+										JOptionPane.ERROR_MESSAGE);
+								final JDialog jDialog = pane.createDialog(
+								        null, 
+								        "Upss!");
+								jDialog.setLocationRelativeTo(frmOurmdb);
+								jDialog.setVisible(true);
 							}
 							if(nameCanBeCreated && !emailCanBeCreated){
-								JOptionPane.showMessageDialog(null, "Please enter a different email!");
+								final JOptionPane pane = new JOptionPane("Please enter a different email!",
+										JOptionPane.ERROR_MESSAGE);
+								final JDialog jDialog = pane.createDialog(
+								        null, 
+								        "Upss!");
+								jDialog.setLocationRelativeTo(frmOurmdb);
+								jDialog.setVisible(true);
 							}
 						}
 					}
@@ -1503,15 +1571,6 @@ public class MainForm {
 		/*BackgroundPanel*/
 		JPanel panelBackground = new JPanel();
 		panelBackground.setBackground(new Color(0, 191, 255));
-		/*Background image*/
-		/*JPanel panelBackground = new JPanel(){
-			public void paintComponent(Graphics g){
-				ImageIcon icon = new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\back.jpg");
-				Image i = icon.getImage();
-				
-				g.drawImage(i, 0, 0, this.getSize().width, this.getSize().height, this);
-			}
-		};*/
 		panelBackground.setBounds(0, 0, 550, 750);
 		frmOurmdb.getContentPane().add(panelBackground);
 		/*EndOf-BackgroundPanel*/

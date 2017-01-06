@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -252,6 +253,12 @@ public class EachMovie {
 		
 		final JLabel lblBackground = new JLabel("");
 		
+		ArrayList<UserRatings> ratingList = SqlOperations.getUserRating("SELECT rating FROM Rating "
+				+ "WHERE fkMovieId = '" + movieId + "' AND fkUserId = " + MainForm.getLoggedUserId());
+		if(ratingList.size() > 0){
+			userRatePoint = ratingList.get(0).getRating();
+		}
+		
 		JLabel lblExit = new JLabel("");
 		lblExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblExit.addMouseListener(new MouseAdapter() {
@@ -265,18 +272,19 @@ public class EachMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				//Set visible false if not rated
+				if(userRatePoint == 0){
+					panelHoverRated.setVisible(false);
+				}
+				else{
+					rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
+				}
 				panelRate.setVisible(false);
 			}
 		});
 		lblExit.setBounds(12, 12, 15, 15);
 		panelRate.add(lblExit);
-		
-		ArrayList<UserRatings> ratingList = SqlOperations.getUserRating("SELECT rating FROM Rating "
-				+ "WHERE fkMovieId = '" + movieId + "' AND fkUserId = " + MainForm.getLoggedUserId());
-		if(ratingList.size() > 0){
-			userRatePoint = ratingList.get(0).getRating();
-		}
-		
+
 		if(userRatePoint != 0){
 			rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated" + userRatePoint + ".png")));
 			rateIcon.addMouseListener(new MouseAdapter() {
@@ -295,12 +303,18 @@ public class EachMovie {
 			panelHover.setVisible(true);
 		}
 		
+		
+		//TODO:: PanelRate ilk açýldýðýnda panelRatedHover tek seferlik güncellenmiyo
+		//baþka bug varmý diye detaylý incelenecek
 		JLabel lblR1 = new JLabel("");
 		lblR1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblR1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_1.png"));
+
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated1.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -359,7 +373,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -372,6 +394,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_2.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated2.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -431,7 +456,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -445,6 +478,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_3.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated3.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -504,7 +540,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -518,6 +562,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_4.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated4.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -577,7 +624,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -591,6 +646,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_5.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated5.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -650,7 +708,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -664,6 +730,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_6.png"));
+			
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated6.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -723,7 +792,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -737,6 +814,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_7.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated7.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -796,7 +876,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -810,6 +898,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_8.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated8.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -869,7 +960,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -883,6 +982,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_9.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated9.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -942,7 +1044,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -956,6 +1066,9 @@ public class EachMovie {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				lblBackground.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rate_10.png"));
+				
+				rateIcon.setIcon(new ImageIcon(("C:\\Workplace\\OurIMDb\\Design\\Button Png\\Rated10.png")));
+				panelHoverRated.setVisible(true);
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -1015,7 +1128,15 @@ public class EachMovie {
 					panelHoverRated.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for rating!");
+					final JOptionPane pane = new JOptionPane("Please register for rating!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+					
+					panelHoverRated.setVisible(false);
 				}
 				panelRate.setVisible(false);
 			}
@@ -1067,7 +1188,13 @@ public class EachMovie {
 					lblAddedWatch.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for adding watchlist!");
+					final JOptionPane pane = new JOptionPane("Please register for adding watchlist!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
 				}
 				
 			}

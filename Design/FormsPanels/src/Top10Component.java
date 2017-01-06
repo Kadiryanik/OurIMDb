@@ -123,7 +123,7 @@ public class Top10Component {
 					lblAddedwatchlist.setVisible(true);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "Please register for adding watchlist!");
+					JOptionPane.showMessageDialog(MainForm.refFrmOurmdb, "Please register for adding watchlist!");
 				}
 			}
 			@Override
