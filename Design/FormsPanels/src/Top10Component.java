@@ -39,8 +39,8 @@ public class Top10Component {
 		panel.setPreferredSize(new Dimension(440, 60));
 		
 		JLabel lblImage = new JLabel("");
-		//TODO:get image from database
-		lblImage.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\icon32.png"));
+		lblImage.setBounds(0, 0, 44, 60);
+		lblImage.setIcon(SqlOperations.getMovieImage(mId, lblImage));
 		
 		JLabel label = new JLabel(Id + ".");
 		label.setForeground(new Color(30, 144, 255));

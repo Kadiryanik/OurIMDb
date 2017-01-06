@@ -38,8 +38,8 @@ public class UserReviews {
 		panelMovieName.setBounds(80, 10, 460, 30);
 		panel.add(panelMovieName);
 		panelMovieName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-		new LabelWithoutLink(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + movieId + "'").get(0).getmTitle(), 
-				102, 102, 102, true, panelMovieName);
+		new LabelWithLinkForMovie(SqlOperations.getMovie("SELECT mTitle FROM Movie WHERE movieId = '" + movieId + "'").get(0).getmTitle(), 
+				mId, 12, 50, panelMovieName);
 		
 		final JLabel lblWriteReview = new JLabel("");
 		lblWriteReview.setSize(88, 21);

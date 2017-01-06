@@ -39,8 +39,15 @@ public class LabelWithLinkForUser {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Goto eachCelebs with id
-				System.out.println("" + name + userId);
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refPanelEachOne.removeAll();
+				MainForm.refPanelUser.removeAll();
+				new UserPageClass(userId, MainForm.refPanelUser);
+				MainForm.refLabelTurnHome.setVisible(false);
+				MainForm.refPanelEachOne.setVisible(false);
+				MainForm.refLabelturnHomeD.setVisible(true);
+				MainForm.refPanelTop.setVisible(true);
+				MainForm.refPanelUser.setVisible(true);
 			}
 		});
 		panelReal.add(lblLink);
