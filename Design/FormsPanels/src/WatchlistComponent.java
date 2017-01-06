@@ -23,7 +23,7 @@ public class WatchlistComponent {
 		userId = uId;
 		int isAdded = 0;
 		
-		String Query = "SELECT movieId FROM Movie WHERE movieId = '" + movieId + "' AND movieId IN"
+		String Query = "SELECT movieId,mTitle FROM Movie WHERE movieId = '" + movieId + "' AND movieId IN"
 				+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + userId + ")";
 		ArrayList<Movie> watchList = SqlOperations.getMovie(Query);
 		if(watchList.size() > 0){
@@ -39,7 +39,8 @@ public class WatchlistComponent {
 		
 		JPanel panelName = new JPanel();
 		panelName.setBackground(new Color(255, 255, 255));
-		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		new LabelWithLinkForMovie(watchList.get(0).getmTitle(), mId, 11, 50, panelName);
 		
 		JPanel panelUnderName = new JPanel();
 		panelUnderName.setBackground(new Color(255, 255, 255));

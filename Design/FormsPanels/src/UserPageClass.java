@@ -27,7 +27,7 @@ public class UserPageClass {
 		
 		JLabel lblIcon = new JLabel("");
 		lblIcon.setBounds(35, 11, 74, 84);
-		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurImdb//DB//Felicity Jones.jpg");
+		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurImdb//DB//PeopleMinimizedImages//null.jpg");
 		Image image = imageIcon.getImage();
 		Image imageResized = image.getScaledInstance(lblIcon.getWidth(),lblIcon.getHeight(), Image.SCALE_SMOOTH);
 		lblIcon.setIcon(new ImageIcon(imageResized));

@@ -40,6 +40,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLClientInfoException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
@@ -137,8 +138,6 @@ public class MainForm {
 	
 	//Hash md5 method
 	public String getHash(String passStr){
-		System.out.println(passStr.hashCode());
-		//1360838976 (...... için veritabanýna kaydedilen deðer)
 		return ("" + passStr.hashCode());
 	}
 
@@ -762,13 +761,26 @@ public class MainForm {
 				panelMovies.add(tabbedPane);
 				//EndOf-Movies Init
 				panelMovies.setVisible(false);
-				String movieQuery = "SELECT movieId FROM Movie ORDER BY mDate";
-				ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+				
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+				timestamp.setHours(timestamp.getHours() + 1);
+				Timestamp timestampTwoWeekEarlier = new Timestamp(System.currentTimeMillis());
+				timestampTwoWeekEarlier.setDate(timestamp.getDay() - 14);
+				String movieQueryInTheaters = "SELECT movieId FROM Movie WHERE mDate < '" + timestamp.toString().substring(0, 10) 
+						+ "' AND mDate > '" + timestampTwoWeekEarlier.toString().substring(0, 10) + "'";
+				ArrayList<Movie> movieList = SqlOperations.getMovie(movieQueryInTheaters);
 				for(int i = 0; i < movieList.size(); i++){
 					new MovieTabComponents(movieList.get(i).getMovieId(), panelInTheaters);
 				}
 				
-				//TODO: get system date and add coming soon movies
+				Timestamp timestampTwoWeekLater = new Timestamp(System.currentTimeMillis());
+				timestampTwoWeekLater.setDate(timestamp.getDay() + 14);
+				String movieQueryComingSoon = "SELECT movieId FROM Movie WHERE mDate > '" + timestamp.toString().substring(0, 10) 
+						+ "' AND mDate < '" + timestampTwoWeekLater.toString().substring(0, 10) + "'";
+				ArrayList<Movie> movieListComingSoon = SqlOperations.getMovie(movieQueryComingSoon);
+				for(int i = 0; i < movieListComingSoon.size(); i++){
+					new MovieTabComponents(movieListComingSoon.get(i).getMovieId(), panelComingSoon);
+				}
 				
 				panelHome.setVisible(false);
 				panelCelebs.setVisible(false);
