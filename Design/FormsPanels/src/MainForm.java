@@ -63,12 +63,6 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
-//final JOptionPane pane = new JOptionPane("Hello");
-//final JDialog d = pane.createDialog(null, "Title");
-//d.setLocationRelativeTo(frmOurmdb);
-//d.setVisible(true);
-
 public class MainForm {
 	
 	private JFrame frmOurmdb;
@@ -661,22 +655,34 @@ public class MainForm {
 			@Override
 			public void keyPressed(KeyEvent arg0) {
 				if(arg0.getKeyChar() == arg0.VK_ENTER){
-					lblturnHomeD.setVisible(false);
-					panelTop.setVisible(false);
-					panelHome.setVisible(false);
-					panelCelebs.setVisible(false);
-					panelTop10.setVisible(false);
-					panelUser.setVisible(false);
-					panelRegister.setVisible(false);
-					panelEachOne.setVisible(false);
-					panelWatchList.setVisible(false);
-					panelTop.setVisible(false);
-					panelEachOne.removeAll();
-					panelEachOne.setVisible(false);
-					new SearchResult(textFieldSearch.getText(), panelEachOne);
-					textFieldSearch.setText("");
-					panelEachOne.setVisible(true);
-					lblTurnHome.setVisible(true);
+					if(textFieldSearch.getText().equals("")){
+						final JOptionPane pane = new JOptionPane("Genre search: Start with g:\nYear search: Start with y:"
+								+ "\nNormal search: Just write",
+								JOptionPane.INFORMATION_MESSAGE);
+						final JDialog jDialog = pane.createDialog(
+						        null, 
+						        "Help!");
+						jDialog.setLocationRelativeTo(frmOurmdb);
+						jDialog.setVisible(true);
+					}
+					else{
+						lblturnHomeD.setVisible(false);
+						panelTop.setVisible(false);
+						panelHome.setVisible(false);
+						panelCelebs.setVisible(false);
+						panelTop10.setVisible(false);
+						panelUser.setVisible(false);
+						panelRegister.setVisible(false);
+						panelEachOne.setVisible(false);
+						panelWatchList.setVisible(false);
+						panelTop.setVisible(false);
+						panelEachOne.removeAll();
+						panelEachOne.setVisible(false);
+						new SearchResult(textFieldSearch.getText(), panelEachOne);
+						textFieldSearch.setText("");
+						panelEachOne.setVisible(true);
+						lblTurnHome.setVisible(true);
+					}
 				}
 			}
 		});
