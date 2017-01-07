@@ -299,6 +299,10 @@ public class MainForm {
 		
 		final JPanel panelLogined = new JPanel();
 		final JLabel lblUser = new JLabel("User");
+
+		final JLabel lblUserBack = new JLabel("");
+		lblUserBack.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\lblUserBack.png"));
+		lblUserBack.setBounds(0, 25, 110, 20);
 		
 		textFieldId = new JTextField("ID");
 		textFieldId.setFocusTraversalKeysEnabled(false);
@@ -465,10 +469,17 @@ public class MainForm {
 		//lblUser
 		lblUser.addMouseListener(new MouseAdapter() {
 			@Override
+			public void mouseEntered(MouseEvent arg0){
+				lblUser.setForeground(new Color(57, 163, 220));
+			}
+			public void mouseExited(MouseEvent arg0){
+				lblUser.setForeground(new Color(51, 51, 51));
+			}
+			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				/*UserPage Init*/
 				panelUser.removeAll();
-				new UserPageClass(loggedUserId, panelUser);
+				new UserPageClass(loggedUserId, true, panelUser);
 				
 				panelRegister.setVisible(false);
 				panelWatchList.setVisible(false);
@@ -482,20 +493,21 @@ public class MainForm {
 		
 		JLabel lblWelcome = new JLabel("Welcome ");
 		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWelcome.setForeground(new Color(0, 0, 0));
+		lblWelcome.setForeground(new Color(51, 51, 51));
 		lblWelcome.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
 		lblWelcome.setBounds(0, 5, 168, 19);
 		panelLogined.add(lblWelcome);
 		lblUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblUser.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUser.setForeground(new Color(0, 0, 0));
-		lblUser.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
-		lblUser.setBounds(0, 25, 110, 19);
+		lblUser.setForeground(new Color(51, 51, 51));
+		lblUser.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 12));
+		lblUser.setBounds(3, 26, 104, 17);
 		panelLogined.add(lblUser);
+		panelLogined.add(lblUserBack);
 		
 		final JLabel lblLogOut = new JLabel("LogOut");
 		lblLogOut.setFont(new Font("Comic Sans MS", Font.BOLD | Font.ITALIC, 13));
-		lblLogOut.setForeground(new Color(0, 0, 0));
+		lblLogOut.setForeground(new Color(51, 51, 51));
 		lblLogOut.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblLogOut.addMouseListener(new MouseAdapter() {
 			@Override
@@ -568,37 +580,6 @@ public class MainForm {
 		//SearchField 
 		final JLabel lblSearch = new JLabel("");
 		lblSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		lblSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButtonA.png"));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButton.png"));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if(!textFieldSearch.getText().equals("")){
-					lblturnHomeD.setVisible(false);
-					panelTop.setVisible(false);
-					panelHome.setVisible(false);
-					panelCelebs.setVisible(false);
-					panelTop10.setVisible(false);
-					panelUser.setVisible(false);
-					panelRegister.setVisible(false);
-					panelEachOne.setVisible(false);
-					panelWatchList.setVisible(false);
-					panelTop.setVisible(false);
-					panelEachOne.removeAll();
-					panelEachOne.setVisible(false);
-					new SearchResult(textFieldSearch.getText(), panelEachOne);
-					textFieldSearch.setText("");
-					panelEachOne.setVisible(true);
-					lblTurnHome.setVisible(true);
-				}
-			}
-		});
 		lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButton.png"));
 		lblSearch.setBounds(450, 0, 24, 24);
 		frmOurmdb.getContentPane().add(lblSearch);
@@ -649,6 +630,54 @@ public class MainForm {
 		lblRight.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchRight.png"));
 		lblRight.setBounds(125, 0, 8, 24);
 		frmOurmdb.getContentPane().add(lblRight);
+		
+		//lblSearch clicked
+		lblSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButtonA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblSearch.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\SearchButton.png"));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(textFieldSearch.getText().equals("")){
+					lblLeft.setVisible(false);
+					textFieldSearch.setVisible(true);
+					lblRight.setVisible(true);
+					
+					final JOptionPane pane = new JOptionPane("Genre search: Start with g:\nYear search: Start with y:"
+							+ "\nNormal search: Just write",
+							JOptionPane.INFORMATION_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Help!");
+					jDialog.setLocationRelativeTo(frmOurmdb);
+					jDialog.setVisible(true);
+					
+				}
+				else{
+					lblturnHomeD.setVisible(false);
+					panelTop.setVisible(false);
+					panelHome.setVisible(false);
+					panelCelebs.setVisible(false);
+					panelTop10.setVisible(false);
+					panelUser.setVisible(false);
+					panelRegister.setVisible(false);
+					panelEachOne.setVisible(false);
+					panelWatchList.setVisible(false);
+					panelTop.setVisible(false);
+					panelEachOne.removeAll();
+					panelEachOne.setVisible(false);
+					new SearchResult(textFieldSearch.getText(), panelEachOne);
+					textFieldSearch.setText("");
+					panelEachOne.setVisible(true);
+					lblTurnHome.setVisible(true);
+				}
+			}
+		});
 		
 		textFieldSearch = new JTextField();
 		textFieldSearch.addKeyListener(new KeyAdapter() {
@@ -1281,6 +1310,14 @@ public class MainForm {
 						isLogined = true;
 						loggedUserId = userInfo.get(0).getUserId();
 						
+						panelHome.setVisible(false);
+						panelCelebs.setVisible(false);
+						panelTop10.setVisible(false);
+						panelUser.setVisible(false);
+						panelRegister.setVisible(false);
+						panelMovies.setVisible(false);
+						panelEachOne.setVisible(false);
+						panelWatchList.setVisible(false);
 						new HomePageClass(panelHome);
 						panelHome.setVisible(true);
 					}

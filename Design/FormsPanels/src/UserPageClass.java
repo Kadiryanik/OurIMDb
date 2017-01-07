@@ -15,7 +15,7 @@ import javax.swing.ScrollPaneConstants;
 
 public class UserPageClass {
 	private int userId;
-	public UserPageClass(int uId, JPanel panelReal) {
+	public UserPageClass(int uId, boolean isY, JPanel panelReal) {
         
 		userId = uId;
 		String userQuery = "SELECT userId, uDisplayName, uRegistrationDate FROM Users WHERE userId = " + userId;
@@ -24,6 +24,15 @@ public class UserPageClass {
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 550, 726);
 		panel.setLayout(null);
+		
+		String showText;
+		if(isY){
+			showText = "Your";
+		}
+		else{
+			showText = userInfo.get(0).getuDisplayName() + "'s";
+		}
+		
 		
 		JLabel lblIcon = new JLabel("");
 		lblIcon.setBounds(35, 11, 74, 84);
@@ -54,7 +63,7 @@ public class UserPageClass {
 		panel.add(panelYourRatings);
 		panelYourRatings.setLayout(null);
 		
-		JLabel lblYourRatings = new JLabel("Your Ratings");
+		JLabel lblYourRatings = new JLabel("" + showText + " Ratings");
 		lblYourRatings.setForeground(new Color(165, 133, 0));
 		lblYourRatings.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		lblYourRatings.setBounds(10, 11, 134, 21);
@@ -99,7 +108,7 @@ public class UserPageClass {
 		panelYourWatchlist.setBounds(25, 428, 500, 287);
 		panel.add(panelYourWatchlist);
 		
-		JLabel lblYourWatchlist = new JLabel("Your Watchlist");
+		JLabel lblYourWatchlist = new JLabel("" + showText + " Watchlist");
 		lblYourWatchlist.setForeground(new Color(165, 133, 0));
 		lblYourWatchlist.setFont(new Font("Comic Sans MS", Font.BOLD, 15));
 		lblYourWatchlist.setBounds(10, 11, 134, 21);

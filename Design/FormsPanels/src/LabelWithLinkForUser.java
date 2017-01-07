@@ -42,7 +42,7 @@ public class LabelWithLinkForUser {
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refPanelEachOne.removeAll();
 				MainForm.refPanelUser.removeAll();
-				new UserPageClass(userId, MainForm.refPanelUser);
+				new UserPageClass(userId, false, MainForm.refPanelUser);
 				MainForm.refLabelTurnHome.setVisible(false);
 				MainForm.refPanelEachOne.setVisible(false);
 				MainForm.refLabelturnHomeD.setVisible(true);
