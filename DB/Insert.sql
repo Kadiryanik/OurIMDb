@@ -1,4 +1,8 @@
 USE imdb;
+#nm0000175
+select actorFlag, directorFlag, writerFlag, mTitle from imdb.moviepeople m, imdb.movie a where a.movieId = 'tt1375670' AND m.fkPeopleId = 'nm0240797';
+UPDATE `moviepeople` SET `actorFlag`= 0,`directorFlag`= 1,`writerFlag`= 0, `castName`='Francis Ford Coppola' WHERE fkMovieId = 'tt1375670' AND fkPeopleId = 'nm0240797';
+
 
 INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
 	VALUES('The Shawshank Redemption', '1994-10-14', 'United States', '142', 'English', 70, 10,
@@ -17,8 +21,8 @@ INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,
 INSERT INTO Genre(mType,movieId) SELECT 'Crime',movieId FROM Movie WHERE mTitle = 'The Godfather';
 INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle = 'The Godfather';
 
-INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('cagatayavsr@gmail.com','cagatay','......');
-INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('eleqiac2@gmail.com','kadir','......');
+#INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('cagatayavsr@gmail.com','cagatay','......');
+#INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('eleqiac2@gmail.com','kadir','......');
 
 
 INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
@@ -54,8 +58,75 @@ INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,
             
 INSERT INTO Genre(mType,movieId) SELECT 'Comedy',movieId FROM Movie WHERE mTitle = 'Grown Ups 2';
 
+########
 
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('OK Jaanu', '2017-01-13', ' India', '135', 'India', 70, 10,
+		'Adi and Tara move to Mumbai to pursue their dreams. A chance meeting sparks off a heady, no strings attached romance until their careers pull them apart. Will ambition prevail over matters of the heart?',
+			'https://www.youtube.com/embed/HLdbAdya2po','tt5764024');
+ 
+INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle = 'OK Jaanu';
+INSERT INTO Genre(mType,movieId) SELECT 'Romance',movieId FROM Movie WHERE mTitle = 'OK Jaanu';
 
+########
 
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('A Monster Calls', '2016-10-14', 'United States', '108', 'English', 77, 10,
+		'A boy seeks the help of a tree monster to cope with his single mum\'s terminal illness.',
+			'https://www.youtube.com/embed/R2Xbo-irtBA','tt3416532');
+ 
+INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle = 'A Monster Calls';
+INSERT INTO Genre(mType,movieId) SELECT 'Fantasy',movieId FROM Movie WHERE mTitle = 'A Monster Calls';
 
+########
 
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('Monster Trucks', '2017-01-17', 'United States', '104', 'English', 54, 10,
+		'Looking for any way to get away from the life and town he was born into, Tripp (Lucas Till), a high school senior, builds a Monster Truck from bits and pieces of scrapped cars. After an accident at a nearby oil-drilling site displaces a strange and subterranean creature with a taste and a talent for speed, Tripp may have just found the key to getting out of town and a most unlikely friend.',
+			'https://www.youtube.com/embed/wQGawWqJdfs','tt3095734');
+            
+INSERT INTO Genre(mType,movieId) SELECT 'Animation',movieId FROM Movie WHERE mTitle = 'Monster Trucks';
+INSERT INTO Genre(mType,movieId) SELECT 'Action',movieId FROM Movie WHERE mTitle = 'Monster Trucks';
+INSERT INTO Genre(mType,movieId) SELECT 'Adventure',movieId FROM Movie WHERE mTitle = 'Monster Trucks';
+
+########
+
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('Sleepless', '2017-01-13', 'United States', '95', 'English', 70, 10,
+		'A cop with a connection to the criminal underworld scours a nightclub in search of his kidnapped son.',
+			'https://www.youtube.com/embed/LzWNDXwRbLY','tt2072233');
+ 
+INSERT INTO Genre(mType,movieId) SELECT 'Action',movieId FROM Movie WHERE mTitle = 'Sleepless';
+INSERT INTO Genre(mType,movieId) SELECT 'Crime',movieId FROM Movie WHERE mTitle = 'Sleepless';
+INSERT INTO Genre(mType,movieId) SELECT 'Thriller',movieId FROM Movie WHERE mTitle = 'Sleepless';
+
+########
+
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('The Bye Bye Man', '2017-01-13', 'United States', '96', 'English', 70, 10,
+		'Three friends stumble upon the horrific origins of the Bye Bye Man, a mysterious figure they discover is the root cause of the evil behind man\'s most unspeakable acts.',
+			'https://www.youtube.com/embed/ZGdOnCiQRpQ','tt4030600');
+ 
+INSERT INTO Genre(mType,movieId) SELECT 'Horror',movieId FROM Movie WHERE mTitle = 'The Bye Bye Man';
+INSERT INTO Genre(mType,movieId) SELECT 'Thriller',movieId FROM Movie WHERE mTitle = 'The Bye Bye Man';
+
+########
+
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('Underworld Blood Wars', '2016-12-02', 'United States', '91', 'English', 64, 10,
+		'Vampire death dealer, Selene (Kate Beckinsale) fights to end the eternal war between the Lycan clan and the Vampire faction that betrayed her.',
+			'https://www.youtube.com/embed/FtbM_W9iNjg','tt3717252');
+ 
+INSERT INTO Genre(mType,movieId) SELECT 'Action',movieId FROM Movie WHERE mTitle = 'Underworld Blood Wars';
+INSERT INTO Genre(mType,movieId) SELECT 'Horror',movieId FROM Movie WHERE mTitle = 'Underworld Blood Wars';
+
+########
+
+INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
+	VALUES('xXx Return of Xander Cage', '2017-01-27', 'United States', '107', 'English', 67, 10,
+		'Xander Cage is left for dead after an incident, though he secretly returns to action for a new, tough assignment with his handler Augustus Gibbons.',
+			'https://www.youtube.com/embed/xEuM4IUFWu8','tt1293847');
+
+INSERT INTO Genre(mType,movieId) SELECT 'Action',movieId FROM Movie WHERE mTitle = 'xXx Return of Xander Cage';
+INSERT INTO Genre(mType,movieId) SELECT 'Adventure',movieId FROM Movie WHERE mTitle = 'xXx Return of Xander Cage';
+INSERT INTO Genre(mType,movieId) SELECT 'Thriller',movieId FROM Movie WHERE mTitle = 'xXx Return of Xander Cage';
