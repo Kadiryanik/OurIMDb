@@ -26,7 +26,7 @@ public class SqlOperations {
 			int columnCount = rsMetaData.getColumnCount(); //number of column return from sql query
 			
 			String[] attr = new String[]{"mTitle", "mDate", "mCountry", "mTime", "mLanguage","mRatingSum",
-					"mRatingCount", "mDescription", "mImage", "mUrlLink", "movieId"};
+					"mRatingCount","mNumOfVisit", "mDescription", "mImage", "mUrlLink", "movieId"};
 			ArrayList<Movie> array = new ArrayList<Movie>();
 			
 			while(result.next()){
@@ -34,7 +34,8 @@ public class SqlOperations {
 				if(columnCount == attr.length){
 					Movie temp = new Movie(result.getString(attr[0]), result.getString(attr[1]), result.getString(attr[2]),
 							result.getString(attr[3]), result.getString(attr[4]), result.getDouble(attr[5]), result.getDouble(attr[6]),
-							result.getString(attr[7]), result.getBytes(attr[8]), result.getString(attr[9]), result.getString(attr[10]));
+							result.getInt(attr[7]),result.getString(attr[8]), result.getBytes(attr[9]),
+							result.getString(attr[10]), result.getString(attr[11]));
 					array.add(temp);
 				}
 				else{
@@ -47,10 +48,11 @@ public class SqlOperations {
 						if(g.equals(attr[4])){a.setmLanguage(result.getString(attr[4]));}
 						if(g.equals(attr[5])){a.setmRatingSum(result.getDouble(attr[5]));}
 						if(g.equals(attr[6])){a.setmRatingCount(result.getDouble(attr[6]));}
-						if(g.equals(attr[7])){a.setmDescription(result.getString(attr[7]));}
-						if(g.equals(attr[8])){a.setmImage(result.getBytes(attr[8]));}
-						if(g.equals(attr[9])){a.setmUrlLink(result.getString(attr[9]));}
-						if(g.equals(attr[10])){a.setMovieId(result.getString(attr[10]));}
+						if(g.equals(attr[7])){a.setmNumOfVisit(result.getInt(attr[7]));}
+						if(g.equals(attr[8])){a.setmDescription(result.getString(attr[8]));}
+						if(g.equals(attr[9])){a.setmImage(result.getBytes(attr[9]));}
+						if(g.equals(attr[10])){a.setmUrlLink(result.getString(attr[10]));}
+						if(g.equals(attr[11])){a.setMovieId(result.getString(attr[11]));}
 					}
 					array.add(a);
 				}
@@ -414,7 +416,7 @@ public class SqlOperations {
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3307/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "h3b9er1po";
 			Class.forName(driver);
@@ -493,6 +495,7 @@ public class SqlOperations {
 		Image image = imageIcon.getImage();
 		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
 		return new ImageIcon(im);
+//		return new ImageIcon("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//null.jpg");
 	}
 	
 	public static ImageIcon getPeopleImage(String peopleId,JLabel lblImage){
@@ -506,7 +509,10 @@ public class SqlOperations {
 		catch(Exception e){
 			System.out.println(e);
 		}
-		return null;
+		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//null.jpg");
+		Image image = imageIcon.getImage();
+		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
+		return new ImageIcon(im);
 	}
 	
 	public static void insert(String query){

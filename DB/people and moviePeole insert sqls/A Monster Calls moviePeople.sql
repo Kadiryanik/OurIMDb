@@ -24,18 +24,15 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1973308' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0057623' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0379408' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0379408' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1818372' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0454908' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0492038' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4710432' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0688361' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1568142' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0905163' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0923635' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1302939' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1260544' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1252389' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1253632' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0047071' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0127429' AND movieId = 'tt3416532');
@@ -87,7 +84,6 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1380390' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm6995876' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm2305391' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm2305391' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm2498712' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm6662930' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4204212' AND movieId = 'tt3416532');
@@ -102,7 +98,6 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm6181249' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1556780' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3655439' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3655439' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0140674' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4200779' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm5438480' AND movieId = 'tt3416532');
@@ -114,14 +109,10 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm5063397' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3276741' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0590186' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0590186' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0651377' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm2015411' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3655867' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3655867' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm6086716' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1088262' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1088262' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1088262' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm8523434' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4527833' AND movieId = 'tt3416532');
@@ -210,7 +201,6 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1428516' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3424992' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1087955' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1087955' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1026730' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0400109' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm7360597' AND movieId = 'tt3416532');
@@ -245,8 +235,6 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm8070849' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3668403' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3134759' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3134759' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3134759' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm2728181' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1950311' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1709986' AND movieId = 'tt3416532');
@@ -262,7 +250,6 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3111319' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1152373' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3034737' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3034737' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4017857' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4388366' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3280231' AND movieId = 'tt3416532');
@@ -271,10 +258,8 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4573026' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm8068251' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4556626' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4556626' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm7050627' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3691065' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm2018004' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1849675' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0087440' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm5557913' AND movieId = 'tt3416532');
@@ -290,11 +275,9 @@ INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorF
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0326632' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm3022683' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1246990' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1246990' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1275877' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4550544' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0385431' AND movieId = 'tt3416532');
-INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm4043618' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm0425950' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm1716653' AND movieId = 'tt3416532');
 INSERT IGNORE INTO moviepeople(fkMovieId,fkPeopleId,castName,actorFlag,directorFlag,writerFlag) (SELECT movieId,peopleId,'',1,0,0 FROM People,Movie WHERE peopleId = 'nm5003289' AND movieId = 'tt3416532');

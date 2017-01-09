@@ -1,8 +1,4 @@
 USE imdb;
-#nm0000175
-select actorFlag, directorFlag, writerFlag, mTitle from imdb.moviepeople m, imdb.movie a where a.movieId = 'tt1375670' AND m.fkPeopleId = 'nm0240797';
-UPDATE `moviepeople` SET `actorFlag`= 0,`directorFlag`= 1,`writerFlag`= 0, `castName`='Francis Ford Coppola' WHERE fkMovieId = 'tt1375670' AND fkPeopleId = 'nm0240797';
-
 
 INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
 	VALUES('The Shawshank Redemption', '1994-10-14', 'United States', '142', 'English', 70, 10,
@@ -21,12 +17,8 @@ INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,
 INSERT INTO Genre(mType,movieId) SELECT 'Crime',movieId FROM Movie WHERE mTitle = 'The Godfather';
 INSERT INTO Genre(mType,movieId) SELECT 'Drama',movieId FROM Movie WHERE mTitle = 'The Godfather';
 
-#INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('cagatayavsr@gmail.com','cagatay','......');
-#INSERT INTO Users(uEmail,uDisplayName,uPassword) values ('eleqiac2@gmail.com','kadir','......');
-
-
 INSERT INTO Movie(mTitle,mDate,mCountry,mTime,mLanguage,mRatingSum,mRatingCount,mDescription,mUrlLink,movieId)
-	VALUES('The Lord of the Rings: The Return of the King', '2003-12-19', 'United States', '201', 'English', 89, 10,
+	VALUES('The Lord of the Rings The Return of the King', '2003-12-19', 'United States', '201', 'English', 89, 10,
 		'Gandalf and Aragorn lead the World of Men against Sauron\'s army to draw his gaze from Frodo and Sam as they approach Mount Doom with the One Ring.',
 			'https://www.youtube.com/embed/r5X-hFf6Bwo','tt0167260');
 

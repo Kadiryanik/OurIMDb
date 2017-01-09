@@ -77,7 +77,7 @@ public class UserReviews {
 					}
 				}
 				else{
-					JOptionPane.showMessageDialog(MainForm.refFrmOurmdb, "Please register to comment!");
+					JOptionPane.showMessageDialog(MainForm.refFrmOurmdb, "Please register to comment!", "Upss!", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}

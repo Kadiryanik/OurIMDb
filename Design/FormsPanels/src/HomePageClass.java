@@ -21,9 +21,21 @@ public class HomePageClass {
 		panel.setLayout(null);
 
 		cropLimit = 25;
-		
-		String movieQuery = "SELECT movieId, mTitle FROM Movie ORDER BY mDate DESC";
-		ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
+		String movieQuery;
+		ArrayList<Movie> movieList;
+		if(MainForm.getIsLogined()){
+			movieQuery = "(SELECT movieId,mTitle FROM Movie,NumberOfVisit WHERE fkUserId = + " + MainForm.getLoggedUserId() 
+					+ " AND fkMovieId = movieId GROUP BY counter DESC,mTitle)"
+					+ " UNION " 
+					+ "(SELECT movieId,mTitle FROM Movie WHERE movieId NOT IN (SELECT fkMovieId FROM NumberOfVisit WHERE fkUserId = " 
+					+ MainForm.getLoggedUserId() + " )"
+					+ " GROUP BY mNumOfVisit DESC,mTitle)";
+			movieList = SqlOperations.getMovie(movieQuery);
+		}
+		else{
+			movieQuery = "SELECT movieId, mTitle FROM Movie ORDER BY mNumOfVisit DESC,mTitle ";
+			movieList = SqlOperations.getMovie(movieQuery);
+		}
 		
 		JLabel lblPopular = new JLabel("Popular Movies");
 		lblPopular.setForeground(new Color(0, 0, 0));
