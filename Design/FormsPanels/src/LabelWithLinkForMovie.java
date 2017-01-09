@@ -47,6 +47,27 @@ public class LabelWithLinkForMovie {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(MainForm.getIsLogined()){
+					String query = "SELECT fkMovieId FROM NumberOfVisit WHERE fkUserId = " + MainForm.getLoggedUserId() 
+						+ " AND fkMovieId = '" + movieId + "'";
+					ArrayList<Movie> movieList = SqlOperations.getMovie(query);
+					if(movieList.isEmpty())
+					{
+						//insert if not exist
+						String insertQuery = "INSERT INTO NumberOfVisit(fkUserId,fkMovieId) VALUES(" 
+								+ MainForm.getLoggedUserId() + ",'" + movieId + "')";
+						SqlOperations.insert(insertQuery);
+					}
+					else{
+						String updateQuery = "UPDATE NumberOfVisit SET counter=counter+1 WHERE fkUserId = " + MainForm.getLoggedUserId() 
+							+ " AND fkMovieId = '" + movieId + "'";
+						SqlOperations.update(updateQuery);
+					}
+				}
+
+				String updateQuery = "UPDATE Movie SET mNumOfVisit=mNumOfVisit+1 WHERE movieId = '" + movieId + "'";
+				SqlOperations.update(updateQuery);
+				
 				MainForm.refPanelTop.setVisible(false);
 				MainForm.refPanelHome.setVisible(false);
 				MainForm.refPanelMovies.setVisible(false);

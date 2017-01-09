@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -159,7 +160,7 @@ public class MainForm {
 		//reference
 		refFrmOurmdb = frmOurmdb;
 		
-		boolean NewMovieIn = false;
+		boolean NewMovieIn = true;
 		if(NewMovieIn){	
 			String movieQuery = "SELECT movieId FROM Movie";
 			ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
@@ -170,12 +171,12 @@ public class MainForm {
 			}
 			
 			SqlOperations.postMovieImage("C:\\Workplace\\OurIMDb\\DB\\MovieOriginalImages");
-			
+			/*
 			for(int i = 0; i < movieIds.length; i++){
 				staticMovieId = movieIds[i];
 				System.out.println(staticMovieId);
 				SqlOperations.postPeopleImage("C:\\Workplace\\OurIMDb\\DB\\PeopleMinimizedImages");	
-			}
+			}*/
 		}
 		
 		final JButton btnWatchList = new JButton("");
@@ -320,6 +321,7 @@ public class MainForm {
 						if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
 							panelTop.setVisible(false);
 							panelUnLogin.setVisible(false);
+							panelHome.setVisible(false);
 							panelLogined.setVisible(true);
 							btnWatchList.setEnabled(true);
 							panelTop.setVisible(true);
@@ -329,7 +331,7 @@ public class MainForm {
 							
 							isLogined = true;
 							loggedUserId = userInfo.get(0).getUserId();
-							
+							panelHome.removeAll();
 							new HomePageClass(panelHome);
 							panelHome.setVisible(true);
 						}
@@ -398,6 +400,7 @@ public class MainForm {
 						if(getHash(textFieldPw.getText()).equals(userInfo.get(0).getuPassword())){
 							panelTop.setVisible(false);
 							panelUnLogin.setVisible(false);
+							panelHome.setVisible(false);
 							panelLogined.setVisible(true);
 							btnWatchList.setEnabled(true);
 							panelTop.setVisible(true);
@@ -408,7 +411,7 @@ public class MainForm {
 							
 							isLogined = true;
 							loggedUserId = userInfo.get(0).getUserId();
-							
+							panelHome.removeAll();
 							new HomePageClass(panelHome);
 							panelHome.setVisible(true);
 						}
@@ -515,15 +518,19 @@ public class MainForm {
 				panelTop.setVisible(false);
 				panelUnLogin.setVisible(true);
 				panelLogined.setVisible(false);
+				panelHome.setVisible(false);
 				btnWatchList.setEnabled(false);
 				panelUser.setVisible(false);
 				panelTop.setVisible(true);
-				panelHome.setVisible(true);
+				panelHome.removeAll();
+				
 				
 				textFieldId.setText("ID");
 				textFieldPw.setText("......");
 				
 				isLogined = false;
+				new HomePageClass(panelHome);
+				panelHome.setVisible(true);
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -549,6 +556,8 @@ public class MainForm {
 		lblTurnHome.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				panelHome.setVisible(false);
+				panelHome.removeAll();
 				panelEachOne.removeAll();
 				new HomePageClass(panelHome);
 				
@@ -758,6 +767,7 @@ public class MainForm {
 		btnHome.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\home.png"));
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				panelHome.setVisible(false);
 				panelHome.removeAll();
 				new HomePageClass(panelHome);
 				
@@ -1161,7 +1171,7 @@ public class MainForm {
 				scrollPane.setViewportView(panelTop10Scroll);
 				panelTop10.setVisible(false);
 				/*EndOf Top10 Inýt*/
-				String movieQuery = "SELECT movieId,mTitle,mRatingSum,mRatingCount FROM Movie ORDER BY mRatingSum/mRatingCount DESC";
+				String movieQuery = "SELECT movieId,mTitle,mRatingSum,mRatingCount FROM Movie ORDER BY mRatingSum/mRatingCount DESC LIMIT 10";
 				ArrayList<Movie> movieTop10List = SqlOperations.getMovie(movieQuery);
 
 				for(int i = 0; i < movieTop10List.size(); i++){
@@ -1190,7 +1200,8 @@ public class MainForm {
 			public void actionPerformed(ActionEvent e) {
 				panelWatchList.removeAll();
 				final JPanel WatchScroll = new JPanel();
-
+				final JPanel WatchScrollContent = new JPanel();
+				
 				JScrollPane scrollPaneWatch = new JScrollPane();
 				scrollPaneWatch.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 				scrollPaneWatch.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -1205,24 +1216,99 @@ public class MainForm {
 				WatchScrollTop.setBackground(new Color(238, 238, 238));
 				WatchScroll.add(WatchScrollTop);
 				
+				String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
+						+ "fkUserId = " + loggedUserId + " ORDER BY addedTime DESC";
+				ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
 				
 				
 				JLabel lblYourwatchlist = new JLabel("YourWatchlist");
 				lblYourwatchlist.setForeground(new Color(66, 66, 66));
 				lblYourwatchlist.setFont(new Font("Comic Sans MS", Font.BOLD, 16));
 				
+				
+				
 				//TODO: Link these ones with db
 				JLabel lblWithname = new JLabel("Name");
+				lblWithname.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				lblWithname.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+				lblWithname.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0){
+						panelWatchList.setVisible(false);
+						WatchScrollContent.removeAll();
+						String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
+								+ "fkUserId = " + loggedUserId + " ORDER BY mTitle";
+						ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
+						for(int i = 0; i < watchList.size(); i++){
+							new WatchlistComponent(loggedUserId, watchList.get(i).getMovieId(), WatchScrollContent);
+						}
+						
+						panelHome.setVisible(false);
+						panelMovies.setVisible(false);
+						panelCelebs.setVisible(false);
+						panelTop10.setVisible(false);
+						panelUser.setVisible(false);
+						panelRegister.setVisible(false);
+						panelWatchList.setVisible(true);
+						panelEachOne.setVisible(false);
+					}	
+				});
 				
 				JLabel lblSortBy = new JLabel("Sort by:");
 				lblSortBy.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
 				
 				JLabel lblRating = new JLabel("Rating");
+				lblRating.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				lblRating.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+				lblRating.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0){
+						panelWatchList.setVisible(false);
+						WatchScrollContent.removeAll();
+						String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
+								+ "fkUserId = " + loggedUserId + " ORDER BY mRatingSum/mRatingCount DESC";
+						ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
+						for(int i = 0; i < watchList.size(); i++){
+							new WatchlistComponent(loggedUserId, watchList.get(i).getMovieId(), WatchScrollContent);
+						}
+						
+						panelHome.setVisible(false);
+						panelMovies.setVisible(false);
+						panelCelebs.setVisible(false);
+						panelTop10.setVisible(false);
+						panelUser.setVisible(false);
+						panelRegister.setVisible(false);
+						panelWatchList.setVisible(true);
+						panelEachOne.setVisible(false);
+					}
+					
+				});
 				
-				JLabel lblYourRating = new JLabel("Your Rating");
-				lblYourRating.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+				JLabel lblYear = new JLabel("Year");
+				lblYear.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				lblYear.setFont(new Font("Comic Sans MS", Font.PLAIN, 11));
+				lblYear.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0){
+						panelWatchList.setVisible(false);
+						WatchScrollContent.removeAll();
+						String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
+								+ "fkUserId = " + loggedUserId + " ORDER BY mDate DESC";
+						ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
+						for(int i = 0; i < watchList.size(); i++){
+							new WatchlistComponent(loggedUserId, watchList.get(i).getMovieId(), WatchScrollContent);
+						}
+						
+						panelHome.setVisible(false);
+						panelMovies.setVisible(false);
+						panelCelebs.setVisible(false);
+						panelTop10.setVisible(false);
+						panelUser.setVisible(false);
+						panelRegister.setVisible(false);
+						panelWatchList.setVisible(true);
+						panelEachOne.setVisible(false);
+					}	
+				});
 				
 				JLabel lblForSize = new JLabel("");
 				GroupLayout gl_WatchScrollTop = new GroupLayout(WatchScrollTop);
@@ -1242,7 +1328,7 @@ public class MainForm {
 							.addGap(5)
 							.addComponent(lblRating, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 							.addGap(8)
-							.addComponent(lblYourRating))
+							.addComponent(lblYear))
 				);
 				gl_WatchScrollTop.setVerticalGroup(
 					gl_WatchScrollTop.createParallelGroup(Alignment.LEADING)
@@ -1255,21 +1341,17 @@ public class MainForm {
 								.addComponent(lblSortBy, GroupLayout.PREFERRED_SIZE, 14, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblWithname, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblRating, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblYourRating, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(lblYear, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)))
 				);
 				WatchScrollTop.setLayout(gl_WatchScrollTop);
 				
-				final JPanel WatchScrollContent = new JPanel();
+				//WatchScrollContent
 				WatchScroll.add(WatchScrollContent);
 				WatchScrollContent.setLayout(new WrapLayout(FlowLayout.CENTER, 5, 2));
 				
-				String movieQuery = "SELECT movieId, mTitle from Movie,WatchList WHERE fkMovieid = movieId AND "
-						+ "fkUserId = " + loggedUserId + " ORDER BY addedTime DESC";
-				ArrayList<Movie> watchList = SqlOperations.getMovie(movieQuery);
 				for(int i = 0; i < watchList.size(); i++){
 					new WatchlistComponent(loggedUserId, watchList.get(i).getMovieId(), WatchScrollContent);
 				}
-				
 				
 				panelHome.setVisible(false);
 				panelMovies.setVisible(false);
@@ -1318,6 +1400,7 @@ public class MainForm {
 						panelMovies.setVisible(false);
 						panelEachOne.setVisible(false);
 						panelWatchList.setVisible(false);
+						panelHome.removeAll();
 						new HomePageClass(panelHome);
 						panelHome.setVisible(true);
 					}

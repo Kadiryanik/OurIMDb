@@ -1412,9 +1412,8 @@ public class EachMovie {
 		panelAward.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 2));
 		panel.add(panelAward);
 		
-		new LabelWithoutLink("deneme",102,102,102,true,panelAward);
 		//TODO: Bu labelden önce win notification labeli oluþturup eklencek
-		final JLabel labelSeeFullAward = new JLabel("See more award >>");
+		final JLabel labelSeeFullAward = new JLabel("");
 		labelSeeFullAward.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		labelSeeFullAward.addMouseListener(new MouseAdapter() {
 			@Override
