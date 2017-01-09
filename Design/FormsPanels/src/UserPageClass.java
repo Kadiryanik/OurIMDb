@@ -79,7 +79,7 @@ public class UserPageClass {
 		panelContentMost.setBackground(new Color(255, 255, 255));
 		panelContentMost.setBounds(10, 72, 480, 230);
 		panelYourRatings.add(panelContentMost);
-		panelContentMost.setLayout(new WrapLayout(FlowLayout.LEFT, 8, 5));
+		panelContentMost.setLayout(new WrapLayout(FlowLayout.CENTER, 8, 5));
 		
 		/*getting rating with descending order*/
 		//String ratingQuery = "SELECT * FROM Rating WHERE fkUserId = " + userId + " ORDER BY rating DESC LIMIT 4";

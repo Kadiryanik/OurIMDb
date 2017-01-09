@@ -98,7 +98,7 @@ public class CommentComponent {
 			
 			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
 			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
-			JLabel lblNewLabel = new JLabel("UserImage");
+			JLabel lblNewLabel = new JLabel("");
 			
 			JPanel panelUserName = new JPanel();
 			panelUserName.setBackground(new Color(248, 248, 248));
@@ -243,7 +243,7 @@ public class CommentComponent {
 			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
 			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			
-			JLabel lblNewLabel = new JLabel("UserImage");
+			JLabel lblNewLabel = new JLabel("");
 			
 			JPanel panelUserName = new JPanel();
 			panelUserName.setBackground(new Color(248, 248, 248));
@@ -306,7 +306,7 @@ public class CommentComponent {
 			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
 			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			
-			JLabel lblNewLabel = new JLabel("UserImage");
+			JLabel lblNewLabel = new JLabel("");
 			
 			JPanel panelUserName = new JPanel();
 			panelUserName.setBackground(new Color(248, 248, 248));
@@ -405,7 +405,7 @@ public class CommentComponent {
 			String userQuery = "SELECT uDisplayName,userId FROM Users WHERE userId = " + commentList.get(0).getFkUserId();
 			ArrayList<UserClass> userInfo = SqlOperations.getUserInfo(userQuery);
 			
-			JLabel lblNewLabel = new JLabel("UserImage");
+			JLabel lblNewLabel = new JLabel("");
 			
 			JPanel panelUserName = new JPanel();
 			panelUserName.setBackground(new Color(248, 248, 248));

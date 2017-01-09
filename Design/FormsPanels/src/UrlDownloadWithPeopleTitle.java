@@ -40,7 +40,8 @@ public class UrlDownloadWithPeopleTitle {
 			ArrayList<People> list = SqlOperations.getPeople(query);
 	       
 			for(i = 0; i < list.size(); i++){
-				if(list.get(i).getpImage() == null){
+				if(list.get(i).getpImage() == null && 
+						list.get(i).getpImageUrl().substring(list.get(i).getpImageUrl().length()-3, list.get(i).getpImageUrl().length()) != "png"){
 				    // Create a trust manager that does not validate certificate chains
 			        TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
 			               public java.security.cert.X509Certificate[] getAcceptedIssuers() {

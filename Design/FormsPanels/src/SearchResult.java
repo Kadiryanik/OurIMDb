@@ -47,6 +47,14 @@ public class SearchResult {
 				movieList = SqlOperations.getMovie(movieQuery);
 			}
 		}
+		else if(text.equals("AllMovies")){
+			//System.out.println("movie search");
+			ArrayList<People> list = new ArrayList<People>();
+			celebList = list;
+			
+			movieQuery = "SELECT movieId, mTitle FROM Movie WHERE 1";
+			movieList = SqlOperations.getMovie(movieQuery);
+		}
 		else{
 			//System.out.println("else search");
 			celebQuery = "SELECT peopleId, pTitle FROM People WHERE pTitle LIKE '%" + text + "%'";
@@ -55,8 +63,6 @@ public class SearchResult {
 			movieQuery = "SELECT movieId, mTitle FROM Movie WHERE mTitle LIKE '%" + text + "%'";
 			movieList = SqlOperations.getMovie(movieQuery);
 		}
-		
-		
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(255, 255, 255));

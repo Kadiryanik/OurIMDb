@@ -8,6 +8,7 @@ public class Movie {
 	private String mLanguage;
 	private double mRatingSum;
 	private double mRatingCount;
+	private int mNumOfVisit;
 	private String mDescription;
 	private byte[] mImage;
 	private String mUrlLink;
@@ -16,7 +17,7 @@ public class Movie {
 	Movie(){}
 	
 	Movie(String mTitle, String mDate, String mCountry, String mTime, String mLanguage, double mRatingSum,
-			double mRatingCount,String mDescription, byte[] mImage, String mUrlLink, String movieId){
+			double mRatingCount,int mNumOfVisit, String mDescription, byte[] mImage, String mUrlLink, String movieId){
 		this.setmTitle(mTitle);
 		this.setmDate(mDate);
 		this.setmCountry(mCountry);
@@ -24,6 +25,7 @@ public class Movie {
 		this.setmLanguage(mLanguage);
 		this.setmRatingSum(mRatingSum);
 		this.setmRatingCount(mRatingCount);
+		this.setmNumOfVisit(mNumOfVisit);
 		this.setmDescription(mDescription);
 		this.setmImage(mImage);
 		this.setmUrlLink(mUrlLink);
@@ -95,5 +97,13 @@ public class Movie {
 	}
 	public void setmDescription(String mDescription) {
 		this.mDescription = mDescription;
+	}
+
+	public int getmNumOfVisit() {
+		return mNumOfVisit;
+	}
+
+	public void setmNumOfVisit(int mNumOfVisit) {
+		this.mNumOfVisit = mNumOfVisit;
 	}
 }

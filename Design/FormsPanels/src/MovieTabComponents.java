@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -20,9 +22,18 @@ public class MovieTabComponents {
 	public static int Id = 0;
 	private String movieId;
 	
-	MovieTabComponents(String mId, JPanel panelReal){
+	MovieTabComponents(String mId, int isAdded, JPanel panelReal){
 		Id++;
 		movieId = mId;
+		
+		if(isAdded == 0){
+			String movieQuery = "SELECT movieId FROM Movie WHERE movieId = '" + movieId + "' AND movieId IN"
+					+ "(SELECT fkMovieId FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() + ")";
+			ArrayList<Movie> d = SqlOperations.getMovie(movieQuery);
+			if(d.size() > 0){
+				isAdded = 1;
+			}
+		}
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(0, 0, 524, 233);
@@ -32,7 +43,7 @@ public class MovieTabComponents {
 		JPanel panelDirector = new JPanel();
 		JPanel panelStars = new JPanel();
 		JPanel panelGenres = new JPanel();
-		
+
 		if(Id % 2 == 0){
 			panel.setBackground(new Color(230, 230, 230));
 			panelName.setBackground(new Color(230, 230, 230));
@@ -49,10 +60,6 @@ public class MovieTabComponents {
 			panelStars.setBackground(new Color(245, 245, 245));
 			panelGenres.setBackground(new Color(245, 245, 245));
 		}
-		
-		
-		//panel.setBackground(new Color(192, 192, 192));
-		
 		
 		panelName.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
@@ -94,8 +101,8 @@ public class MovieTabComponents {
 		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(10, 11, 140, 209);
 		lblImage.setIcon(SqlOperations.getMovieImage(movieId, lblImage));
-		lblImage.setBackground(UIManager.getColor("menu"));
 		
+		//TODO::
 		JLabel lblMin = new JLabel(movieList.get(0).getmTime() + "min");
 		lblMin.setForeground(new Color(102, 102, 102));
 		
@@ -104,10 +111,10 @@ public class MovieTabComponents {
 		panelGenres.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
 		
 		textInfo.setFont(new Font("Comic Sans MS", Font.PLAIN, 10));
-		//textInfo.setBackground(new Color(231, 231, 231));
 		textInfo.setBounds(160, 61, 370, 83);
 		textInfo.setEditable(false);
 		textInfo.setFocusable(false);
+
 		textInfo.setText(movieList.get(0).getmDescription());
 		textInfo.setLineWrap(true);
 		textInfo.setWrapStyleWord(true);
@@ -144,6 +151,7 @@ public class MovieTabComponents {
 				if(MainForm.getIsLogined()){
 					isLogin = 0;
 				}
+				
 				new EachMovie(movieId, MainForm.refPanelEachOne, isLogin);
 				MainForm.refPanelEachOne.setVisible(true);
 			}
@@ -151,6 +159,7 @@ public class MovieTabComponents {
 		lblWatchTrailer.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchTrailerButton.png"));
 		
 		final JLabel lblAddWatchlist = new JLabel("add watchlist");
+		final JLabel lblAddedWatchlist = new JLabel("");
 		lblAddWatchlist.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblAddWatchlist.addMouseListener(new MouseAdapter() {
 			@Override
@@ -163,10 +172,57 @@ public class MovieTabComponents {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//TODO: Yönlendir added button eklenecek týklandýðýnda gözükmesi için
+				if(MainForm.getIsLogined()){
+					String query = "INSERT INTO WatchList(fkUserId, fkMovieId) VALUES(" + MainForm.getLoggedUserId() + ",'" + movieId + "')";
+					SqlOperations.insert(query);
+					lblAddWatchlist.setVisible(false);
+					lblAddedWatchlist.setVisible(true);
+				}
+				else{
+					final JOptionPane pane = new JOptionPane("Please register for adding watchlist!",
+							JOptionPane.ERROR_MESSAGE);
+					final JDialog jDialog = pane.createDialog(
+					        null, 
+					        "Upss!");
+					jDialog.setLocationRelativeTo(MainForm.refFrmOurmdb);
+					jDialog.setVisible(true);
+				}
 			}
 		});
 		lblAddWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\WatchlistButton.png"));
+		
+
+		//lblAddedWatchlist
+		lblAddedWatchlist.setVisible(false);
+		lblAddedWatchlist.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		lblAddedWatchlist.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				lblAddedWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\AddedWatchlistButtonA.png"));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				lblAddedWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\AddedWatchlistButton.png"));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String query = "DELETE FROM WatchList WHERE fkUserId = " + MainForm.getLoggedUserId() 
+				+ " AND fkMovieId = '" + movieId + "'";
+				SqlOperations.delete(query);
+				lblAddedWatchlist.setVisible(false);
+				lblAddWatchlist.setVisible(true);
+			}
+		});
+		lblAddedWatchlist.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\AddedWatchlistButton.png"));
+		
+		if(isAdded == 0){
+			lblAddWatchlist.setVisible(true);
+			lblAddedWatchlist.setVisible(false);
+		}
+		if(isAdded == 1){
+			lblAddWatchlist.setVisible(false);
+			lblAddedWatchlist.setVisible(true);
+		}
 		
 		JLabel lblDirector = new JLabel("Director  :");
 		lblDirector.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -177,8 +233,11 @@ public class MovieTabComponents {
 		lblStars.setForeground(new Color(102, 102, 102));
 		
 		panelDirector.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
-		
 		panelStars.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+		
+		JLabel lblForGroup = new JLabel("");
+		lblForGroup.setIcon(new ImageIcon("C:\\Workplace\\OurIMDb\\Design\\Button Png\\line.png"));
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -186,14 +245,15 @@ public class MovieTabComponents {
 					.addGap(10)
 					.addComponent(lblImage)
 					.addGap(10)
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(panelName, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(panelName, GroupLayout.PREFERRED_SIZE, 353, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblMin, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 							.addGap(5)
 							.addComponent(label, GroupLayout.PREFERRED_SIZE, 12, GroupLayout.PREFERRED_SIZE)
 							.addGap(8)
 							.addComponent(panelGenres, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))
+						.addComponent(scroll, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(lblDirector, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
 							.addGap(4)
@@ -207,9 +267,10 @@ public class MovieTabComponents {
 							.addGap(175)
 							.addComponent(lblWatchTrailer, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
 							.addGap(10)
-							.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE))
-						.addComponent(scroll, 0, 0, Short.MAX_VALUE))
-					.addGap(19))
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblAddedWatchlist)
+								.addComponent(lblAddWatchlist, GroupLayout.PREFERRED_SIZE, 93, GroupLayout.PREFERRED_SIZE)))))
+				.addComponent(lblForGroup, GroupLayout.PREFERRED_SIZE, 524, GroupLayout.PREFERRED_SIZE)
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
@@ -241,10 +302,12 @@ public class MovieTabComponents {
 							.addGap(21)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblWatchTrailer)
-								.addComponent(lblAddWatchlist)))))
+								.addComponent(lblAddedWatchlist)
+								.addComponent(lblAddWatchlist))))
+					.addGap(8)
+					.addComponent(lblForGroup, GroupLayout.PREFERRED_SIZE, 1, GroupLayout.PREFERRED_SIZE))
 		);
 		panel.setLayout(gl_panel);
-		
 		panelReal.add(panel);
 	}
 

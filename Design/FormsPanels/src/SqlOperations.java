@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -416,7 +417,7 @@ public class SqlOperations {
 
 		try {
 			String driver = "com.mysql.jdbc.Driver";
-			String url = "jdbc:mysql://localhost:3307/imdb?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3306/imdb?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "h3b9er1po";
 			Class.forName(driver);
@@ -433,69 +434,90 @@ public class SqlOperations {
 		
 		Connection con = null;
 		PreparedStatement statement = null;
-		
-		try {
-			ArrayList<Movie> list = SqlOperations.getMovie("SELECT mTitle FROM Movie");
 			
-			String imageQuery = "UPDATE Movie SET mImage = ? WHERE mTitle = ?";
-			con = getConnection();
+		ArrayList<Movie> list = SqlOperations.getMovie("SELECT mTitle FROM Movie");
+		
+		String imageQuery = "UPDATE Movie SET mImage = ? WHERE mTitle = ?";
+		con = getConnection();
+		try {
 			statement = con.prepareStatement(imageQuery);
-			for(int i = 0; i < list.size(); i++){
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+		}
+		for(int i = 0; i < list.size(); i++){
+			try {
 				String fileName = list.get(i).getmTitle();
 				File theFile = new File(directory + "\\" + fileName + ".jpg");
 				FileInputStream input = new FileInputStream(theFile);
 				statement.setBinaryStream(1, input);
 				statement.setString(2, fileName);
 				statement.executeUpdate();
-			}
-			
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally{
-			try { if (statement != null) statement.close(); } catch (Exception e) {};
-			try { if (con != null) con.close(); } catch (Exception e) {};
+				
+			} catch(java.io.FileNotFoundException e){
+				//do nothing
+				System.out.println("File doesnt exist");
+			} catch (Exception e) {
+				System.out.println(e);
+			} 
 		}
+		
+		try { if (statement != null) statement.close(); } catch (Exception e) {};
+		try { if (con != null) con.close(); } catch (Exception e) {};
 	}
 	
 	public static void postPeopleImage(String directory){
 		
 		Connection con = null;
 		PreparedStatement statement = null;
-		
+		ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle,pImage FROM People WHERE "
+				+ "peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='" + MainForm.staticMovieId + "')");
+		String imageQuery = "UPDATE People SET pImage = ? WHERE pTitle = ?";
+		con = getConnection();
 		try {
-			ArrayList<People> list = SqlOperations.getPeople("SELECT pTitle,pImage FROM People WHERE "
-					+ "peopleId IN (SELECT fkPeopleId FROM moviepeople WHERE fkMovieId='" + MainForm.staticMovieId + "')");
-			String imageQuery = "UPDATE People SET pImage = ? WHERE pTitle = ?";
-			con = getConnection();
 			statement = con.prepareStatement(imageQuery);
-			for(int i = 0; i < list.size(); i++){
-				if(list.get(i).getpImage() == null){
-					String fileName = list.get(i).getpTitle();
-					File theFile = new File(directory + "\\" + fileName + ".jpg");
-					FileInputStream input = new FileInputStream(theFile);
-					statement.setBinaryStream(1, input);
-					statement.setString(2, fileName);
-					statement.executeUpdate();
-					System.out.println("" + i + " of " + list.size() + "added");
-				}
-				//System.out.println("" + i + " of " + list.size() + "passed");
-			}
-		} catch (Exception e) {
-			System.out.println(e);
-		} finally{
-			try { if (statement != null) statement.close(); } catch (Exception e) {};
-			try { if (con != null) con.close(); } catch (Exception e) {};
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		for(int i = 0; i < list.size(); i++){
+			try {
+					if(list.get(i).getpImage() == null){
+						String fileName = list.get(i).getpTitle();
+						File theFile = new File(directory + "\\" + fileName + ".jpg");
+						FileInputStream input = new FileInputStream(theFile);
+						statement.setBinaryStream(1, input);
+						statement.setString(2, fileName);
+						statement.executeUpdate();
+						System.out.println("" + i + " of " + list.size() + "added");
+					}
+			} catch(java.io.FileNotFoundException e){
+				//do nothing
+				System.out.println("File doesnt exist");
+			} catch (Exception e) {
+				System.out.println(e);
+			} 
+		}
+
+		try { if (statement != null) statement.close(); } catch (Exception e) {};
+		try { if (con != null) con.close(); } catch (Exception e) {};
+			
 	}
 	
 	public static ImageIcon getMovieImage(String movieId,JLabel lblImage){
+		try{
+			String Query = "SELECT mImage FROM Movie WHERE movieId = '" + movieId + "'";
+			ImageIcon imageIcon = new ImageIcon(SqlOperations.getMovie(Query).get(0).getmImage());
+			Image image = imageIcon.getImage();
+			Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
+			return new ImageIcon(im);
+		} catch(Exception e){
+			//Do nothing
+			ImageIcon imageIcon = new ImageIcon("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//null.jpg");
+			Image image = imageIcon.getImage();
+			Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
+			return new ImageIcon(im);
+		}
 		
-		String Query = "SELECT mImage FROM Movie WHERE movieId = '" + movieId + "'";
-		ImageIcon imageIcon = new ImageIcon(SqlOperations.getMovie(Query).get(0).getmImage());
-		Image image = imageIcon.getImage();
-		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
-		return new ImageIcon(im);
-//		return new ImageIcon("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//null.jpg");
 	}
 	
 	public static ImageIcon getPeopleImage(String peopleId,JLabel lblImage){
@@ -507,12 +529,12 @@ public class SqlOperations {
 			return new ImageIcon(im);
 		}
 		catch(Exception e){
-			System.out.println(e);
+			ImageIcon imageIcon = new ImageIcon("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//null.jpg");
+			Image image = imageIcon.getImage();
+			Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
+			return new ImageIcon(im);
 		}
-		ImageIcon imageIcon = new ImageIcon("C://Workplace//OurIMDb//DB//PeopleMinimizedImages//null.jpg");
-		Image image = imageIcon.getImage();
-		Image im = image.getScaledInstance(lblImage.getWidth(),	lblImage.getHeight(), Image.SCALE_SMOOTH);
-		return new ImageIcon(im);
+		
 	}
 	
 	public static void insert(String query){

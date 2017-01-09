@@ -34,7 +34,7 @@ public class CelebsComponent {
 		label.setBounds(10, 11, 42, 14);
 		panel.add(label);
 		
-		JLabel lblImage = new JLabel("image");
+		JLabel lblImage = new JLabel("");
 		lblImage.setBounds(51, 5, 73, 103);
 		lblImage.setIcon(SqlOperations.getPeopleImage(celebId, lblImage));
 		panel.add(lblImage);

@@ -160,7 +160,7 @@ public class MainForm {
 		//reference
 		refFrmOurmdb = frmOurmdb;
 		
-		boolean NewMovieIn = true;
+		boolean NewMovieIn = false;
 		if(NewMovieIn){	
 			String movieQuery = "SELECT movieId FROM Movie";
 			ArrayList<Movie> movieList = SqlOperations.getMovie(movieQuery);
@@ -169,14 +169,13 @@ public class MainForm {
 			for(int i = 0; i < movieIds.length; i++){
 				movieIds[i] = movieList.get(i).getMovieId();
 			}
-			
 			SqlOperations.postMovieImage("C:\\Workplace\\OurIMDb\\DB\\MovieOriginalImages");
-			/*
+			
 			for(int i = 0; i < movieIds.length; i++){
 				staticMovieId = movieIds[i];
 				System.out.println(staticMovieId);
 				SqlOperations.postPeopleImage("C:\\Workplace\\OurIMDb\\DB\\PeopleMinimizedImages");	
-			}*/
+			}
 		}
 		
 		final JButton btnWatchList = new JButton("");
@@ -658,7 +657,7 @@ public class MainForm {
 					lblRight.setVisible(true);
 					
 					final JOptionPane pane = new JOptionPane("Genre search: Start with g:\nYear search: Start with y:"
-							+ "\nNormal search: Just write",
+							+ "\nType AllMovies for all movies\nNormal search: Just Type",
 							JOptionPane.INFORMATION_MESSAGE);
 					final JDialog jDialog = pane.createDialog(
 					        null, 
@@ -829,8 +828,12 @@ public class MainForm {
 				String movieQueryInTheaters = "SELECT movieId FROM Movie WHERE mDate < '" + timestamp.toString().substring(0, 10) 
 						+ "' AND mDate > '" + timestampTwoWeekEarlier.toString().substring(0, 10) + "'";
 				ArrayList<Movie> movieList = SqlOperations.getMovie(movieQueryInTheaters);
+				int isLogin = -1;
+				if(MainForm.getIsLogined()){
+					isLogin = 0;
+				}
 				for(int i = 0; i < movieList.size(); i++){
-					new MovieTabComponents(movieList.get(i).getMovieId(), panelInTheaters);
+					new MovieTabComponents(movieList.get(i).getMovieId(), isLogin,panelInTheaters);
 				}
 				
 				Timestamp timestampTwoWeekLater = new Timestamp(System.currentTimeMillis());
@@ -838,8 +841,12 @@ public class MainForm {
 				String movieQueryComingSoon = "SELECT movieId FROM Movie WHERE mDate > '" + timestamp.toString().substring(0, 10) 
 						+ "' AND mDate < '" + timestampTwoWeekLater.toString().substring(0, 10) + "'";
 				ArrayList<Movie> movieListComingSoon = SqlOperations.getMovie(movieQueryComingSoon);
+				isLogin = -1;
+				if(getIsLogined()){
+					isLogin = 0;
+				}
 				for(int i = 0; i < movieListComingSoon.size(); i++){
-					new MovieTabComponents(movieListComingSoon.get(i).getMovieId(), panelComingSoon);
+					new MovieTabComponents(movieListComingSoon.get(i).getMovieId(), isLogin, panelComingSoon);
 				}
 				
 				panelHome.setVisible(false);

@@ -250,6 +250,12 @@ public class EachMovie {
 		panelRate.setBounds(193, 22, 251, 42);
 		panelTop.add(panelRate);
 		panelRate.setLayout(null);
+		panelRate.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0){
+				panelHoverRated.setVisible(true);
+			}
+		});
 		
 		final JLabel lblBackground = new JLabel("");
 		
