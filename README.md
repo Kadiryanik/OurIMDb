@@ -2,17 +2,17 @@ OurIMDb klasörü C:\Workplace\ dizini altına kopyalanmalıdır.
 
 Projenin çalışması için eklenmesi gereken kütüphaneler "External Jars" klasörü altındadır.
 
-For SqlConnection
+SqlConnection için:
 - mysql-connector-java-5.1.40\mysql-connector-java-5.1.40-bin.jar
 
-For WebBrowser:
+WebBrowser için:
 - DJNativeSwing-SWT-1-0-2\DJNativeSwing.jar
 - DJNativeSwing-SWT-1-0-2\DJNativeSwing-SWT.jar
 - native\swt.jar
 
 Çalıştırmak için "MainForm.java" kullanılmalıdır.
 
-UrlDownloadWithPeopleTitle ve MinimizeImages dosyalarınında mainleri mevcuttur, bunların kullanım yeri raporda mevcurttur.
+UrlDownloadWithPeopleTitle ve MinimizeImages dosyalarınında mainleri mevcuttur.
 
 Veri tabanını yeniden oluşturmak için sırasıyla:
 - Create Database.sql (Database ve tabloları oluşturmak için)
