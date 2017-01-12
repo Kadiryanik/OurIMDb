@@ -1,4 +1,0 @@
-MOVIE 	     -> MovieID,GenreID,Title,Year,Country,MovieTime,Language,Rating
-MOVIE_PEOPLE -> MovieID,PeopleID,MovieIDPeopleID
-PEOPLE       ->	PeopleID,Title,Fname,Lname,Birtday,Gender
-GENRE        -> GenreID,Type
